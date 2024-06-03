@@ -15,15 +15,15 @@ namespace Domain.Entities.ConfigurationData
         /// <summary>
         /// Nombre de la variable
         /// </summary>
-        string Name { get; set; }
+        public string Name { get; set; }
         /// <summary>
         /// Unidad de medida de la variable
         /// </summary>
-        string MeasurementUnit { get; set; }
+        public string MeasurementUnit { get; set; }
         /// <summary>
         /// Código de la variable en diagrama PI&D
         /// </summary>
-        string Code { get; set; }
+        public string Code { get; set; }
 
         public Variable(string name, string measurementUnit, string code)
         {
