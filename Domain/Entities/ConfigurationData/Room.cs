@@ -29,13 +29,12 @@ public class Room
 
 
     // Constructor
-    public Room(int number, bool isProduction, string description)
+    public Room(int number, bool isProduction, string description, Floor floor)
     {
         Number = number;
         IsProduction = isProduction;
         Description = description;
-        Floor = Floor;
-
-    }
+        Floor = floor;
+     }
 
 }
