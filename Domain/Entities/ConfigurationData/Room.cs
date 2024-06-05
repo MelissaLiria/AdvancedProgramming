@@ -6,10 +6,26 @@ using System.Threading.Tasks;
 
 public class Room
 {
-    // Properties for Room
+    /// <summary>
+    /// Clase habitación
+    /// </summary>
+
     public int Number { get; set; }
+    /// <summary>
+    /// Numero de habitacion
+    /// </summary>
     public bool IsProduction { get; set; }
+    /// <summary>
+    /// Si es de produccion o no
+    /// </summary>
     public string Description { get; set; }
+    /// <summary>
+    /// Breve descripcion sobre la habitacion
+    /// </summary>
+    public Floor Floor { get; set; }
+    /// <summary>
+    /// Piso al que pertenece la habitacion
+    /// </summary>
 
 
     // Constructor
@@ -18,6 +34,7 @@ public class Room
         Number = number;
         IsProduction = isProduction;
         Description = description;
+        Floor = Floor;
 
     }
 
