@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 public class Room
 {
     /// <summary>
-    /// Clase habitación
+    /// Clase habitación 2.0
     /// </summary>
 
     public int Number { get; set; }
