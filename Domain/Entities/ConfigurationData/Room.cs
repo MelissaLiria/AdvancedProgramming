@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+namespace  Domain.Entities.ConfigurationData
 
-public class Room
 {
+    public class Room
+    {
     /// <summary>
     /// Clase habitación 2.0
     /// </summary>
@@ -37,4 +39,5 @@ public class Room
         Floor = floor;
      }
 
+    }
 }
