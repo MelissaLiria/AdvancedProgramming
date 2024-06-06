@@ -3,13 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Abstract
 
 namespace Domain.Entities.ConfigurationData
 {
     /// <summary>
     /// Piso de un edificio
     /// </summary>
-    public class Floor
+    public class Floor: Structure
     {
         #region Properties
 
