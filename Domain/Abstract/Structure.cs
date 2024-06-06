@@ -6,7 +6,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Abstract
 {
-    abstract public class Structure
+    /// <summary>
+    /// Clase abstracta que define el tipo de las clases Building, Floor y Room
+    /// </summary>
+     public abstract class Structure
     {
+
     }
 }
