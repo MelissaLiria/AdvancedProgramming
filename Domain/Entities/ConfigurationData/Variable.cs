@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Abstract;
-
+using Domain.Entities.Types;
 
 namespace Domain.Entities.ConfigurationData
 {
@@ -13,28 +13,30 @@ namespace Domain.Entities.ConfigurationData
     /// </summary>
     public class Variable
     {
+
         /// <summary>
         /// Localización en la que es medida la variable
         /// </summary>
         public Structure Location { get; set; }
         /// <summary>
-        /// Nombre de la variable
+        /// Tipo de Variable
         /// </summary>
-        public string Name { get; set; }
-        /// <summary>
-        /// Unidad de medida de la variable
-        /// </summary>
-        public string MeasurementUnit { get; set; }
+        public VariableType VariableType { get; set; }
         /// <summary>
         /// Código de la variable en diagrama PI&D
         /// </summary>
         public string Code { get; set; }
 
-        public Variable(Structure location, string name, string measurementUnit, string code)
+        /// <summary>
+        /// Inicializa un objeto tipo Variable
+        /// </summary>
+        /// <param name="location"></param>
+        /// <param name="variableType"></param>
+        /// <param name="code"></param>
+        public Variable(Structure location, VariableType variableType, string code)
         {
             Location = location;
-            Name = name;
-            MeasurementUnit = measurementUnit;
+            VariableType = variableType;
             Code = code;
         }
     }
