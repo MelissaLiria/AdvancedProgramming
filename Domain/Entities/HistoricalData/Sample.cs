@@ -10,7 +10,7 @@ namespace Domain.Entities.HistoricalData
     /// <summary>
     /// Clase que modela las muestras de cada variable
     /// </summary>
-    public class Sample <T>
+    public class Sample
     {
         /// <summary>
         /// Variable asociada a la medición
@@ -19,17 +19,32 @@ namespace Domain.Entities.HistoricalData
         /// <summary>
         /// Valor de la variable medida
         /// </summary>
-        public T Value { get; set; }
+        public object Value { get; }
         /// <summary>
         /// Registra la fecha y hora de la toma de la muestra
         /// </summary>
         public DateTime DateTime { get; set; }
 
-        public Sample(Variable variable, T value, DateTime dateTime)
+
+        /// <summary>
+        /// Constructor de la clase Variable
+        /// </summary>
+        /// <param name="variable"></param>
+        /// <param name="value"></param>
+        /// <param name="dateTime"></param>
+        /// <exception cref="ArgumentException"></exception>
+        public Sample(Variable variable, object value, DateTime dateTime)
         {
-            Variable = variable;
-            Value = value;
+            if(value is int||value is bool||value is double||value is float)
+            {
+                Value = value;
+            }
+            else
+            {
+                throw new ArgumentException("Data type not allowed");
+            }
             DateTime = dateTime;
+            Variable = variable;
         }
         
     }
