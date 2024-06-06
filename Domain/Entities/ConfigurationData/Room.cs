@@ -3,10 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Domain.Abstract
+
 namespace  Domain.Entities.ConfigurationData
 
 {
-    public class Room
+    public class Room : Structure
     {
     /// <summary>
     /// Clase habitación 2.0
