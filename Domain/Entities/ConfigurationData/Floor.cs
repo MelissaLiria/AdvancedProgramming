@@ -24,6 +24,16 @@ namespace Domain.Entities.ConfigurationData
         /// </summary>
         public Building Building { get; set; }
 
+        /// <summary>
+        /// Habitaciones dentro del piso
+        /// </summary>
+        public List<Room> Rooms { get; set; }
+
+        /// <summary>
+        /// Variables dentro del piso
+        /// </summary>
+        public List<Variable> Variables { get; set; }
+
         #endregion 
 
         /// <summary>
@@ -35,7 +45,8 @@ namespace Domain.Entities.ConfigurationData
         {
             Location = location;
             Building = building;
-
+            Rooms = new List<Room>();
+            Variables = new List<Variable>();
         }
 
 
