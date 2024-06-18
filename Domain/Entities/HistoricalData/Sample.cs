@@ -19,6 +19,10 @@ namespace Domain.Entities.HistoricalData
         /// </summary>
         public Variable Variable { get; set; }
         /// <summary>
+        /// Identificador de la variable
+        /// </summary>
+        public Guid VariableId { get; set; }
+        /// <summary>
         /// Registra la fecha y hora de la toma de la muestra
         /// </summary>
         public DateTime DateTime { get; set; }
@@ -34,9 +38,10 @@ namespace Domain.Entities.HistoricalData
         /// </summary>
         /// <param name="variable"></param>
         /// <exception cref="ArgumentException"></exception>
-        public Sample(Guid id, Variable variable) : base(id)
+        public Sample(Guid id, Variable variable, Guid variableId) : base(id)
         { 
             DateTime = DateTime.Now;
+            VariableId = variableId;
             Variable = variable;
         }
         
