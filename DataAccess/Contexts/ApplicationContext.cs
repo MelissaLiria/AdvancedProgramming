@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Contexts
 {
-    internal class ApplicationContext : DbContext
+    public class ApplicationContext : DbContext
     {
         #region Tables
         /// <summary>
