@@ -20,6 +20,10 @@ namespace Domain.Entities.ConfigurationData
         /// </summary>
         public Structure Location { get; set; }
         /// <summary>
+        /// Identificador de la localización
+        /// </summary>
+        public Guid LocationId { get; set; }
+        /// <summary>
         /// Tipo de Variable
         /// </summary>
         public VariableType VariableType { get; set; }
