@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -7,24 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="Entities\Types\**" />
-    <EmbeddedResource Remove="Entities\Types\**" />
-    <None Remove="Entities\Types\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Entities\HistoricalData\" />
-    <Folder Include="Common\" />
-    <Folder Include="ValueObjects\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <PackageReference Include="EntityFramework" Version="6.5.1" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="6.0.27" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.27">
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="FluentConfigurations\" />
+    <Folder Include="Repositories\" />
   </ItemGroup>
 
 </Project>
