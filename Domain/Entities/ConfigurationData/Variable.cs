@@ -35,7 +35,7 @@ namespace Domain.Entities.ConfigurationData
 
         protected Variable(): base()
         {
-            LocationId = null;
+            LocationId = Guid.NewGuid();
             Location = null;
             VariableType = null;
             Code = null;
@@ -48,7 +48,7 @@ namespace Domain.Entities.ConfigurationData
         /// <param name="location"></param>
         /// <param name="variableType"></param>
         /// <param name="code"></param>
-        public Variable(Guid id, Structure location, Guid locationId VariableType variableType, string code): base(id)
+        public Variable(Guid id, Structure location, Guid locationId, VariableType variableType, string code): base(id)
         {
             Location = location;
             LocationId = locationId;
