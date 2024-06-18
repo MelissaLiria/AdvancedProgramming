@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Domain.Common;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,9 +10,9 @@ namespace Domain.Entities.Types
     /// <summary>
     /// Clase de tipos de variables
     /// </summary>
-    public class VariableType
+    public class VariableType : ValueObject
     {
-        
+        #region Properties
         /// <summary>
         /// Nombre de la variable
         /// </summary>
@@ -20,6 +21,9 @@ namespace Domain.Entities.Types
         /// Unidad de medida
         /// </summary>
         public string MeasurementUnit { get; set; }
+        #endregion
+
+        protected VariableType() { }
 
         /// <summary>
         /// Inicializa un objeto tipo VariableType
@@ -32,5 +36,14 @@ namespace Domain.Entities.Types
             MeasurementUnit = measurementUnit;
         }
 
+        /// <summary>
+        /// Implementando método de la clase base ValueObject
+        /// </summary>
+        /// <returns></returns>
+        protected override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Name;
+            yield return MeasurementUnit;
+        }
     }
 }
