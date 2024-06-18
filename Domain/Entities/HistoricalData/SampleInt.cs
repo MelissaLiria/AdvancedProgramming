@@ -26,7 +26,7 @@ namespace Domain.Entities.HistoricalData
         /// </summary>
         /// <param name="variable"></param>
         /// <param name="value"></param>
-        public SampleInt(Guid id, Variable variable, int value) : base(id, variable)
+        public SampleInt(Guid id, Variable variable, Guid variableId, int value) : base(id, variable, variableId)
         {
             Value = value;
         }

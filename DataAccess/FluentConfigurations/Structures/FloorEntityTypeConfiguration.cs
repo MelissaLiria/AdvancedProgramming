@@ -19,7 +19,7 @@ namespace DataAccess.FluentConfigurations.Structures
             builder.HasBaseType(typeof(Structure));
             builder.Ignore(x =>x.Rooms);
             builder.Ignore(x =>x.Variables);
-            builder.HasMany(x => x.Rooms).WithOne().HasForeignKey(x => x.RoomId);
+            builder.HasMany(x => x.Rooms).WithOne().HasForeignKey(x => x.FloorId);
             builder.HasMany(x => x.Variables).WithOne().HasForeignKey(x => x.LocationId);
 
         }
