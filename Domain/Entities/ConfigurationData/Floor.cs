@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Abstract;
+using Domain.Common;
 
 namespace Domain.Entities.ConfigurationData
 {
@@ -25,6 +26,11 @@ namespace Domain.Entities.ConfigurationData
         public Building Building { get; set; }
 
         /// <summary>
+        /// Id de Building
+        /// </summary>
+        public Guid BuildingId { get; set; }
+
+        /// <summary>
         /// Habitaciones dentro del piso
         /// </summary>
         public List<Room> Rooms { get; set; }
@@ -37,14 +43,23 @@ namespace Domain.Entities.ConfigurationData
         #endregion 
 
         /// <summary>
+        /// Constructor por defecto de la clase FLoor
+        /// </summary>
+        protected Floor() 
+        {
+        }
+
+        /// <summary>
         /// Inicializa un objeto <see cref="Floor"/>
         /// </summary>
         /// <param name="location">Ubicacion del piso.</param>
         /// <param name="building">Edificio donde se encuentra el piso</param>
-        public Floor(string location, Building building)
+        /// <param name="buildingId">Id de Building</param>
+        public Floor(Guid id, string location, Building building,Guid buildingId):base(id)
         {
             Location = location;
             Building = building;
+            BuildingId = buildingId;
             Rooms = new List<Room>();
             Variables = new List<Variable>();
         }
