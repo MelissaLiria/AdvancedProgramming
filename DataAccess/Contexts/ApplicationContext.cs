@@ -1,4 +1,7 @@
-﻿using Domain.Entities.ConfigurationData;
+﻿using DataAccess.FluentConfigurations.Variables;
+using DataAccess.FluentConfigurations.Samples;
+using DataAccess.FluentConfigurations.Structures;
+using Domain.Entities.ConfigurationData;
 using Domain.Entities.HistoricalData;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -58,6 +61,15 @@ namespace DataAccess.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new VariableEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleEntityTypeConfigurationBase());
+            modelBuilder.ApplyConfiguration(new SampleIntEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleDoubleEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleBoolEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StructureEntityTypeConfigurationBase());
+            modelBuilder.ApplyConfiguration(new BuildingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FloorEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RoomEntityTypeConfiguration());
 
         }
 
