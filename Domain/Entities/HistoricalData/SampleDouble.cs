@@ -27,7 +27,7 @@ namespace Domain.Entities.HistoricalData
         /// </summary>
         /// <param name="variable"></param>
         /// <param name="value"></param>
-        public SampleDouble(Guid id, Variable variable, double value) : base(id, variable)
+        public SampleDouble(Guid id, Variable variable, Guid variableId, double value) : base(id, variable, variableId)
         {
             Value = value;
         }

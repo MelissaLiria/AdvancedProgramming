@@ -27,7 +27,7 @@ namespace Domain.Entities.HistoricalData
         /// </summary>
         /// <param name="variable"></param>
         /// <param name="value"></param>
-        public SampleBool(Guid id, Variable variable, bool value) : base(id, variable)
+        public SampleBool(Guid id, Variable variable, Guid variableId, bool value) : base(id, variable, variableId)
         {
             Value = value;
         }
