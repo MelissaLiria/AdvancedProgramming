@@ -4,13 +4,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Abstract;
+using Domain.Common;
 
 namespace Domain.Entities.ConfigurationData
 {
     /// <summary>
     /// Edificio
     /// </summary>
-    public class Building: Structure
+    public class Building: Entity, Structure
+
     {
         #region Properties
 
@@ -36,12 +38,13 @@ namespace Domain.Entities.ConfigurationData
 
         #endregion
 
+        
         /// <summary>
         /// Inicializa un objeto <see cref="Building">.
         /// </summary>
         /// <param name="address">Direccion fisica del edificio.</param>
         /// <param name="number">Numero del edificio.</param>
-        public Building(string address, int number)
+        public Building(Guid id,string address, int number):base(id)
         {
             Address = address;
             Number = number;
@@ -49,5 +52,8 @@ namespace Domain.Entities.ConfigurationData
             Variables = new List<Variable>();
         }
 
+        protected Building()
+        {
+        }
     }
 }
