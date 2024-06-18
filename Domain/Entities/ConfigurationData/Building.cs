@@ -11,6 +11,7 @@ namespace Domain.Entities.ConfigurationData
     /// Edificio
     /// </summary>
     public class Building: Structure
+
     {
         #region Properties
 
@@ -36,12 +37,13 @@ namespace Domain.Entities.ConfigurationData
 
         #endregion
 
+        
         /// <summary>
         /// Inicializa un objeto <see cref="Building">.
         /// </summary>
         /// <param name="address">Direccion fisica del edificio.</param>
         /// <param name="number">Numero del edificio.</param>
-        public Building(string address, int number)
+        public Building(Guid id,string address, int number):base(id)
         {
             Address = address;
             Number = number;
@@ -49,5 +51,8 @@ namespace Domain.Entities.ConfigurationData
             Variables = new List<Variable>();
         }
 
+        protected Building()
+        {
+        }
     }
 }
