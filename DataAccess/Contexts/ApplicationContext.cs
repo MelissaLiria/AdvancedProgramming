@@ -21,17 +21,9 @@ namespace DataAccess.Contexts
         /// </summary>
         public DbSet<Sample> Samples { get; set; }
         /// <summary>
-        /// Tabla de Pisos
+        /// Tabla de Estructurasas
         /// </summary>
-        public DbSet<Floor> Floors { get; set; }
-        /// <summary>
-        /// Tabla de Habitaciones
-        /// </summary>
-        public DbSet<Room> Rooms { get; set; }
-        /// <summary>
-        /// Tabla de Edificios
-        /// </summary>
-        public DbSet<Building> Buildings { get; set; }
+        public DbSet<Structure> Structures { get; set; }
         #endregion
 
         /// <summary>
@@ -40,6 +32,7 @@ namespace DataAccess.Contexts
         public ApplicationContext()
         {
         }
+
         /// <summary>
         /// Inicializa un objeto ApplicationContext
         /// </summary>
