@@ -9,17 +9,24 @@ namespace Domain.Entities.HistoricalData
 {
     public class SampleInt : Sample
     {
+        #region Properties
         /// <summary>
         /// Valor entero de la muestra
         /// </summary>
         public int Value { get; set; }
+        #endregion
+
+        /// <summary>
+        /// Constructor por defecto de la clase SampleInt
+        /// </summary>
+        protected SampleInt(){ }
 
         /// <summary>
         /// Inicializa un objeto tipo SampleInt
         /// </summary>
         /// <param name="variable"></param>
         /// <param name="value"></param>
-        public SampleInt(Variable variable, int value) : base(variable)
+        public SampleInt(Guid id, Variable variable, int value) : base(id, variable)
         {
             Value = value;
         }
