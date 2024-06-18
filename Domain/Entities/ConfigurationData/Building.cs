@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Domain.Abstract;
 using Domain.Common;
 
 namespace Domain.Entities.ConfigurationData
@@ -11,7 +10,7 @@ namespace Domain.Entities.ConfigurationData
     /// <summary>
     /// Edificio
     /// </summary>
-    public class Building: Entity, Structure
+    public class Building: Structure
 
     {
         #region Properties
