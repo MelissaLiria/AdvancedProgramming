@@ -5,10 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Domain.Abstract;
 using Domain.Common;
-using Domain.Entities.Types;
 using Domain.ValueObjects;
-
-
 
 namespace Domain.Entities.ConfigurationData
 {
