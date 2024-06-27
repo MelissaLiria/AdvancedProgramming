@@ -25,6 +25,7 @@ namespace Domain.Entities.HistoricalData
         /// <summary>
         /// Inicializa un objeto tipo SampleBool
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="variable"></param>
         /// <param name="value"></param>
         public SampleBool(Guid id, Variable variable, bool value) : base(id, variable)

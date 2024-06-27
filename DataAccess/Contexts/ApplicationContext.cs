@@ -1,4 +1,7 @@
-﻿using Domain.Entities.ConfigurationData;
+﻿using DataAccess.FluentConfigurations.Variables;
+using DataAccess.FluentConfigurations.Samples;
+using DataAccess.FluentConfigurations.Structures;
+using Domain.Entities.ConfigurationData;
 using Domain.Entities.HistoricalData;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -21,17 +24,9 @@ namespace DataAccess.Contexts
         /// </summary>
         public DbSet<Sample> Samples { get; set; }
         /// <summary>
-        /// Tabla de Pisos
+        /// Tabla de Estructurasas
         /// </summary>
-        public DbSet<Floor> Floors { get; set; }
-        /// <summary>
-        /// Tabla de Habitaciones
-        /// </summary>
-        public DbSet<Room> Rooms { get; set; }
-        /// <summary>
-        /// Tabla de Edificios
-        /// </summary>
-        public DbSet<Building> Buildings { get; set; }
+        public DbSet<Structure> Structures { get; set; }
         #endregion
 
         /// <summary>
@@ -40,6 +35,7 @@ namespace DataAccess.Contexts
         public ApplicationContext()
         {
         }
+
         /// <summary>
         /// Inicializa un objeto ApplicationContext
         /// </summary>
@@ -65,6 +61,15 @@ namespace DataAccess.Contexts
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.ApplyConfiguration(new VariableEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleEntityTypeConfigurationBase());
+            modelBuilder.ApplyConfiguration(new SampleIntEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleDoubleEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new SampleBoolEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new StructureEntityTypeConfigurationBase());
+            modelBuilder.ApplyConfiguration(new BuildingEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new FloorEntityTypeConfiguration());
+            modelBuilder.ApplyConfiguration(new RoomEntityTypeConfiguration());
 
         }
 

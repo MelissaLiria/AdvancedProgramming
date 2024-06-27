@@ -24,6 +24,7 @@ namespace Domain.Entities.HistoricalData
         /// <summary>
         /// Inicializa un objeto tipo SampleInt
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="variable"></param>
         /// <param name="value"></param>
         public SampleInt(Guid id, Variable variable, int value) : base(id, variable)
