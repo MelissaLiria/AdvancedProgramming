@@ -47,10 +47,10 @@ namespace Domain.Entities.ConfigurationData
         /// <param name="location"></param>
         /// <param name="variableType"></param>
         /// <param name="code"></param>
-        public Variable(Guid id, Structure location, Guid locationId, VariableType variableType, string code): base(id)
+        public Variable(Guid id, Structure location, VariableType variableType, string code): base(id)
         {
             Location = location;
-            LocationId = locationId;
+            LocationId = location.Id;
             VariableType = variableType;
             Code = code;
         }
