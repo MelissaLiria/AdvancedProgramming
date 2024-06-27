@@ -34,14 +34,14 @@ namespace Domain.Entities.HistoricalData
         protected Sample() { }
 
         /// <summary>
-        /// Constructor de la clase Variable
+        /// Constructor de la clase Sample
         /// </summary>
+        /// <param name="id"></param>
         /// <param name="variable"></param>
-        /// <exception cref="ArgumentException"></exception>
-        public Sample(Guid id, Variable variable, Guid variableId) : base(id)
+        public Sample(Guid id, Variable variable) : base(id)
         { 
             DateTime = DateTime.Now;
-            VariableId = variableId;
+            VariableId = variable.Id;
             Variable = variable;
         }
         
