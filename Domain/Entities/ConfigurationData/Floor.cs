@@ -53,12 +53,12 @@ namespace Domain.Entities.ConfigurationData
         /// </summary>
         /// <param name="location">Ubicacion del piso.</param>
         /// <param name="building">Edificio donde se encuentra el piso</param>
-        /// <param name="buildingId">Id de Building</param>
-        public Floor(Guid id, string location, Building building,Guid buildingId):base(id)
+        /// <param name="id"'>Identificador de Floor</param>
+        public Floor(Guid id, string location, Building building):base(id)
         {
             Location = location;
             Building = building;
-            BuildingId = buildingId;
+            BuildingId = building.Id;
             Rooms = new List<Room>();
             Variables = new List<Variable>();
         }
