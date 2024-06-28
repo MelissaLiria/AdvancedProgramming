@@ -12,7 +12,7 @@ namespace Contracts.Variables
         /// <summary>
         /// Añade una variable al soporte de datos.
         /// </summary>
-        /// <param name="structure"></param>
+        /// <param name="variable"></param>
         void AddVariable(Variable variable);
 
         /// <summary>
