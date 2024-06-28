@@ -30,11 +30,6 @@ namespace Domain.Entities.ConfigurationData
         /// </summary>
         public List<Floor> Floors { get; set; }
 
-        /// <summary>
-        /// Variables medidas dentro del edificio
-        /// </summary>
-        public List<Variable> Variables { get; set; }
-
         #endregion
 
         
@@ -48,7 +43,6 @@ namespace Domain.Entities.ConfigurationData
             Address = address;
             Number = number;
             Floors = new List<Floor>();
-            Variables = new List<Variable>();
         }
 
         protected Building()

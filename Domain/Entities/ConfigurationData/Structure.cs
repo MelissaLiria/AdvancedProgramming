@@ -12,11 +12,20 @@ namespace Domain.Entities.ConfigurationData
     /// </summary>
      public abstract class Structure : Entity
     {
+        #region Properties
+        /// <summary>
+        /// Variables medidas
+        /// </summary>
+        public List<Variable> Variables { get; set; }
+
+        #endregion
+
         /// <summary>
         /// Constructor por defecto de Structure
         /// </summary>
         public Structure() 
         {
+            Variables = new List<Variable>();
         }
 
         /// <summary>
@@ -25,7 +34,7 @@ namespace Domain.Entities.ConfigurationData
         /// <param name="id"></param>
         public Structure (Guid id) : base(id)
         {
-
+            Variables = new List<Variable> ();
         }
     }
 }
