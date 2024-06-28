@@ -16,7 +16,7 @@ namespace DataAccess.FluentConfigurations.Variables
         {
             builder.ToTable("Variables");
             builder.Ignore(x => x.Location);
-            builder.HasOne(x => x.Location).WithMany().HasForeignKey(x => x.LocationId);
+            builder.HasOne(x => x.Location).WithMany(x => x.Variables).HasForeignKey(x => x.LocationId);
             builder.OwnsOne(x => x.VariableType);
             base.Configure(builder);
         }
