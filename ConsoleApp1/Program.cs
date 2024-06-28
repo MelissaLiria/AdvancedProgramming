@@ -125,6 +125,10 @@ if (DeletedVariable is null)
 {
     Console.WriteLine("Variable eliminada con éxito");
 }
+else
+{
+    Console.WriteLine("ERROR: Variable no eliminada");
+}
 
 IEnumerable<Room> rooms1 = appContext.Set<Room>().Where(x => x.Floor.BuildingId == Edificio1.Id).ToList();
 Console.WriteLine("\nHabitaciones del Edificio1: ");
