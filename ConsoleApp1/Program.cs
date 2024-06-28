@@ -103,35 +103,69 @@ appContext.SaveChanges();
 Variable? Readvariable = appContext.Variables.FirstOrDefault(v => v.LocationId == Taller1.Id);
 
 if (Readvariable != null){
-    Console.WriteLine(Readvariable.ToString());
+    Console.WriteLine("Código de la variable " + Readvariable.Code);
     Readvariable.Code = "X-00";
     appContext.Variables.Update(Readvariable);
     appContext.SaveChanges();
 
 }
 
-
-
 Variable? ModifiedVariable = appContext.Variables.FirstOrDefault(x => x.Id == Readvariable.Id);
 if (ModifiedVariable != null)
 {
-    Console.WriteLine("Codigo modificado de la variable "+ModifiedVariable.Code);
+    Console.WriteLine("Código modificado de la variable "+ModifiedVariable.Code);
     appContext.Variables.Remove(ModifiedVariable);
-    
-
+    appContext.SaveChanges();
 }
 
+
+
 Variable? DeletedVariable = appContext.Variables.FirstOrDefault(x => x.Id == ModifiedVariable.Id);
-if (ModifiedVariable == null)
+if (DeletedVariable is null)
 {
     Console.WriteLine("Variable eliminada con éxito");
 }
 
-IEnumerable<Room> rooms = appContext.Set<Room>().TakeWhile(x => x.Floor.BuildingId == Edificio1.Id);
-foreach (Room room in rooms)
+IEnumerable<Room> rooms1 = appContext.Set<Room>().Where(x => x.Floor.BuildingId == Edificio1.Id).ToList();
+Console.WriteLine("\nHabitaciones del Edificio1: ");
+foreach (Room room in rooms1)
 {
-    Console.WriteLine(room.ToString());
+    Console.WriteLine(room.Description);
 }
+
+IEnumerable<Room> rooms2 = appContext.Set<Room>().Where(x => x.Floor.BuildingId == Edificio2.Id).ToList();
+Console.WriteLine("\nHabitaciones del Edificio2: ");
+foreach (Room room in rooms2)
+{
+    Console.WriteLine(room.Description);
+}
+
+IEnumerable<Sample> samples = appContext.Set<Sample>().ToList();
+Console.WriteLine("\nMuestras totales:");
+foreach (Sample sample in samples)
+{
+    Variable? vartemp = appContext.Variables.FirstOrDefault(x =>x.Id == sample.VariableId);
+    if (vartemp != null)
+    {
+        if(sample is SampleBool)
+            {
+                SampleBool temp = sample as SampleBool;
+                Console.WriteLine(vartemp.VariableType.Name+": "+temp.Value.ToString());
+            }
+            if (sample is SampleInt)
+            {
+                SampleInt temp = sample as SampleInt;
+                Console.WriteLine(vartemp.VariableType.Name + ": " + temp.Value.ToString());
+            }
+            if (sample is SampleDouble)
+            {
+                SampleDouble temp = sample as SampleDouble;
+                Console.WriteLine(vartemp.VariableType.Name + ": " + temp.Value.ToString());
+            }
+    }
+    
+}
+
 
 
 
