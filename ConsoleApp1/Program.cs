@@ -43,24 +43,20 @@ Técnico1.Rooms.Add(Taller1);
 Room Taller2 = new Room(Guid.NewGuid(), 05, true, "Taller de productos", Técnico1);
 Técnico1.Rooms.Add(Taller2);
 
-VariableType Presion = new VariableType("Presión", "PSI");
-VariableType Temperatura = new VariableType("Temperatura", "ºC");
-VariableType Humedad = new VariableType("Humedad", "g/m^3");
-VariableType NivelMax = new VariableType("Nivel Máximo", "");
 
-Variable Var1 = new Variable(Guid.NewGuid(), Lobby1, Humedad, "H-01");
+Variable Var1 = new Variable(Guid.NewGuid(), Lobby1, new VariableType("Humedad", "g/m^3"), "H-01");
 Lobby1.Variables.Add(Var1);
-Variable Var2 = new Variable(Guid.NewGuid(), Lobby1, Temperatura, "T-01");
+Variable Var2 = new Variable(Guid.NewGuid(), Lobby1, new VariableType("Temperatura", "ºC"), "T-01");
 Lobby2.Variables.Add(Var2);
-Variable Var3 = new Variable(Guid.NewGuid(), Investigacion1, Temperatura, "T-02");
+Variable Var3 = new Variable(Guid.NewGuid(), Investigacion1, new VariableType("Temperatura", "ºC"), "T-02");
 Investigacion1.Variables.Add(Var3);
-Variable Var4 = new Variable(Guid.NewGuid(), Laboratorio1, Humedad, "H-02");
+Variable Var4 = new Variable(Guid.NewGuid(), Laboratorio1, new VariableType("Humedad", "g/m^3"), "H-02");
 Laboratorio1.Variables.Add(Var4);
-Variable Var5 = new Variable(Guid.NewGuid(), Taller1, Presion, "P-01");
+Variable Var5 = new Variable(Guid.NewGuid(), Taller1, new VariableType("Presión", "PSI"), "P-01");
 Taller1.Variables.Add(Var5);
-Variable Var6 = new Variable(Guid.NewGuid(), Taller2, Presion, "P-02");
+Variable Var6 = new Variable(Guid.NewGuid(), Taller2, new VariableType("Presión", "PSI"), "P-02");
 Taller2.Variables.Add(Var6);
-Variable Var7 = new Variable(Guid.NewGuid(), Laboratorio2, NivelMax, "LM-01");
+Variable Var7 = new Variable(Guid.NewGuid(), Laboratorio2, new VariableType("Nivel Máximo", ""), "LM-01");
 Laboratorio2.Variables.Add(Var7);
 
 SampleDouble sample1 = new SampleDouble(Guid.NewGuid(), Var1, 2.56);
