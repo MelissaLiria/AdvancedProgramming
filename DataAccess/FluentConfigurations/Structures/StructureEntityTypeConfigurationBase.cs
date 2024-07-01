@@ -16,9 +16,9 @@ namespace DataAccess.FluentConfigurations.Structures
         public override void Configure(EntityTypeBuilder<Structure> builder)
         {
             builder.ToTable("Structure");
-            base.Configure(builder);
             builder.HasMany(x => x.Variables).WithOne(x => x.Location).HasForeignKey(x => x.LocationId);
             builder.Ignore(x => x.Variables);
+            base.Configure(builder);
         }
     }
 }
