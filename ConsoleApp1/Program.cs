@@ -100,7 +100,9 @@ appContext.Samples.Add(sample7);
 
 appContext.SaveChanges();
 
-Variable? Readvariable = appContext.Variables.FirstOrDefault(v => v.LocationId == Taller1.Id);
+Variable? Readvariable = appContext
+    .Variables
+    .FirstOrDefault(v => v.LocationId == Taller1.Id);
 
 if (Readvariable != null){
     Console.WriteLine("Código de la variable " + Readvariable.Code);
@@ -110,7 +112,9 @@ if (Readvariable != null){
 
 }
 
-Variable? ModifiedVariable = appContext.Variables.FirstOrDefault(x => x.Id == Readvariable.Id);
+Variable? ModifiedVariable = appContext
+    .Variables
+    .FirstOrDefault(x => x.Id == Readvariable.Id);
 if (ModifiedVariable != null)
 {
     Console.WriteLine("Código modificado de la variable "+ModifiedVariable.Code);
@@ -119,8 +123,9 @@ if (ModifiedVariable != null)
 }
 
 
-
-Variable? DeletedVariable = appContext.Variables.FirstOrDefault(x => x.Id == ModifiedVariable.Id);
+Variable? DeletedVariable = appContext
+    .Variables
+    .FirstOrDefault(x => x.Id == ModifiedVariable.Id);
 if (DeletedVariable is null)
 {
     Console.WriteLine("Variable eliminada con éxito");
@@ -130,41 +135,49 @@ else
     Console.WriteLine("ERROR: Variable no eliminada");
 }
 
-IEnumerable<Room> rooms1 = appContext.Set<Room>().Where(x => x.Floor.BuildingId == Edificio1.Id).ToList();
+IEnumerable<Room> rooms1 = appContext
+    .Set<Room>()
+    .Include(x => x.Floor)
+    .Where(x => x.Floor.BuildingId == Edificio1.Id).ToList();
 Console.WriteLine("\nHabitaciones del Edificio1: ");
 foreach (Room room in rooms1)
 {
     Console.WriteLine(room.Description);
 }
 
-IEnumerable<Room> rooms2 = appContext.Set<Room>().Where(x => x.Floor.BuildingId == Edificio2.Id).ToList();
+IEnumerable<Room> rooms2 = appContext
+    .Set<Room>()
+    .Include(x => x.Floor)
+    .Where(x => x.Floor.BuildingId == Edificio2.Id).ToList();
 Console.WriteLine("\nHabitaciones del Edificio2: ");
 foreach (Room room in rooms2)
 {
     Console.WriteLine(room.Description);
 }
 
-IEnumerable<Sample> samples = appContext.Set<Sample>().ToList();
+IEnumerable<Sample> samples = appContext
+    .Set<Sample>()
+    .ToList();
 Console.WriteLine("\nMuestras totales:");
 foreach (Sample sample in samples)
 {
-    Variable? vartemp = appContext.Variables.FirstOrDefault(x =>x.Id == sample.VariableId);
+    Variable? vartemp = appContext
+        .Variables
+        .FirstOrDefault(x =>x.Id == sample.VariableId);
+
     if (vartemp != null)
     {
-        if(sample is SampleBool)
+        if(sample is SampleBool samplebool)
             {
-                SampleBool temp = sample as SampleBool;
-                Console.WriteLine(vartemp.VariableType.Name+": "+temp.Value.ToString());
+                Console.WriteLine(vartemp.VariableType.Name+": "+samplebool.Value.ToString());
             }
-            if (sample is SampleInt)
+            if (sample is SampleInt sampleInt)
             {
-                SampleInt temp = sample as SampleInt;
-                Console.WriteLine(vartemp.VariableType.Name + ": " + temp.Value.ToString());
+                Console.WriteLine(vartemp.VariableType.Name + ": " +sampleInt.Value.ToString());
             }
-            if (sample is SampleDouble)
+            if (sample is SampleDouble sampleDouble)
             {
-                SampleDouble temp = sample as SampleDouble;
-                Console.WriteLine(vartemp.VariableType.Name + ": " + temp.Value.ToString());
+                Console.WriteLine(vartemp.VariableType.Name + ": " +sampleDouble.Value.ToString());
             }
     }
     
