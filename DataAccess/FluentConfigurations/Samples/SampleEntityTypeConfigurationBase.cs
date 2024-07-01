@@ -15,7 +15,6 @@ namespace DataAccess.FluentConfigurations.Samples
         public override void Configure(EntityTypeBuilder<Sample> builder)
         {
             builder.ToTable("Samples");
-            builder.Ignore(x => x.Variable);
             builder.HasOne(x => x.Variable).WithMany().HasForeignKey(x => x.VariableId);
             base.Configure(builder);
 

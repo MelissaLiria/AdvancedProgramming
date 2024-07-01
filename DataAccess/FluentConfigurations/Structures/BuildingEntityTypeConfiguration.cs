@@ -16,7 +16,6 @@ namespace DataAccess.FluentConfigurations.Structures
         {
             builder.ToTable("Buildings");
             builder.HasBaseType(typeof(Structure));
-            builder.Ignore(x => x.Floors);
             builder.HasMany(x => x.Floors).WithOne(x => x.Building).HasForeignKey(x => x.BuildingId);
 
         }
