@@ -16,11 +16,13 @@ namespace Contracts.Structures
         void AddStructure(Structure structure);
 
         /// <summary>
-        /// Obtienen una estructura del soporte de datos a partir de su identificador.
+        /// Obtienen una estructura del soporte de datos a partir 
+        /// de su identificador.
         /// </summary>
         /// <typeparam name="T">Tipo de estructura a obtener</typeparam>
         /// <param name="id">Identificador de la estructura</param>
-        /// <returns>Estructura obtenida del soporte de datos; de no existir, <see langword="null"/>.</returns>
+        /// <returns>Estructura obtenida del soporte de datos; de 
+        /// no existir, <see langword="null"/>.</returns>
         T? GetStructureById<T>(Guid id) where T : Structure;
 
         /// <summary>
@@ -31,9 +33,11 @@ namespace Contracts.Structures
         IEnumerable<T> GetAllStructures<T>() where T : Structure;
 
         /// <summary>
-        /// Actualiza las propiedades de una estructura en el soporte de datos.
+        /// Actualiza las propiedades de una estructura en el
+        /// soporte de datos.
         /// </summary>
-        /// <param name="structure">Instancia con la información a actualizar de la estructura</param>
+        /// <param name="structure">Instancia con la información
+        /// a actualizar de la estructura</param>
         void UpdateStructure(Structure structure);
 
         /// <summary>
