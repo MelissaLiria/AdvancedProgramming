@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DataAccess.Repositories
+namespace DataAccess.Repositories.Common
 {
     /// <summary>
     /// Clase base para repositorios.
