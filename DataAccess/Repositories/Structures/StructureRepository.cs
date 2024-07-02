@@ -1,5 +1,6 @@
 ﻿using Contracts.Structures;
 using DataAccess.Contexts;
+using DataAccess.Repositories.Common;
 using Domain.Entities.ConfigurationData;
 using System;
 using System.Collections.Generic;
