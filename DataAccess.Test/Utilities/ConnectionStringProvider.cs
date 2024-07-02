@@ -16,6 +16,6 @@ namespace DataAccess.Test.Utilities
         /// las pruebas unitarias.
         /// </summary>
         /// <returns></returns>
-        public static string GetConectionString() => "Data Source=Data.squlite";
+        public static string GetConnectionString() => "Data Source=Data.sqlite";
     }
 }
