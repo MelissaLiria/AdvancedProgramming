@@ -29,7 +29,7 @@ namespace DataAccess.Test
 
         [DataRow("Calle 1", 1, "Temperatura", "ºC", "TP-01")]
         [TestMethod]
-        public void Can_Add_Variable(
+        public void VariableTest01_Can_Add_Variable(
             string address,
             int number,
             string variableType_name,
@@ -54,7 +54,7 @@ namespace DataAccess.Test
         }
 
         [TestMethod]
-        public void Can_Get_All_Variables()
+        public void VariableTest02_Can_Get_All_Variables()
         {
             // Arrange
 
@@ -69,7 +69,7 @@ namespace DataAccess.Test
 
         [DataRow(0)]
         [TestMethod]
-        public void Can_Get_Variable_By_Id(int position)
+        public void VariableTest03_Can_Get_Variable_By_Id(int position)
         {
             // Arrange
             var variables = _variableRepository.GetAllVariables().ToList();
@@ -85,7 +85,7 @@ namespace DataAccess.Test
         }
         
         [TestMethod]
-        public void Cannot_Get_Variable_By_Invalid_Id()
+        public void VariableTest04_Cannot_Get_Variable_By_Invalid_Id()
         {
             // Arrange
 
@@ -98,29 +98,30 @@ namespace DataAccess.Test
 
         [DataRow(0)]
         [TestMethod]
-        public void Can_Update_Variable(int position)
+        public void VariableTest05_Can_Update_Variable(int position)
         {
             // Arrange
             var variables = _variableRepository.GetAllVariables().ToList();
             Assert.IsNotNull(variables);
             Assert.IsTrue(position < variables.Count);
+            string code = variables[position].Code;
             Variable variableToUpdate = variables[position];
-            variableToUpdate.Code = "no code";
-            Assert.IsTrue(variables[position].Code != variableToUpdate.Code);
+            variableToUpdate.Code = code+".";
+            Assert.IsTrue(code != variableToUpdate.Code);
 
             // Execute
             _variableRepository.UpdateVariable(variableToUpdate);
             _unitOfWork.SaveChanges();
 
             // Assert
-            Variable? loadedVariable = _variableRepository.GetVariableById(variables[position].Id);
+            Variable? loadedVariable = _variableRepository.GetVariableById(variableToUpdate.Id);
             Assert.IsNotNull(loadedVariable);
             Assert.IsTrue(loadedVariable.Code == variableToUpdate.Code);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void Can_Delete_Variable(int position)
+        public void VariableTest06_Can_Delete_Variable(int position)
         {
             // Arrange
             var variables = _variableRepository.GetAllVariables().ToList();

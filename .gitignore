@@ -396,3 +396,6 @@ FodyWeavers.xsd
 
 # JetBrains Rider
 *.sln.iml
+/DataAccess/Migrations/20240702063020_Initial.cs
+/DataAccess/Migrations/20240702063020_Initial.Designer.cs
+/DataAccess/Migrations/ApplicationContextModelSnapshot.cs
