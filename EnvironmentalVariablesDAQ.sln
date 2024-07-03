@@ -14,7 +14,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Contracts", "Contracts\Cont
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess.Test", "DataAccess.Test\DataAccess.Test.csproj", "{E30F4655-5162-42B6-994D-C23F8983FD3B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain.Test", "DomainTest\Domain.Test.csproj", "{3D1ED39F-C5BD-45EA-B54E-F63E5E007631}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain.Test", "DomainTest\Domain.Test.csproj", "{3D1ED39F-C5BD-45EA-B54E-F63E5E007631}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
