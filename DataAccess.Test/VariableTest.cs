@@ -1,16 +1,15 @@
 ﻿using Contracts;
+using Contracts.Structures;
 using Contracts.Variables;
 using DataAccess.Contexts;
+using DataAccess.Repositories.Structures;
 using DataAccess.Repositories.Variables;
 using DataAccess.Test.Utilities;
 using Domain.Entities.ConfigurationData;
 using Domain.ValueObjects;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.Test
 {
@@ -19,29 +18,32 @@ namespace DataAccess.Test
     {
         private IVariableRepository _variableRepository;
         private IUnitOfWork _unitOfWork;
+        private IStructureRepository _structureRepository;
     
         public VariableTest()
         {
-             ApplicationContext context = new ApplicationContext(ConnectionStringProvider.GetConnectionString());
-             _variableRepository = new VariableRepository(context);
-             _unitOfWork = new UnitOfWork(context);
+            ApplicationContext context = new ApplicationContext(ConnectionStringProvider.GetConnectionString());
+            _variableRepository = new VariableRepository(context);
+            _unitOfWork = new UnitOfWork(context);
+            _structureRepository = new StructureRepository(context);
         }
 
-        [DataRow("Calle 1", 1, "Temperatura", "ºC", "TP-01")]
+        [DataRow(0, "Temperatura", "ºC", "TP-01")]
         [TestMethod]
         public void VariableTest01_Can_Add_Variable(
-            string address,
-            int number,
+            int buildingPosition,
             string variableType_name,
             string variableType_measurementUnit,
             string code)
         {
             // Arrange
+            Building? building = _structureRepository.GetAllStructures<Building>().ElementAtOrDefault(buildingPosition);
+            Assert.IsNotNull(building); 
             Guid variableId = Guid.NewGuid();
             Variable variable = new Variable(
-                variableId, 
-                new Building(Guid.NewGuid(), address, number), 
-                new VariableType(variableType_name, variableType_measurementUnit), 
+                variableId,
+                building,
+                new VariableType(variableType_name, variableType_measurementUnit),
                 code);
 
             // Execute
@@ -49,7 +51,7 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            Variable? loadedVariable= _variableRepository.GetVariableById(variableId);
+            Variable? loadedVariable = _variableRepository.GetVariableById(variableId);
             Assert.IsNotNull(loadedVariable);
         }
 
@@ -78,12 +80,12 @@ namespace DataAccess.Test
             Variable variableToGet = variables[position];
 
             // Execute
-            Variable? loadedVariable= _variableRepository.GetVariableById(variableToGet.Id);
+            Variable? loadedVariable = _variableRepository.GetVariableById(variableToGet.Id);
 
             // Assert
             Assert.IsNotNull(loadedVariable);
         }
-        
+
         [TestMethod]
         public void VariableTest04_Cannot_Get_Variable_By_Invalid_Id()
         {
@@ -106,7 +108,7 @@ namespace DataAccess.Test
             Assert.IsTrue(position < variables.Count);
             string code = variables[position].Code;
             Variable variableToUpdate = variables[position];
-            variableToUpdate.Code = code+".";
+            variableToUpdate.Code = code + ".";
             Assert.IsTrue(code != variableToUpdate.Code);
 
             // Execute
