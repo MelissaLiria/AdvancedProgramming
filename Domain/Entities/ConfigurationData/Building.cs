@@ -1,16 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Domain.Entities.ConfigurationData
+﻿namespace Domain.Entities.ConfigurationData
 {
     /// <summary>
     /// Edificio
     /// </summary>
-    public class Building: Structure
+    public class Building : Structure
 
     {
         #region Properties
@@ -31,22 +24,24 @@ namespace Domain.Entities.ConfigurationData
         public List<Floor> Floors { get; set; }
 
         #endregion
+        /// <summary>
+        /// Constructor por defecto de la clase Building.
+        /// </summary>
+        protected Building()
+        {
+        }
 
-        
         /// <summary>
         /// Inicializa un objeto <see cref="Building">.
         /// </summary>
         /// <param name="address">Direccion fisica del edificio.</param>
         /// <param name="number">Numero del edificio.</param>
-        public Building(Guid id,string address, int number):base(id)
+        public Building(Guid id, string address, int number) : base(id)
         {
             Address = address;
             Number = number;
             Floors = new List<Floor>();
         }
 
-        protected Building()
-        {
-        }
     }
 }

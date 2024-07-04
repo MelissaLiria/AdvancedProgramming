@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-namespace Domain.Entities.ConfigurationData
+﻿namespace Domain.Entities.ConfigurationData
 {
     /// <summary>
     /// Clase habitación
@@ -18,7 +11,8 @@ namespace Domain.Entities.ConfigurationData
         /// </summary>
         public int Number { get; set; }
         /// <summary>
-        /// Si es de produccion o no
+        ///Si es de producción = <see langword="true"/>,
+        ///si es de oficina = <see langword="false"/>.
         /// </summary>
         public bool IsProduction { get; set; }
         /// <summary>
@@ -47,7 +41,8 @@ namespace Domain.Entities.ConfigurationData
         /// <param name="isProduction"></param>
         /// <param name="description"></param>
         /// <param name="floor"></param>
-        public Room(Guid id, int number, bool isProduction, string description, Floor floor) : base(id)
+        public Room(Guid id, int number, bool isProduction, string description, Floor floor)
+            : base(id)
         {
             Number = number;
             IsProduction = isProduction;
@@ -57,4 +52,4 @@ namespace Domain.Entities.ConfigurationData
         }
 
     }
-}   
+}

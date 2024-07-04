@@ -1,22 +1,20 @@
-﻿using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccess.FluentConfigurations.Common;
 using Domain.Entities.ConfigurationData;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace DataAccess.FluentConfigurations.Structures
 {
     public class BuildingEntityTypeConfiguration
-        : IEntityTypeConfiguration<Building>
+        : EntityTypeConfigurationBase<Building>
     {
-        public void Configure(EntityTypeBuilder<Building> builder)
+        public override void Configure(EntityTypeBuilder<Building> builder)
         {
             builder.ToTable("Buildings");
             builder.HasBaseType(typeof(Structure));
-            builder.HasMany(x => x.Floors).WithOne(x => x.Building).HasForeignKey(x => x.BuildingId);
+            builder.HasMany(x => x.Floors)
+                .WithOne(x => x.Building)
+                .HasForeignKey(x => x.BuildingId);
 
         }
     }

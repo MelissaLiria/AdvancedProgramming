@@ -2,11 +2,6 @@
 using Domain.Entities.ConfigurationData;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DataAccess.FluentConfigurations.Structures
 {
@@ -17,7 +12,9 @@ namespace DataAccess.FluentConfigurations.Structures
         {
             builder.ToTable("Floors");
             builder.HasBaseType(typeof(Structure));
-            builder.HasMany(x => x.Rooms).WithOne(x => x.Floor).HasForeignKey(x => x.FloorId);
+            builder.HasMany(x => x.Rooms)
+                .WithOne(x => x.Floor)
+                .HasForeignKey(x => x.FloorId);
 
         }
     }
