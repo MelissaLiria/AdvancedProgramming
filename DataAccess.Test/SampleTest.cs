@@ -31,7 +31,7 @@ namespace DataAccess.Test
             _variableRepository = new VariableRepository(context);
             _unitOfWork = new UnitOfWork(context);
         }
-
+        
         [DataRow(0, 15)]
         [TestMethod]
         public void SampleTest01_Can_Add_SampleInt(int variablePos, int value)
@@ -39,15 +39,15 @@ namespace DataAccess.Test
             // Arrange
             Variable? variable = _variableRepository.GetAllVariables().ElementAtOrDefault(variablePos);
             Assert.IsNotNull(variable);
-            Guid Id = Guid.NewGuid();
-            SampleInt sampleInt = new SampleInt(Id, variable, value);
-
+            SampleInt sampleInt = new SampleInt(variable.Id, value);
+            
             // Execute
             _sampleRepository.AddSample(sampleInt);
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleInt? loadedSample = _sampleRepository.GetSampleById<SampleInt>(Id);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleInt>(sampleInt.VariableId).ToList();
+            SampleInt? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleInt.DateTime);
             Assert.IsNotNull(loadedSample);
         }
 
@@ -59,14 +59,15 @@ namespace DataAccess.Test
             Variable? variable = _variableRepository.GetAllVariables().ElementAtOrDefault(variablePos);
             Assert.IsNotNull(variable);
             Guid Id = Guid.NewGuid();
-            SampleDouble sampleDouble = new SampleDouble(Id, variable, value);
+            SampleDouble sampleDouble = new SampleDouble(variable.Id, value);
 
             // Execute
             _sampleRepository.AddSample(sampleDouble);
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleDouble? loadedSample = _sampleRepository.GetSampleById<SampleDouble>(Id);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleDouble>(sampleDouble.VariableId).ToList();
+            SampleDouble? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleDouble.DateTime);
             Assert.IsNotNull(loadedSample);
         }
         [DataRow(0, true)]
@@ -77,14 +78,15 @@ namespace DataAccess.Test
             Variable? variable = _variableRepository.GetAllVariables().ElementAtOrDefault(variablePos);
             Assert.IsNotNull(variable);
             Guid Id = Guid.NewGuid();
-            SampleBool sampleBool = new SampleBool(Id, variable, value);
+            SampleBool sampleBool = new SampleBool(variable.Id, value);
 
             // Execute
             _sampleRepository.AddSample(sampleBool);
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleBool? loadedSample = _sampleRepository.GetSampleById<SampleBool>(Id);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleBool>(sampleBool.VariableId).ToList();
+            SampleBool? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleBool.DateTime);
             Assert.IsNotNull(loadedSample);
         }
 
@@ -129,7 +131,7 @@ namespace DataAccess.Test
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest07_Can_Get_SampleInt_By_Id(int position)
+        public void SampleTest07_Can_Get_SampleInts_By_VariableId(int position)
         {
             // Arrange
             var sampleInts = _sampleRepository
@@ -141,16 +143,17 @@ namespace DataAccess.Test
             SampleInt sampleIntToGet = sampleInts[position];
 
             // Execute
-            SampleInt? loadedSampleInt = _sampleRepository
-                .GetSampleById<SampleInt>(sampleIntToGet.Id);
+            var samples = _sampleRepository
+                .GetSamplesByVariableId<SampleInt>(sampleIntToGet.VariableId).ToList();
 
             // Assert
-            Assert.IsNotNull(loadedSampleInt);
+            var loadedsamples = _sampleRepository.GetAllSamples<SampleInt>().Where(x => x.VariableId == sampleIntToGet.VariableId).ToList();
+            Assert.AreEqual(samples.Count, loadedsamples.Count);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest08_Can_Get_SampleDouble_By_Id(int position)
+        public void SampleTest08_Can_Get_SampleDoubles_By_VariableId(int position)
         {
             // Arrange
             var sampleDoubles = _sampleRepository
@@ -162,16 +165,17 @@ namespace DataAccess.Test
             SampleDouble sampleDoubleToGet = sampleDoubles[position];
 
             // Execute
-            SampleDouble? loadedSampleDouble = _sampleRepository
-                .GetSampleById<SampleDouble>(sampleDoubleToGet.Id);
+            var samples = _sampleRepository
+                .GetSamplesByVariableId<SampleDouble>(sampleDoubleToGet.VariableId).ToList();
 
             // Assert
-            Assert.IsNotNull(loadedSampleDouble);
+            var loadedsamples = _sampleRepository.GetAllSamples<SampleDouble>().Where(x => x.VariableId == sampleDoubleToGet.VariableId).ToList();
+            Assert.AreEqual(samples.Count, loadedsamples.Count);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest09_Can_Get_SampleBool_By_Id(int position)
+        public void SampleTest09_Can_Get_SampleBools_By_VariableId(int position)
         {
             // Arrange
             var sampleBools = _sampleRepository
@@ -183,55 +187,119 @@ namespace DataAccess.Test
             SampleBool sampleBoolToGet = sampleBools[position];
 
             // Execute
-            SampleBool? loadedSampleBool = _sampleRepository
-                .GetSampleById<SampleBool>(sampleBoolToGet.Id);
+            var samples = _sampleRepository
+                .GetSamplesByVariableId<SampleBool>(sampleBoolToGet.VariableId).ToList();
 
             // Assert
-            Assert.IsNotNull(loadedSampleBool);
+            var loadedsamples = _sampleRepository.GetAllSamples<SampleBool>().Where(x => x.VariableId == sampleBoolToGet.VariableId).ToList();
+            Assert.AreEqual(samples.Count, loadedsamples.Count);
+        }
+
+        [DataRow(0)]
+        [TestMethod]
+        public void SampleTest10_Can_Get_SampleInt_By_TimeSpan(int position)
+        {
+            // Arrange
+            var sampleInts = _sampleRepository
+                .GetAllSamples<SampleInt>()
+                .ToList();
+
+            Assert.IsNotNull(sampleInts);
+            Assert.IsTrue(position < sampleInts.Count);
+            SampleInt sampleIntToGet = sampleInts[position];
+
+            // Execute
+            var samples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleInt>(sampleIntToGet.DateTime, DateTime.Now).ToList();
+
+            // Assert
+            Assert.AreEqual(sampleInts.Count, samples.Count);
+        }
+
+        [DataRow(0)]
+        [TestMethod]
+        public void SampleTest11_Can_Get_SampleDouble_By_TimeSpan(int position)
+        {
+            // Arrange
+            var sampleDoubles = _sampleRepository
+                .GetAllSamples<SampleDouble>()
+                .ToList();
+
+            Assert.IsNotNull(sampleDoubles);
+            Assert.IsTrue(position < sampleDoubles.Count);
+            SampleDouble sampleDoubleToGet = sampleDoubles[position];
+
+            // Execute
+            var samples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleDouble>(sampleDoubleToGet.DateTime, DateTime.Now).ToList();
+
+            // Assert
+            Assert.AreEqual(sampleDoubles.Count, samples.Count);
+        }
+
+        [DataRow(0)]
+        [TestMethod]
+        public void SampleTest12_Can_Get_SampleBools_By_TimeSpan(int position)
+        {
+            // Arrange
+            var sampleBools = _sampleRepository
+                .GetAllSamples<SampleBool>()
+                .ToList();
+
+            Assert.IsNotNull(sampleBools);
+            Assert.IsTrue(position < sampleBools.Count);
+            SampleBool sampleBoolToGet = sampleBools[position];
+
+            // Execute
+            var samples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleBool>(sampleBoolToGet.DateTime, DateTime.Now).ToList();
+
+            // Assert
+            Assert.AreEqual(sampleBools.Count, samples.Count);
         }
 
         [TestMethod]
-        public void SampleTest10_Cannot_Get_SampleInt_By_Invalid_Id()
+        public void SampleTest13_Cannot_Get_SampleInt_By_Invalid_TimeSpan()
         {
             // Arrange
 
             // Execute
-            SampleInt? loadedSampleInt = _sampleRepository
-                .GetSampleById<SampleInt>(Guid.Empty);
+            var loadedSamples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleInt>(DateTime.MaxValue,DateTime.MinValue).ToList();
 
             // Assert
-            Assert.IsNull(loadedSampleInt);
+            Assert.AreEqual(loadedSamples.Count, 0);
         }
 
         [TestMethod]
-        public void SampleTest11_Cannot_Get_SampleDouble_By_Invalid_Id()
+        public void SampleTest14_Cannot_Get_SampleDouble_By_Invalid_Id()
+        {
+            /// Arrange
+
+            // Execute
+            var loadedSamples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleDouble>(DateTime.MaxValue, DateTime.MinValue).ToList();
+
+            // Assert
+            Assert.AreEqual(loadedSamples.Count, 0);
+        }
+
+        [TestMethod]
+        public void SampleTest15_Cannot_Get_SampleBool_By_Invalid_Id()
         {
             // Arrange
 
             // Execute
-            SampleDouble? loadedSampleDouble = _sampleRepository
-                .GetSampleById<SampleDouble>(Guid.Empty);
+            var loadedSamples = _sampleRepository
+                .GetSamplesByTimeSpan<SampleBool>(DateTime.MaxValue, DateTime.MinValue).ToList();
 
             // Assert
-            Assert.IsNull(loadedSampleDouble);
-        }
-
-        [TestMethod]
-        public void SampleTest12_Cannot_Get_SampleBool_By_Invalid_Id()
-        {
-            // Arrange
-
-            // Execute
-            SampleBool? loadedSampleBool = _sampleRepository
-                .GetSampleById<SampleBool>(Guid.Empty);
-
-            // Assert
-            Assert.IsNull(loadedSampleBool);
+            Assert.AreEqual(loadedSamples.Count, 0);
         }
 
         [DataRow(0, 8)]
         [TestMethod]
-        public void SampleTest13_Can_Update_SampleInt(int position, int value)
+        public void SampleTest16_Can_Update_SampleInt(int position, int value)
         {
             // Arrange
             var sampleInts = _sampleRepository
@@ -248,15 +316,15 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleInt? loadedSampleInt = _sampleRepository
-                .GetSampleById<SampleInt>(sampleIntToUpdate.Id);
-            Assert.IsNotNull(loadedSampleInt);
-            Assert.AreEqual(loadedSampleInt.Value, value);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleInt>(sampleIntToUpdate.VariableId).ToList();
+            SampleInt? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleIntToUpdate.DateTime);
+            Assert.IsNotNull(loadedSample);
+            Assert.AreEqual(loadedSample.Value, value);
         }
 
         [DataRow(0, 45.12)]
         [TestMethod]
-        public void SampleTest14_Can_Update_SampleDouble(int position, double value)
+        public void SampleTest17_Can_Update_SampleDouble(int position, double value)
         {
             // Arrange
             var sampleDoubles = _sampleRepository
@@ -273,15 +341,15 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleDouble? loadedSampleDouble = _sampleRepository
-                .GetSampleById<SampleDouble>(sampleDoubleToUpdate.Id);
-            Assert.IsNotNull(loadedSampleDouble);
-            Assert.AreEqual(loadedSampleDouble.Value, value);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleDouble>(sampleDoubleToUpdate.VariableId).ToList();
+            SampleDouble? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleDoubleToUpdate.DateTime);
+            Assert.IsNotNull(loadedSample);
+            Assert.AreEqual(loadedSample.Value, value);
         }
 
         [DataRow(0, false)]
         [TestMethod]
-        public void SampleTest15_Can_Update_SampleBool(int position, bool value)
+        public void SampleTest18_Can_Update_SampleBool(int position, bool value)
         {
             // Arrange
             var sampleBools = _sampleRepository
@@ -298,15 +366,15 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleBool? loadedSampleBool = _sampleRepository
-                .GetSampleById<SampleBool>(sampleBoolToUpdate.Id);
-            Assert.IsNotNull(loadedSampleBool);
-            Assert.AreEqual(loadedSampleBool.Value, value);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleBool>(sampleBoolToUpdate.VariableId).ToList();
+            SampleBool? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleBoolToUpdate.DateTime);
+            Assert.IsNotNull(loadedSample);
+            Assert.AreEqual(loadedSample.Value, value);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest16_Can_Delete_SampleInt(int position)
+        public void SampleTest19_Can_Delete_SampleInt(int position)
         {
             // Arrange
             var sampleInts = _sampleRepository
@@ -322,14 +390,14 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleInt? loadedSampleInt = _sampleRepository
-                .GetSampleById<SampleInt>(sampleIntToDelete.Id);
-            Assert.IsNull(loadedSampleInt);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleInt>(sampleIntToDelete.VariableId).ToList();
+            SampleInt? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleIntToDelete.DateTime);
+            Assert.IsNull(loadedSample);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest17_Can_Delete_SampleDouble(int position)
+        public void SampleTest20_Can_Delete_SampleDouble(int position)
         {
             // Arrange
             var sampleDoubles = _sampleRepository
@@ -345,14 +413,14 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleDouble? loadedSampleDouble = _sampleRepository
-                .GetSampleById<SampleDouble>(sampleDoubleToDelete.Id);
-            Assert.IsNull(loadedSampleDouble);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleDouble>(sampleDoubleToDelete.VariableId).ToList();
+            SampleDouble? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleDoubleToDelete.DateTime);
+            Assert.IsNull(loadedSample);
         }
 
         [DataRow(0)]
         [TestMethod]
-        public void SampleTest18_Can_Delete_SampleBool(int position)
+        public void SampleTest21_Can_Delete_SampleBool(int position)
         {
             // Arrange
             var sampleBools = _sampleRepository
@@ -368,9 +436,9 @@ namespace DataAccess.Test
             _unitOfWork.SaveChanges();
 
             // Assert
-            SampleBool? loadedSampleBool = _sampleRepository
-                .GetSampleById<SampleBool>(sampleBoolToDelete.Id);
-            Assert.IsNull(loadedSampleBool);
+            var samples = _sampleRepository.GetSamplesByVariableId<SampleBool>(sampleBoolToDelete.VariableId).ToList();
+            SampleBool? loadedSample = samples.FirstOrDefault(x => x.DateTime == sampleBoolToDelete.DateTime);
+            Assert.IsNull(loadedSample);
         }
     }
 }

@@ -25,10 +25,9 @@ namespace Domain.Entities.HistoricalData
         /// <summary>
         /// Inicializa un objeto tipo SampleDouble
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="variable"></param>
+        /// <param name="variableId"></param>
         /// <param name="value"></param>
-        public SampleDouble(Guid id, Variable variable, double value) : base(id, variable)
+        public SampleDouble(Guid variableId, double value) : base(variableId)
         {
             Value = value;
         }

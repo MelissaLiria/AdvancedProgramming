@@ -11,13 +11,9 @@ namespace Domain.Entities.HistoricalData
     /// <summary>
     /// Clase que modela las muestras de cada variable
     /// </summary>
-    public abstract class Sample : Entity
+    public abstract class Sample
     {
         #region Properties
-        /// <summary>
-        /// Variable asociada a la medición
-        /// </summary>
-        public Variable Variable { get; set; }
         /// <summary>
         /// Identificador de la variable
         /// </summary>
@@ -36,14 +32,11 @@ namespace Domain.Entities.HistoricalData
         /// <summary>
         /// Constructor de la clase Sample
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="variable"></param>
-        public Sample(Guid id, Variable variable) : base(id)
+        /// <param name="variableId"></param>
+        public Sample(Guid variableId)
         { 
             DateTime = DateTime.Now;
-            VariableId = variable.Id;
-            Variable = variable;
+            VariableId = variableId;
         }
-        
     }
 }

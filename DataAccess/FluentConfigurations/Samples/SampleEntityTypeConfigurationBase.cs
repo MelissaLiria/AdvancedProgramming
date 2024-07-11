@@ -6,16 +6,19 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 namespace DataAccess.FluentConfigurations.Samples
 {
     public class SampleEntityTypeConfigurationBase :
-        EntityTypeConfigurationBase<Sample>
+        IEntityTypeConfiguration<Sample>
     {
-        public override void Configure(EntityTypeBuilder<Sample> builder)
+        public void Configure(EntityTypeBuilder<Sample> builder)
         {
+            builder.HasKey(nameof(Sample.VariableId),nameof(Sample.DateTime));
+            builder.Property(x => x.VariableId).IsRequired();
+            builder.Property(x => x.DateTime).IsRequired();
             builder.ToTable("Samples");
-            builder.HasOne(x => x.Variable)
-                .WithMany()
-                .HasForeignKey(x => x.VariableId);
-            base.Configure(builder);
-
+            builder.HasDiscriminator<string>("DataType")
+                .HasValue<SampleBool>("Bool")
+                .HasValue<SampleInt>("Int")
+                .HasValue<SampleDouble>("Double");
+            
         }
     }
 }
