@@ -1,0 +1,46 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "EnvironmentalVariablesDAQ.GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+
+service Variable{
+	rpc CreateVariable (CreateVariableRequest) returns (VariableDTO);
+	rpc GetVariable (GetRequest) returns (NullableVariableDTO);
+	rpc GetAllVariables (google.protobuf.Empty) returns (Variables);
+	rpc UpdateVariable (VariableDTO) returns (google.protobuf.Empty);
+	rpc DeleteVariable (DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message VariableDTO{
+	
+	string id = 1;
+	string locationId = 2;
+	VariableType variabletype = 3;
+	string code = 4;
+	//StructureDTO location = 5;
+}
+
+message Variables{
+	repeated VariableDTO items = 1;
+}
+
+message NullableVariableDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		VariableDTO variable = 2;
+	}
+}
+
+message CreateVariableRequest{
+	string id = 1;
+	string locationId = 2;
+	VariableType variabletype = 3;
+	string code = 4;
+	//StructureDTO location = 5;
+}
