@@ -18,12 +18,16 @@ service Variable{
 }
 
 message VariableDTO{
-	
 	string id = 1;
 	string locationId = 2;
-	VariableType variabletype = 3;
+	VariableType variableType = 3;
 	string code = 4;
-	//StructureDTO location = 5;
+	oneof location{
+		BuildingDTO building = 5;
+		FloorDTO floor = 6;
+		RoomDTO room = 7;
+	}
+	
 }
 
 message Variables{
@@ -39,8 +43,11 @@ message NullableVariableDTO{
 
 message CreateVariableRequest{
 	string id = 1;
-	string locationId = 2;
-	VariableType variabletype = 3;
-	string code = 4;
-	//StructureDTO location = 5;
+	VariableType variableType = 2;
+	string code = 3;
+	oneof location{
+		BuildingDTO building = 4;
+		FloorDTO floor = 5;
+		RoomDTO room = 6;
+	}
 }

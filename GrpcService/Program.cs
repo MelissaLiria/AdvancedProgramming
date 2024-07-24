@@ -1,3 +1,4 @@
+using Application;
 using Contracts;
 using Contracts.Samples;
 using Contracts.Structures;
@@ -8,6 +9,7 @@ using DataAccess.Repositories.Samples;
 using DataAccess.Repositories.Structures;
 using DataAccess.Repositories.Variables;
 using GrpcService.Services;
+
 
 namespace GrpcService
 {
@@ -29,6 +31,12 @@ namespace GrpcService
             builder.Services.AddScoped<IStructureRepository, StructureRepository>();
             builder.Services.AddScoped<IVariableRepository, VariableRepository>();
             builder.Services.AddScoped<ISampleRepository, SampleRepository>();
+
+            builder.Services.AddMediatR(new MediatRServiceConfiguration()
+                {
+                    AutoRegisterRequestProcessors = true
+                }
+                .RegisterServicesFromAssemblies(typeof(AssemblyReference).Assembly));
 
             var app = builder.Build();
 
