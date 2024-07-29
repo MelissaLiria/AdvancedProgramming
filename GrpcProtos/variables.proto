@@ -1,6 +1,6 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "EnvironmentalVariablesDAQ.GrpcProtos";
+option csharp_namespace = "GrpcProtos";
 
 package GrpcProtos;
 
@@ -8,6 +8,9 @@ import "google/protobuf/wrappers.proto";
 import "google/protobuf/empty.proto";
 import "google/protobuf/struct.proto";
 import "common.proto";
+import "buildings.proto";
+import "floors.proto";
+import "rooms.proto";
 
 service Variable{
 	rpc CreateVariable (CreateVariableRequest) returns (VariableDTO);

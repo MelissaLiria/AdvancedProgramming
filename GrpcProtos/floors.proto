@@ -1,0 +1,44 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+import "buildings.proto";
+
+service Floor {
+	rpc CreateFloor (CreateFloorRequest) returns (FloorDTO);
+	rpc GetFloor (GetRequest) returns (NullableFloorDTO);
+	rpc GetAllFloors (google.protobuf.Empty) returns (Floors);
+	rpc UpdateFloor(FloorDTO) returns (google.protobuf.Empty);
+	rpc DeleteFloor(DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message	FloorDTO{
+	string id = 1;
+	string location = 2;
+	BuildingDTO building = 3;
+	string buildingId = 4;
+}
+
+message Floors{
+	repeated FloorDTO items = 1;
+}
+
+message NullableFloorDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		FloorDTO floor = 2;
+	}
+}
+
+message CreateFloorRequest{
+	string id = 1;
+	string location = 2;
+	BuildingDTO building = 3;
+}
+

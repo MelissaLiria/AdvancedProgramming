@@ -11,6 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
+	  <None Remove="buildings.proto" />
+	  <None Remove="floors.proto" />
+	  <None Remove="rooms.proto" />
 	  <None Remove="variables.proto" />
   </ItemGroup>
 	
