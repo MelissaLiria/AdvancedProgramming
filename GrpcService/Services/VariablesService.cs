@@ -1,6 +1,5 @@
 ﻿using Contracts;
 using Contracts.Variables;
-using EnvironmentalVariablesDAQ.GrpcProtos;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using AutoMapper;
@@ -9,10 +8,11 @@ using System.Reflection.Metadata.Ecma335;
 using Application.Variables.Commands.CreateVariable;
 using Domain.Entities.ConfigurationData;
 using Application.Variables.Queries.GetVariableById;
+using GrpcProtos;
 
 namespace GrpcService.Services
 {
-    public class VariablesService : EnvironmentalVariablesDAQ.GrpcProtos.Variable.VariableBase
+    public class VariablesService : GrpcProtos.Variable.VariableBase
     {
         private readonly IMediator _mediator;
 
