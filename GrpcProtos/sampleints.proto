@@ -12,10 +12,10 @@ import "common.proto";
 service SampleInt{
 	rpc CreateSampleInt (CreateSampleIntRequest) returns (SampleIntDTO);
 	rpc GetSampleIntByTimeSpan (TimeSpan) returns (SampleInts);
-	rpc GetSampleIntByVariableId (GetRequest) returns (NullableSampleIntDTO);
+	rpc GetSampleIntByVariableId (GetRequest) returns (SampleInts);
 	rpc GetAllSampleInts (google.protobuf.Empty) returns (SampleInts);
 	rpc UpdateSampleInt (SampleIntDTO) returns (google.protobuf.Empty);
-	rpc DeleteSampleInt (DeleteRequest) returns (google.protobuf.Empty);
+	rpc DeleteSampleInt (DeleteSampleRequest) returns (google.protobuf.Empty);
 }
 
 message SampleIntDTO{

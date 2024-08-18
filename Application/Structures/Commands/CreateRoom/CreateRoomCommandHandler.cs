@@ -40,3 +40,4 @@ namespace Application.Structures.Commands.CreateRoom
             return Task.FromResult(result);
         }
     }
+}

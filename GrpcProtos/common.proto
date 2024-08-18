@@ -21,3 +21,8 @@ message TimeSpan{
 	string startTime = 1;
 	string endTime = 2;
 }
+
+message DeleteSampleRequest{
+	string variableId = 1;
+	string dateTime = 2;
+}

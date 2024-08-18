@@ -12,10 +12,10 @@ import "common.proto";
 service SampleBool{
 	rpc CreateSampleBool (CreateSampleBoolRequest) returns (SampleBoolDTO);
 	rpc GetSampleBoolByTimeSpan (TimeSpan) returns (SampleBools);
-	rpc GetSampleBoolByVariableId (GetRequest) returns (NullableSampleBoolDTO);
+	rpc GetSampleBoolByVariableId (GetRequest) returns (SampleBools);
 	rpc GetAllSampleBools (google.protobuf.Empty) returns (SampleBools);
 	rpc UpdateSampleBool (SampleBoolDTO) returns (google.protobuf.Empty);
-	rpc DeleteSampleBool (DeleteRequest) returns (google.protobuf.Empty);
+	rpc DeleteSampleBool (DeleteSampleRequest) returns (google.protobuf.Empty);
 }
 
 message SampleBoolDTO{

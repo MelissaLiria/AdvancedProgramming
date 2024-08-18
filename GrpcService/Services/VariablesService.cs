@@ -8,16 +8,21 @@ using System.Reflection.Metadata.Ecma335;
 using Application.Variables.Commands.CreateVariable;
 using Application.Variables.Queries.GetVariableById;
 using GrpcProtos;
+using Application.Variables.Commands.DeleteVariable;
+using Application.Variables.Queries.GetAllVariables;
+using Application.Variables.Commands.UpdateVariable;
 
 namespace GrpcService.Services
 {
     public class VariablesService : GrpcProtos.Variable.VariableBase
     {
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
-        public VariablesService(IMediator mediator)
+        public VariablesService(IMediator mediator, IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         public override Task<VariableDTO> CreateVariable(CreateVariableRequest request, ServerCallContext context)
@@ -65,16 +70,29 @@ namespace GrpcService.Services
                 request.Code);
 
             var result = _mediator.Send(command).Result;
+
+            return Task.FromResult(_mapper.Map<VariableDTO>(result));
         }
 
         public override Task<Empty> DeleteVariable(DeleteRequest request, ServerCallContext context)
         {
-            return base.DeleteVariable(request, context);
+            var command = new DeleteVariableCommand(new Guid(request.Id));
+
+            _mediator.Send(command);
+
+            return Task.FromResult(new Empty());
         }
 
         public override Task<Variables> GetAllVariables(Empty request, ServerCallContext context)
         {
-            return base.GetAllVariables(request, context);
+            var query = new GetAllVariablesQuery();
+
+            var result = _mediator.Send(query).Result;
+
+            var variablesDTOs = new Variables();
+            variablesDTOs.Items.AddRange(result.Select(m => _mapper.Map<VariableDTO>(m)));
+
+            return Task.FromResult(variablesDTOs);        
         }
 
         public override Task<NullableVariableDTO> GetVariable(GetRequest request, ServerCallContext context)
@@ -83,11 +101,21 @@ namespace GrpcService.Services
 
             var result = _mediator.Send(query).Result;
 
+            if (result is null)
+                return Task.FromResult(new NullableVariableDTO() { Null = NullValue.NullValue});
+
+            return Task.FromResult(new NullableVariableDTO() { Variable = _mapper.Map<VariableDTO>(result)});
+
         }
 
         public override Task<Empty> UpdateVariable(VariableDTO request, ServerCallContext context)
         {
-            return base.UpdateVariable(request, context);
+            var command = new UpdateVariableCommand(_mapper.Map<Domain.Entities.ConfigurationData.Variable>(request));
+
+            _mediator.Send(command);
+
+            return Task.FromResult(new Empty());
+
         }
 
     }

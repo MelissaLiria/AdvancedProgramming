@@ -12,10 +12,10 @@ import "common.proto";
 service SampleDouble{
 	rpc CreateSampleDouble (CreateSampleDoubleRequest) returns (SampleDoubleDTO);
 	rpc GetSampleDoubleByTimeSpan (TimeSpan) returns (SampleDoubles);
-	rpc GetSampleDoubleByVariableId (GetRequest) returns (NullableSampleDoubleDTO);
+	rpc GetSampleDoubleByVariableId (GetRequest) returns (SampleDoubles);
 	rpc GetAllSampleDoubles (google.protobuf.Empty) returns (SampleDoubles);
 	rpc UpdateSampleDouble (SampleDoubleDTO) returns (google.protobuf.Empty);
-	rpc DeleteSampleDouble (DeleteRequest) returns (google.protobuf.Empty);
+	rpc DeleteSampleDouble (DeleteSampleRequest) returns (google.protobuf.Empty);
 }
 
 message SampleDoubleDTO{

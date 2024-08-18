@@ -1,4 +1,10 @@
 ﻿using Application.Samples.Commands.CreateSampleInt;
+using Application.Samples.Commands.DeleteSampleInt;
+using Application.Samples.Commands.UpdateSampleInt;
+using Application.Samples.Queries.GetAllSampleInts;
+using Application.Samples.Queries.GetSampleIntByTimeSpan;
+using Application.Samples.Queries.GetSampleIntByVariableId;
+using AutoMapper;
 using Google.Protobuf.WellKnownTypes;
 using Grpc.Core;
 using GrpcProtos;
@@ -10,11 +16,14 @@ namespace GrpcService.Services
     {
 
         private readonly IMediator _mediator;
+        private readonly IMapper _mapper;
 
         public SampleIntsService(
-            IMediator mediator)
+            IMediator mediator,
+            IMapper mapper)
         {
             _mediator = mediator;
+            _mapper = mapper;
         }
 
         public override Task<SampleIntDTO> CreateSampleInt(CreateSampleIntRequest request, ServerCallContext context)
@@ -25,30 +34,61 @@ namespace GrpcService.Services
 
             var result = _mediator.Send(command).Result;
 
+            return Task.FromResult(_mapper.Map<SampleIntDTO>(result));
         }
 
-        public override Task<Empty> DeleteSampleInt(DeleteRequest request, ServerCallContext context)
+        public override Task<Empty> DeleteSampleInt(DeleteSampleRequest request, ServerCallContext context)
         {
-            return base.DeleteSampleInt(request, context);
+            var command = new DeleteSampleIntCommand(new Guid(request.VariableId), DateTime.Parse(request.DateTime));
+
+            _mediator.Send(command);
+
+            return Task.FromResult(new Empty());
         }
 
         public override Task<SampleInts> GetAllSampleInts(Empty request, ServerCallContext context)
         {
-            return base.GetAllSampleInts(request, context);
-        }
-        public override Task<SampleInts> GetSampleIntByTimeSpan(GrpcProtos.TimeSpan request, ServerCallContext context)
-        {
-            return base.GetSampleIntByTimeSpan(request, context);
+            var query = new GetAllSampleIntsQuery();
+
+            var result = _mediator.Send(query).Result;
+
+            var sampleIntDTOs = new SampleInts();
+            sampleIntDTOs.Items.AddRange(result.Select(m => _mapper.Map<SampleIntDTO>(m)));
+
+            return Task.FromResult(sampleIntDTOs);
         }
 
-        public override Task<NullableSampleIntDTO> GetSampleIntByVariableId(GetRequest request, ServerCallContext context)
+        public override Task<SampleInts> GetSampleIntByTimeSpan(GrpcProtos.TimeSpan request, ServerCallContext context)
         {
-            return base.GetSampleIntByVariableId(request, context);
+            var query = new GetSampleIntByTimeSpanQuery(DateTime.Parse(request.StartTime), DateTime.Parse(request.EndTime));
+
+            var result = _mediator.Send(query).Result;
+
+            var sampleIntDTOs = new SampleInts();
+            sampleIntDTOs.Items.AddRange(result.Select(m => _mapper.Map<SampleIntDTO>(m)));
+
+            return Task.FromResult(sampleIntDTOs);
+        }
+
+        public override Task<SampleInts> GetSampleIntByVariableId(GetRequest request, ServerCallContext context)
+        {
+            var query = new GetSampleIntByVariableIdQuery(new Guid(request.Id));
+
+            var result = _mediator.Send(query).Result;
+
+            var sampleIntDTOs = new SampleInts();
+            sampleIntDTOs.Items.AddRange(result.Select(m => _mapper.Map<SampleIntDTO>(m)));
+
+            return Task.FromResult(sampleIntDTOs);
         }
 
         public override Task<Empty> UpdateSampleInt(SampleIntDTO request, ServerCallContext context)
         {
-            return base.UpdateSampleInt(request, context);
+            var command = new UpdateSampleIntCommand(_mapper.Map<Domain.Entities.HistoricalData.SampleInt>(request));
+
+            _mediator.Send(command);
+
+            return Task.FromResult(new Empty());    
         }
 
     }
