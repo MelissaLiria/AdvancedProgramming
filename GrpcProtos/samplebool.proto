@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+
+service SampleBool{
+	rpc CreateSampleBool (CreateSampleBoolRequest) returns (SampleBoolDTO);
+	rpc GetSampleBoolByTimeSpan (TimeSpan) returns (SampleBools);
+	rpc GetSampleBoolByVariableId (GetRequest) returns (NullableSampleBoolDTO);
+	rpc GetAllSampleBools (google.protobuf.Empty) returns (SampleBools);
+	rpc UpdateSampleBool (SampleBoolDTO) returns (google.protobuf.Empty);
+	rpc DeleteSampleBool (DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message SampleBoolDTO{
+	string variableId = 1;
+	string dateTime = 2;
+	bool value = 3;	
+}
+
+message SampleBools{
+	repeated SampleBoolDTO items = 1;
+}
+
+message NullableSampleBoolDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		SampleBoolDTO sampleBool = 2;
+	}
+}
+
+message CreateSampleBoolRequest{
+	string variableId = 1;
+	bool value = 2;
+
+}
+

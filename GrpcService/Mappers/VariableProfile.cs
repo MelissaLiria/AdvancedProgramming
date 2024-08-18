@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using EnvironmentalVariablesDAQ.GrpcProtos;
+using GrpcProtos;
 
 namespace GrpcService.Mappers
 {
@@ -7,6 +7,7 @@ namespace GrpcService.Mappers
     {
         public VariableProfile()
         {
+
             CreateMap<Domain.Entities.ConfigurationData.Variable, VariableDTO>()
                 .ForMember(t => t.Id, o => o.MapFrom(s => s.Id.ToString()))
                 .ForMember(t => t.VariableType, o => o.MapFrom(s => new VariableType()
@@ -15,11 +16,26 @@ namespace GrpcService.Mappers
                     MeasurementUnit = s.VariableType.MeasurementUnit
                 }))
                 .ForMember(t => t.Code, o => o.MapFrom(s => s.Code))
-                .ForMember(t => t.LocationId, o => o.MapFrom(s => s.LocationId.ToString()));
-                
-                
+                .ForMember(t => t.LocationId, o => o.MapFrom(s => s.LocationId.ToString()))
+                .ForMember(t => t.Building, o => o.MapFrom(
+                    s => s.Location is Domain.Entities.ConfigurationData.Building ? s.Location as Domain.Entities.ConfigurationData.Building : null))
+                .ForMember(t => t.Floor, o => o.MapFrom(
+                    s => s.Location is Domain.Entities.ConfigurationData.Floor ? s.Location as Domain.Entities.ConfigurationData.Floor : null))
+                .ForMember(t => t.Room, o => o.MapFrom(
+                    s => s.Location is Domain.Entities.ConfigurationData.Room ? s.Location as Domain.Entities.ConfigurationData.Room : null));
+          
 
-      
+            CreateMap<VariableDTO, Domain.Entities.ConfigurationData.Variable>()
+                .ForMember(t => t.Id, o => o.MapFrom(s => new Guid(s.Id)))
+                .ForMember(t => t.VariableType, o => o.MapFrom(s => new Domain.ValueObjects.VariableType(s.VariableType.Name, s.VariableType.MeasurementUnit)))
+                .ForMember(t => t.Code, o => o.MapFrom(s => s.Code))
+                .ForMember(t => t.LocationId, o => o.MapFrom(s => new Guid(s.LocationId)))
+                .ForMember(t => t.Location, o => o.MapFrom(
+                    s => s.LocationCase == VariableDTO.LocationOneofCase.Building ? (object)s.Building : 
+                    s.LocationCase == VariableDTO.LocationOneofCase.Floor ? (object)s.Floor :
+                    s.LocationCase == VariableDTO.LocationOneofCase.Room ? (object)s.Room : null));
+
         }
     }
+
 }

@@ -6,7 +6,6 @@ using AutoMapper;
 using MediatR;
 using System.Reflection.Metadata.Ecma335;
 using Application.Variables.Commands.CreateVariable;
-using Domain.Entities.ConfigurationData;
 using Application.Variables.Queries.GetVariableById;
 using GrpcProtos;
 
@@ -23,35 +22,35 @@ namespace GrpcService.Services
 
         public override Task<VariableDTO> CreateVariable(CreateVariableRequest request, ServerCallContext context)
         {
-            Structure location;
+            Domain.Entities.ConfigurationData.Structure location;
 
             switch ((int)request.LocationCase)
             {
                 case 4:
-                    location = new Building(
+                    location = new Domain.Entities.ConfigurationData.Building(
                         new Guid(request.Building.Id),
                         request.Building.Address,
                         request.Building.Number);
                     break;
                 case 5:
-                    location = new Floor(
+                    location = new Domain.Entities.ConfigurationData.Floor(
                         new Guid(request.Floor.Id),
                         request.Floor.Location,
-                        new Building(
+                        new Domain.Entities.ConfigurationData.Building(
                             new Guid(request.Floor.Building.Id),
                             request.Floor.Building.Address,
                             request.Floor.Building.Number));
                     break;
                 default:
-                    location = new Room(
+                    location = new Domain.Entities.ConfigurationData.Room(
                         new Guid(request.Room.Id),
                         request.Room.Number,
                         request.Room.IsProduction,
                         request.Room.Description,
-                        new Floor(
+                        new Domain.Entities.ConfigurationData.Floor(
                             new Guid(request.Floor.Id),
                             request.Room.Floor.Location,
-                            new Building(
+                            new Domain.Entities.ConfigurationData.Building(
                                 new Guid(request.Room.Floor.Building.Id),
                                 request.Room.Floor.Building.Address,
                                 request.Room.Floor.Building.Number)));

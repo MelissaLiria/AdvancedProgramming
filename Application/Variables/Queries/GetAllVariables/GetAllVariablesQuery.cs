@@ -8,5 +8,5 @@ using System.Threading.Tasks;
 
 namespace Application.Variables.Queries.GetAllVariables
 {
-    public record GetAllVariablesQuery() : IQuery<Variable?>;
+    public record GetAllVariablesQuery : IQuery<IEnumerable<Variable>>;
 }

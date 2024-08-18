@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+
+service SampleDouble{
+	rpc CreateSampleDouble (CreateSampleDoubleRequest) returns (SampleDoubleDTO);
+	rpc GetSampleDoubleByTimeSpan (TimeSpan) returns (SampleDoubles);
+	rpc GetSampleDoubleByVariableId (GetRequest) returns (NullableSampleDoubleDTO);
+	rpc GetAllSampleDoubles (google.protobuf.Empty) returns (SampleDoubles);
+	rpc UpdateSampleDouble (SampleDoubleDTO) returns (google.protobuf.Empty);
+	rpc DeleteSampleDouble (DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message SampleDoubleDTO{
+	string variableId = 1;
+	string dateTime = 2;
+	double value = 3;	
+}
+
+message SampleDoubles{
+	repeated SampleDoubleDTO items = 1;
+}
+
+message NullableSampleDoubleDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		SampleDoubleDTO sampleDouble = 2;
+	}
+}
+
+message CreateSampleDoubleRequest{
+	string variableId = 1;
+	double value = 2;
+
+}
+
