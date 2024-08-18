@@ -34,3 +34,4 @@ namespace Application.Structures.Commands.DeleteRoom
             return Task.CompletedTask;
         }
     }
+}

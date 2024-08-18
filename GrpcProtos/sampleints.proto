@@ -1,0 +1,43 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+
+service SampleInt{
+	rpc CreateSampleInt (CreateSampleIntRequest) returns (SampleIntDTO);
+	rpc GetSampleIntByTimeSpan (TimeSpan) returns (SampleInts);
+	rpc GetSampleIntByVariableId (GetRequest) returns (SampleInts);
+	rpc GetAllSampleInts (google.protobuf.Empty) returns (SampleInts);
+	rpc UpdateSampleInt (SampleIntDTO) returns (google.protobuf.Empty);
+	rpc DeleteSampleInt (DeleteSampleRequest) returns (google.protobuf.Empty);
+}
+
+message SampleIntDTO{
+	string variableId = 1;
+	string dateTime = 2;
+	int32 value = 3;	
+}
+
+message SampleInts{
+	repeated SampleIntDTO items = 1;
+}
+
+message NullableSampleIntDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		SampleIntDTO sampleInt = 2;
+	}
+}
+
+message CreateSampleIntRequest{
+	string variableId = 1;
+	int32 value = 2;
+
+}
+
