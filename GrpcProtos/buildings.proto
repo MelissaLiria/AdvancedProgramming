@@ -1,0 +1,42 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "GrpcProtos";
+
+package GrpcProtos;
+
+import "google/protobuf/wrappers.proto";
+import "google/protobuf/empty.proto";
+import "google/protobuf/struct.proto";
+import "common.proto";
+
+service Building {
+  
+	rpc CreateBuilding (CreateBuildingRequest) returns (BuildingDTO);
+	rpc GetBuilding (GetRequest) returns (NullableBuildingDTO);
+	rpc GetAllBuildings (google.protobuf.Empty) returns (Buildings);
+	rpc UpdateBuilding(BuildingDTO) returns (google.protobuf.Empty);
+	rpc DeleteBuilding(DeleteRequest) returns (google.protobuf.Empty);
+}
+
+message	BuildingDTO{
+	string id = 1;
+	string address = 2;
+	int32 number = 3;
+}
+
+message Buildings{
+	repeated BuildingDTO items = 1;
+}
+
+message NullableBuildingDTO{
+	oneof kind{
+		google.protobuf.NullValue null = 1;
+		BuildingDTO building = 2;
+	}
+}
+
+message CreateBuildingRequest{
+	string id = 1;
+	string address = 2;
+	int32 number = 3;
+}

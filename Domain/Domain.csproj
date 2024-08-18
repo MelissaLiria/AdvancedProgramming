@@ -7,13 +7,15 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Abstract\**" />
     <Compile Remove="Entities\Types\**" />
+    <EmbeddedResource Remove="Abstract\**" />
     <EmbeddedResource Remove="Entities\Types\**" />
+    <None Remove="Abstract\**" />
     <None Remove="Entities\Types\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Abstract\" />
     <Folder Include="Entities\HistoricalData\" />
     <Folder Include="Common\" />
     <Folder Include="ValueObjects\" />

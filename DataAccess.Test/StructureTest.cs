@@ -89,7 +89,12 @@ namespace DataAccess.Test
 
             Floor? floor = floors[0];
             Assert.IsNotNull(floor);
-            Room room = new Room(id, number, isProduction, description, floor);
+            Room room = new Room(
+                id,
+                number,
+                isProduction,
+                description,
+                floor);
 
             //Execute
             _structureRepository.AddStructure(room);

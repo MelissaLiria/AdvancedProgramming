@@ -63,9 +63,6 @@ namespace DataAccess.Contexts
 
             modelBuilder.ApplyConfiguration(new VariableEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new SampleEntityTypeConfigurationBase());
-            modelBuilder.ApplyConfiguration(new SampleIntEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SampleDoubleEntityTypeConfiguration());
-            modelBuilder.ApplyConfiguration(new SampleBoolEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new StructureEntityTypeConfigurationBase());
             modelBuilder.ApplyConfiguration(new BuildingEntityTypeConfiguration());
             modelBuilder.ApplyConfiguration(new FloorEntityTypeConfiguration());

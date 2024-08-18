@@ -11,7 +11,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240702065507_Initial")]
+    [Migration("20240711173618_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -52,21 +52,21 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Entities.HistoricalData.Sample", b =>
                 {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
+                    b.Property<Guid>("VariableId")
                         .HasColumnType("TEXT");
 
                     b.Property<DateTime>("DateTime")
                         .HasColumnType("TEXT");
 
-                    b.Property<Guid>("VariableId")
+                    b.Property<string>("DataType")
+                        .IsRequired()
                         .HasColumnType("TEXT");
 
-                    b.HasKey("Id");
-
-                    b.HasIndex("VariableId");
+                    b.HasKey("VariableId", "DateTime");
 
                     b.ToTable("Samples", (string)null);
+
+                    b.HasDiscriminator<string>("DataType").HasValue("Sample");
                 });
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Building", b =>
@@ -128,7 +128,7 @@ namespace DataAccess.Migrations
                     b.Property<bool>("Value")
                         .HasColumnType("INTEGER");
 
-                    b.ToTable("SampleBools", (string)null);
+                    b.HasDiscriminator().HasValue("Bool");
                 });
 
             modelBuilder.Entity("Domain.Entities.HistoricalData.SampleDouble", b =>
@@ -136,9 +136,10 @@ namespace DataAccess.Migrations
                     b.HasBaseType("Domain.Entities.HistoricalData.Sample");
 
                     b.Property<double>("Value")
-                        .HasColumnType("REAL");
+                        .HasColumnType("REAL")
+                        .HasColumnName("SampleDouble_Value");
 
-                    b.ToTable("SampleDoubles", (string)null);
+                    b.HasDiscriminator().HasValue("Double");
                 });
 
             modelBuilder.Entity("Domain.Entities.HistoricalData.SampleInt", b =>
@@ -146,9 +147,10 @@ namespace DataAccess.Migrations
                     b.HasBaseType("Domain.Entities.HistoricalData.Sample");
 
                     b.Property<int>("Value")
-                        .HasColumnType("INTEGER");
+                        .HasColumnType("INTEGER")
+                        .HasColumnName("SampleInt_Value");
 
-                    b.ToTable("SampleInts", (string)null);
+                    b.HasDiscriminator().HasValue("Int");
                 });
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Variable", b =>
@@ -184,17 +186,6 @@ namespace DataAccess.Migrations
 
                     b.Navigation("VariableType")
                         .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.HistoricalData.Sample", b =>
-                {
-                    b.HasOne("Domain.Entities.ConfigurationData.Variable", "Variable")
-                        .WithMany()
-                        .HasForeignKey("VariableId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Variable");
                 });
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Building", b =>
@@ -238,33 +229,6 @@ namespace DataAccess.Migrations
                         .IsRequired();
 
                     b.Navigation("Floor");
-                });
-
-            modelBuilder.Entity("Domain.Entities.HistoricalData.SampleBool", b =>
-                {
-                    b.HasOne("Domain.Entities.HistoricalData.Sample", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.HistoricalData.SampleBool", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.HistoricalData.SampleDouble", b =>
-                {
-                    b.HasOne("Domain.Entities.HistoricalData.Sample", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.HistoricalData.SampleDouble", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.Entities.HistoricalData.SampleInt", b =>
-                {
-                    b.HasOne("Domain.Entities.HistoricalData.Sample", null)
-                        .WithOne()
-                        .HasForeignKey("Domain.Entities.HistoricalData.SampleInt", "Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Structure", b =>

@@ -15,12 +15,17 @@ namespace DataAccess.Repositories.Samples
     /// </summary>
     public class SampleRepository
         : RepositoryBase, ISampleRepository
-    {
+    {  
+        
+        public SampleRepository(ApplicationContext context) : base(context)
+        {
+        }
+
         public void AddSample(Sample sample)
         {
             _context.Samples.Add(sample);
         }
-
+        
         public void DeleteSample(Sample sample)
         {
             _context.Samples.Remove(sample);
@@ -31,18 +36,23 @@ namespace DataAccess.Repositories.Samples
             return _context.Set<T>().ToList();
         }
 
-        public T? GetSampleById<T>(Guid id) where T : Sample
+        public IEnumerable<T> GetSamplesByTimeSpan<T>(DateTime start, DateTime end) where T : Sample
         {
-            return _context.Set<T>().FirstOrDefault(x => x.Id == id);
+            return _context.Set<T>().Where(x => x.DateTime >= start && x.DateTime <= end).ToList();
         }
+
+        public IEnumerable<T> GetSamplesByVariableId<T>(Guid variableId) where T : Sample
+        {
+            return _context.Set<T>().Where(x => x.VariableId == variableId).ToList();
+        }
+
 
         public void UpdateSample(Sample sample)
         {
             _context.Samples.Update(sample);
         }
 
-        public SampleRepository(ApplicationContext context) : base(context)
-        {
-        }
+        
+      
     }
 }
