@@ -1,4 +1,5 @@
-﻿using Grpc.Net.Client;
+﻿
+using Grpc.Net.Client;
 using GrpcProtos;
 
 namespace ConsoleApp
@@ -7,6 +8,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
+            Console.WriteLine(DateTime.Now.ToString());
             bool loop = true;
             Console.WriteLine("Presione una tecla para iniciar la conexión\n");
             Console.ReadKey();
@@ -372,9 +374,6 @@ namespace ConsoleApp
         public static void CreateVariable(GrpcChannel channel)
         {
             var variableClient = new Variable.VariableClient(channel);
-            var buildingClient = new Building.BuildingClient(channel);
-            var floorClient = new Floor.FloorClient(channel);
-            var roomClient = new Room.RoomClient(channel);
 
             Console.WriteLine("Insert the following data: \n" +
                 "Code: ");
@@ -391,13 +390,15 @@ namespace ConsoleApp
                 "2 - Floor \n" +
                 "3 - Room \n");
 
+            object location;
+
             //Lista de Edificios, pisos o habitaciones para escoger la ubicacion de la variable
             switch (Console.ReadLine())
             {
                 case "1":
                     Console.WriteLine("Select the corresponding building: \n");
                     var allBuildings = GetAllBuildings(channel);
-
+                    location = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
                     
                     break;
 
@@ -405,18 +406,19 @@ namespace ConsoleApp
 
                     Console.WriteLine("Select the corresponding floor: \n");
                     var allFloors = GetAllFloors(channel);
-
+                    location = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
                     break;
 
                 case "3":
 
                     Console.WriteLine("Select the corresponding room: \n");
                     var allRooms = GetAllRooms(channel);
-
+                    location = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1];
                     break;
 
                 default:
                     Console.WriteLine("Invalid action");
+                    location = null;
                     break;
             }
 
@@ -424,7 +426,10 @@ namespace ConsoleApp
             {
                 Code = code,
                 VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
-                //LocationCase
+                Building = location as BuildingDTO,
+                Floor = location as FloorDTO,
+                Room = location as RoomDTO,
+
             });
 
             if (createResponse is null)
@@ -442,6 +447,87 @@ namespace ConsoleApp
         public static void CreateSample(GrpcChannel channel)
         {
 
+            var sampleIntClient = new SampleInt.SampleIntClient(channel);
+            var sampleDoubleClient = new SampleDouble.SampleDoubleClient(channel);
+            var sampleBoolClient = new SampleBool.SampleBoolClient(channel);
+
+            Console.WriteLine("Select the Variable: \n");
+
+            var allVariables = GetAllVariables(channel);
+            
+            string variableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
+
+            Console.WriteLine("Select the Sample DataType: \n" +
+                "1 - Int\n" +
+                "2 - Double\n" +
+                "3 - Boolean\n");
+
+            switch (Console.ReadLine())
+            {
+                case "1":
+                    Console.WriteLine("Insert Value: ");
+                    var createResponseInt = sampleIntClient.CreateSampleInt(new CreateSampleIntRequest()
+                    {
+                        VariableId = variableId,
+                        Value = Convert.ToInt32(Console.ReadLine())
+                    });
+
+                    if (createResponseInt is null)
+                    {
+                        Console.WriteLine("Cannot create variable");
+                        channel.Dispose();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Creación exitosa.");
+                    }
+                    break;
+
+                case "2":
+                    Console.WriteLine("Insert Value: ");
+                    var createResponseDouble = sampleDoubleClient.CreateSampleDouble(new CreateSampleDoubleRequest()
+                    {
+                        VariableId = variableId,
+                        Value = Convert.ToDouble(Console.ReadLine())
+                    });
+
+                    if (createResponseDouble is null)
+                    {
+                        Console.WriteLine("Cannot create variable");
+                        channel.Dispose();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Creación exitosa.");
+                    }
+                    break;
+
+                case "3":
+                    Console.WriteLine("Insert Value: ");
+                    var createResponseBool = sampleBoolClient.CreateSampleBool(new CreateSampleBoolRequest()
+                    {
+                        VariableId = variableId,
+                        Value = Convert.ToBoolean(Console.ReadLine())
+                    });
+
+                    if (createResponseBool is null)
+                    {
+                        Console.WriteLine("Cannot create variable");
+                        channel.Dispose();
+                        return;
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Creación exitosa.");
+                    }
+                    break;
+
+                default:
+                    Console.WriteLine("Invalid Input\n");
+                    break;
+            }
         }
 
         public static void UpdateBuilding(GrpcChannel channel)
@@ -640,7 +726,10 @@ namespace ConsoleApp
 
                             var buildingLocation = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
 
-                            //Actualizar location igualandolo a buildingLocation?
+                            variableToUpdate.Variable.Building = buildingLocation.Building;
+                            variableToUpdate.Variable.LocationId = buildingLocation.Building.Id;
+                            variableToUpdate.Variable.Floor = null;
+                            variableToUpdate.Variable.Room = null;
                             break;
 
                         case "2":
@@ -649,7 +738,11 @@ namespace ConsoleApp
                             var allFloors = GetAllFloors(channel);
 
                             var floorLocation = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-                            //Actualizar location igualandolo a floorLocation
+
+                            variableToUpdate.Variable.Building = null;
+                            variableToUpdate.Variable.Floor = floorLocation.Floor;
+                            variableToUpdate.Variable.Room = null;
+                            variableToUpdate.Variable.LocationId = floorLocation.Floor.Id;
                             break;
 
                         case "3":
@@ -658,7 +751,10 @@ namespace ConsoleApp
                             var allRooms = GetAllRooms(channel);
                            
                             var roomLocation = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-                            //Actualizar location igualandolo a roomLocation
+                            variableToUpdate.Variable.Building = null;
+                            variableToUpdate.Variable.Floor = null;
+                            variableToUpdate.Variable.Room = roomLocation.Room;
+                            variableToUpdate.Variable.LocationId = roomLocation.Room.Id;
                             break;
                     }
                     break;

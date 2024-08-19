@@ -45,7 +45,6 @@ message NullableVariableDTO{
 }
 
 message CreateVariableRequest{
-	string id = 1;
 	VariableType variableType = 2;
 	string code = 3;
 	oneof location{
