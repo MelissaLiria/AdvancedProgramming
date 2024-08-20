@@ -29,15 +29,15 @@ namespace GrpcService.Services
         {
             Domain.Entities.ConfigurationData.Structure location;
 
-            switch ((int)request.LocationCase)
+            switch (request.LocationCase)
             {
-                case 4:
+                case CreateVariableRequest.LocationOneofCase.Building:
                     location = new Domain.Entities.ConfigurationData.Building(
                         new Guid(request.Building.Id),
                         request.Building.Address,
                         request.Building.Number);
                     break;
-                case 5:
+                case CreateVariableRequest.LocationOneofCase.Floor:
                     location = new Domain.Entities.ConfigurationData.Floor(
                         new Guid(request.Floor.Id),
                         request.Floor.Location,
@@ -46,7 +46,7 @@ namespace GrpcService.Services
                             request.Floor.Building.Address,
                             request.Floor.Building.Number));
                     break;
-                default:
+                case CreateVariableRequest.LocationOneofCase.Room:
                     location = new Domain.Entities.ConfigurationData.Room(
                         new Guid(request.Room.Id),
                         request.Room.Number,
@@ -59,6 +59,9 @@ namespace GrpcService.Services
                                 new Guid(request.Room.Floor.Building.Id),
                                 request.Room.Floor.Building.Address,
                                 request.Room.Floor.Building.Number)));
+                    break;
+                default:
+                    throw new ArgumentException();
                     break;
             }
             
