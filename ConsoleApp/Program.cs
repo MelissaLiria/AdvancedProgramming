@@ -438,7 +438,7 @@ namespace ConsoleApp
 
             bool isProduction;
 
-            if (Console.Read() == 1)
+            if (Console.ReadLine() == "1")
             {
                 isProduction = true;
             }
@@ -450,13 +450,19 @@ namespace ConsoleApp
 
             Console.WriteLine("Select the corresponding floor: \n");
             var allFloors = GetAllFloors(channel);
-
+            
+            int position = Convert.ToInt32(Console.ReadLine()) - 1;
+            if (position > allFloors.Items.Count || position < 0)
+            {
+                Console.Write("Input Out of Range");
+                return;
+            }
             var createResponse = roomClient.CreateRoom(new GrpcProtos.CreateRoomRequest()
             {
                 Number = roomNumber,
                 Description = description,
                 IsProduction = isProduction,
-                Floor = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1]
+                Floor = allFloors.Items[position]
             });
 
 
@@ -1356,6 +1362,7 @@ namespace ConsoleApp
         public static Floors? GetAllFloors(GrpcChannel channel)
         {
             var floorClient = new Floor.FloorClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
             var getResponse = floorClient.GetAllFloors(new Google.Protobuf.WellKnownTypes.Empty());
 
             if (getResponse.Items is null)
@@ -1365,11 +1372,13 @@ namespace ConsoleApp
             }
             else
             {
+                
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
+                    var building = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].BuildingId });
                     Console.WriteLine(i + " - Location: " + getResponse.Items[i - 1].Location + "\n\t" +
-                        "Building Number: " + getResponse.Items[i - 1].Building.Number + "\n\t" +
-                        "Building Address: " + getResponse.Items[i - 1].Building.Address + "\n");
+                        "Building Number: " + building.Building.Number + "\n\t" +
+                        "Building Address: " + building.Building.Address + "\n");
                 };
             }
             return getResponse;

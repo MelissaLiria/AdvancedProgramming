@@ -11,6 +11,7 @@ namespace DataAccess.FluentConfigurations.Structures
         public override void Configure(EntityTypeBuilder<Floor> builder)
         {
             builder.ToTable("Floors");
+            builder.Ignore(x => x.Building);
             builder.HasBaseType(typeof(Structure));
             builder.HasMany(x => x.Rooms)
                 .WithOne(x => x.Floor)
