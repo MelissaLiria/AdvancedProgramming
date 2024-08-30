@@ -11,7 +11,7 @@ namespace DataAccess.FluentConfigurations.Variables
         public override void Configure(EntityTypeBuilder<Variable> builder)
         {
             builder.ToTable("Variables");
-            builder.Ignore(x => x.Location);
+            //builder.Ignore(x => x.Location);
             builder.HasOne(x => x.Location)
                 .WithMany(x => x.Variables)
                 .HasForeignKey(x => x.LocationId);

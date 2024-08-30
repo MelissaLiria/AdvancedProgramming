@@ -11,8 +11,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DataAccess.Migrations
 {
     [DbContext(typeof(ApplicationContext))]
-    [Migration("20240820030213_second")]
-    partial class second
+    [Migration("20240830011631_initial")]
+    partial class initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -42,6 +42,9 @@ namespace DataAccess.Migrations
 
                     b.Property<Guid>("LocationId")
                         .HasColumnType("TEXT");
+
+                    b.Property<int>("StructureType")
+                        .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
 
@@ -199,7 +202,7 @@ namespace DataAccess.Migrations
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Floor", b =>
                 {
-                    b.HasOne("Domain.Entities.ConfigurationData.Building", null)
+                    b.HasOne("Domain.Entities.ConfigurationData.Building", "Building")
                         .WithMany("Floors")
                         .HasForeignKey("BuildingId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -210,6 +213,8 @@ namespace DataAccess.Migrations
                         .HasForeignKey("Domain.Entities.ConfigurationData.Floor", "Id")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("Building");
                 });
 
             modelBuilder.Entity("Domain.Entities.ConfigurationData.Room", b =>

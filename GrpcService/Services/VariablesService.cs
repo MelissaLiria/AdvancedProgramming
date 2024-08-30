@@ -53,7 +53,7 @@ namespace GrpcService.Services
                         request.Room.IsProduction,
                         request.Room.Description,
                         new Domain.Entities.ConfigurationData.Floor(
-                            new Guid(request.Floor.Id),
+                            new Guid(request.Room.Floor.Id),
                             request.Room.Floor.Location,
                             new Domain.Entities.ConfigurationData.Building(
                                 new Guid(request.Room.Floor.Building.Id),

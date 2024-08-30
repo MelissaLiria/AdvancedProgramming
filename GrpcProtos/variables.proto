@@ -30,7 +30,7 @@ message VariableDTO{
 		FloorDTO floor = 6;
 		RoomDTO room = 7;
 	}
-	
+	StructureType structureType = 8;
 }
 
 message Variables{
@@ -52,4 +52,10 @@ message CreateVariableRequest{
 		FloorDTO floor = 5;
 		RoomDTO room = 6;
 	}
+}
+
+enum StructureType{
+	building = 0;
+	floor = 1;
+	room = 2;
 }

@@ -15,6 +15,7 @@ namespace DataAccess.FluentConfigurations.Structures
             builder.HasMany(x => x.Floors)
                 .WithOne(x => x.Building)
                 .HasForeignKey(x => x.BuildingId);
+            
 
         }
     }

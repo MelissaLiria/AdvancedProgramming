@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Domain.Common;
+using Domain.Types;
 using Domain.ValueObjects;
 
 namespace Domain.Entities.ConfigurationData
@@ -30,14 +31,15 @@ namespace Domain.Entities.ConfigurationData
         /// Código de la variable en diagrama PI&D
         /// </summary>
         public string Code { get; set; }
+        /// <summary>
+        /// Tipo de estructura en la que se encuentra la variable
+        /// </summary>
+        public StructureType StructureType { get; set; }
         #endregion
 
         protected Variable(): base()
         {
-            LocationId = Guid.NewGuid();
-            Location = null;
-            VariableType = null;
-            Code = null;
+
         }
 
         /// <summary>
@@ -53,6 +55,13 @@ namespace Domain.Entities.ConfigurationData
             LocationId = location.Id;
             VariableType = variableType;
             Code = code;
+
+            if (location is Building)
+                StructureType = StructureType.building;
+            else if (location is Floor)
+                StructureType = StructureType.floor;
+            else
+                StructureType = StructureType.room;
         }
     }
 }

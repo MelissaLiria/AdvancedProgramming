@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace DataAccess.Migrations
 {
-    public partial class second : Migration
+    public partial class initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -63,7 +63,8 @@ namespace DataAccess.Migrations
                     LocationId = table.Column<Guid>(type: "TEXT", nullable: false),
                     VariableType_Name = table.Column<string>(type: "TEXT", nullable: false),
                     VariableType_MeasurementUnit = table.Column<string>(type: "TEXT", nullable: false),
-                    Code = table.Column<string>(type: "TEXT", nullable: false)
+                    Code = table.Column<string>(type: "TEXT", nullable: false),
+                    StructureType = table.Column<int>(type: "INTEGER", nullable: false)
                 },
                 constraints: table =>
                 {

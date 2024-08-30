@@ -27,12 +27,13 @@ namespace Application.Structures.Commands.CreateRoom
         public Task<Room> Handle(CreateRoomCommand request, 
             CancellationToken cancellationToken)
         {
+            var floor = _structureRepository.GetStructureById<Floor>(request.Floor.Id);
             Room result = new Room(
                 Guid.NewGuid(),
                 request.Number,
                 request.IsProduction,
                 request.Description,
-                request.Floor);
+                floor);
 
             _structureRepository.AddStructure(result);
             _unitOfWork.SaveChanges();

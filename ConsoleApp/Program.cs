@@ -7,7 +7,7 @@ namespace ConsoleApp
     internal class Program
     {
         static void Main(string[] args)
-        {
+       {
             bool loop = true;
             Console.WriteLine("Press any key to start the connection\n");
             Console.ReadKey();
@@ -424,6 +424,7 @@ namespace ConsoleApp
         {
             var roomClient = new Room.RoomClient(channel);
             var floorClient = new Floor.FloorClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
 
             Console.WriteLine("Insert the following data: \n" +
                 "Number: ");
@@ -457,12 +458,16 @@ namespace ConsoleApp
                 Console.Write("Input Out of Range");
                 return;
             }
+            var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId });
+            var floorOfRoom = allFloors.Items[position];
+            floorOfRoom.Building = buildingOfFloor.Building;
             var createResponse = roomClient.CreateRoom(new GrpcProtos.CreateRoomRequest()
             {
                 Number = roomNumber,
                 Description = description,
                 IsProduction = isProduction,
-                Floor = allFloors.Items[position]
+                Floor = floorOfRoom
+                
             });
 
 
@@ -481,6 +486,8 @@ namespace ConsoleApp
         public static void CreateVariable(GrpcChannel channel)
         {
             var variableClient = new Variable.VariableClient(channel);
+            var floorClient = new Floor.FloorClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
 
             Console.WriteLine("Insert the following data: \n" +
                 "Code: ");
@@ -497,7 +504,6 @@ namespace ConsoleApp
                 "2 - Floor \n" +
                 "3 - Room \n");
 
-            object location;
             VariableDTO createResponse = null;
 
             //Lista de Edificios, pisos o habitaciones para escoger la ubicacion de la variable
@@ -506,12 +512,12 @@ namespace ConsoleApp
                 case "1":
                     Console.WriteLine("Select the corresponding building: \n");
                     var allBuildings = GetAllBuildings(channel);
-                    location = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                    var buildingOfVariable = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
                     createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
-                        Building = location as BuildingDTO
+                        Building = buildingOfVariable
                     });
                     break;
 
@@ -519,12 +525,14 @@ namespace ConsoleApp
 
                     Console.WriteLine("Select the corresponding floor: \n");
                     var allFloors = GetAllFloors(channel);
-                    location = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                    var floorOfVariable = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                    var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfVariable.BuildingId });
+                    floorOfVariable.Building = buildingOfFloor.Building;
                     createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
-                        Floor = location as FloorDTO
+                        Floor = floorOfVariable
                     });
                     break;
 
@@ -532,18 +540,22 @@ namespace ConsoleApp
 
                     Console.WriteLine("Select the corresponding room: \n");
                     var allRooms = GetAllRooms(channel);
-                    location = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                    var roomOfVariable = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                    var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.FloorId });
+                    var buildingOfRoom = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
+                    roomOfVariable.Floor = floorOfRoom.Floor;
+                    roomOfVariable.Floor.Building = buildingOfRoom.Building;
+
                     createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
-                        Room = location as RoomDTO
+                        Room = roomOfVariable
                     });
                     break;
 
                 default:
                     Console.WriteLine("Invalid action");
-                    location = null;
                     break;
             }
 
@@ -620,7 +632,7 @@ namespace ConsoleApp
                     break;
 
                 case "3":
-                    Console.WriteLine("Insert Value: ");
+                    Console.WriteLine("Insert Value (true/false): ");
                     var createResponseBool = sampleBoolClient.CreateSampleBool(new CreateSampleBoolRequest()
                     {
                         VariableId = variableId,
@@ -705,6 +717,7 @@ namespace ConsoleApp
         public static void UpdateFloor(GrpcChannel channel)
         {
             var floorClient = new Floor.FloorClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
 
             Console.WriteLine("Select the corresponding floor \n");
             var allFloors = GetAllFloors(channel);
@@ -721,11 +734,12 @@ namespace ConsoleApp
             while (loop)
             {
 
-            
+                var building = buildingClient.GetBuilding(new GetRequest() { Id = floorToUpdate.Floor.BuildingId });
+
                 Console.WriteLine("What do you want to modify? \n" +
                     "Location: " + floorToUpdate.Floor.Location + "\n" +
-                    "Building Number: " + floorToUpdate.Floor.Building.Number + "\n" +
-                    "Building Address: " + floorToUpdate.Floor.Building.Address + "\n" +
+                    "Building Number: " + building.Building.Number + "\n" +
+                    "Building Address: " + building.Building.Address + "\n" +
                     "Write 1 for Location, 2 for Building\n" +
                     "Press 3 to save");
 
@@ -735,12 +749,14 @@ namespace ConsoleApp
                     case "1":
                         Console.WriteLine("Write the new Location \n");
                         floorToUpdate.Floor.Location = Console.ReadLine();
+                        floorToUpdate.Floor.Building = building.Building;
                         break;
 
                     case "2":
                         Console.WriteLine("Select the corresponding building \n");
                         var allBuildings = GetAllBuildings(channel);
                         floorToUpdate.Floor.Building = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                        floorToUpdate.Floor.BuildingId = floorToUpdate.Floor.Building.Id;
                         break;
 
                     case"3":
@@ -752,13 +768,14 @@ namespace ConsoleApp
                         break;
                 }
             }
+            
             floorClient.UpdateFloor(floorToUpdate.Floor);
 
             var updatedGetResponse = floorClient.GetFloor(new GetRequest() { Id = floorToUpdate.Floor.Id });
             if (updatedGetResponse is not null &&
                 updatedGetResponse.KindCase == NullableFloorDTO.KindOneofCase.Floor &&
                 updatedGetResponse.Floor.Location == floorToUpdate.Floor.Location &&
-                updatedGetResponse.Floor.Building == floorToUpdate.Floor.Building)
+                updatedGetResponse.Floor.BuildingId == floorToUpdate.Floor.BuildingId)
             {
                 Console.WriteLine($"Modificación exitosa.");
             }
@@ -766,6 +783,8 @@ namespace ConsoleApp
 
         public static void UpdateRoom(GrpcChannel channel)
         {
+            var buildingClient = new Building.BuildingClient(channel);
+            var floorClient = new Floor.FloorClient(channel);
             var roomClient = new Room.RoomClient(channel);
             Console.WriteLine("Select the corresponding room: \n");
             var allRooms = GetAllRooms(channel);
@@ -777,43 +796,56 @@ namespace ConsoleApp
 
             while (loop)
             {
-                Console.WriteLine("What do you want to modify? \n" +
-                    "Description: " + roomToUpdate.Room.Description + "\n" +
-                    "Floor Location: " + roomToUpdate.Room.Floor.Location + "\n" +
-                    "Building Number: " + roomToUpdate.Room.Floor.Building.Number + "\n" +
-                    "Building Address: " + roomToUpdate.Room.Floor.Building.Address + "\n");
+                var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomToUpdate.Room.FloorId});
+                var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
+                
                 if (roomToUpdate.Room.IsProduction is true)
                 {
-                    Console.WriteLine("Type: Production \n");
+                    Console.WriteLine("What do you want to modify? \n" +
+                    "Number: " + roomToUpdate.Room.Number + "\n" +
+                    "Description: " + roomToUpdate.Room.Description + "\n" +
+                    "Floor Location: " + floorOfRoom.Floor.Location + "\n" +
+                    "Building Number: " + buildingOfFloor.Building.Number + "\n" +
+                    "Building Address: " + buildingOfFloor.Building.Address + "\n" +
+                    "Type: Production \n");
                 }
                 else
                 {
-                    Console.WriteLine("Type: Office \n");
+                    Console.WriteLine("What do you want to modify? \n" +
+                    "Number: " + roomToUpdate.Room.Number + "\n" +
+                    "Description: " + roomToUpdate.Room.Description + "\n" +
+                    "Floor Location: " + floorOfRoom.Floor.Location + "\n" +
+                    "Building Number: " + buildingOfFloor.Building.Number + "\n" +
+                    "Building Address: " + buildingOfFloor.Building.Address + "\n" +
+                    "Type: Office \n");
                 }
-                Console.WriteLine("Write 1 for Description, 2 for Floor or 3 for Building\n" +
+                Console.WriteLine("Write 1 for Number, 2 for Description or 3 for Floor\n" +
                     "Press 4 to save");
 
                 //Se modifica la descripcion de la habitacion, 
                 switch (Console.ReadLine())
                 {
                     case "1":
+                        Console.WriteLine("Write the new room number \n");
+                        roomToUpdate.Room.Number = Convert.ToInt32(Console.ReadLine());
+                        break;
+
+
+                    case "2":
                         Console.WriteLine("Write the new description \n");
                         roomToUpdate.Room.Description = Console.ReadLine();
                         break;
 
-                    case "2":
+                    case "3":
                         Console.WriteLine("Select the corresponding floor \n");
                         var allFloors = GetAllFloors(channel);
                         roomToUpdate.Room.Floor = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-                        break;
-
-                    case "3":
-                        Console.WriteLine("Select the corresponding building \n");
-                        var allBuildings = GetAllBuildings(channel);
-                        roomToUpdate.Room.Floor.Building = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                        roomToUpdate.Room.FloorId = roomToUpdate.Room.Floor.Id;
                         break;
 
                     case "4":
+                        roomToUpdate.Room.Floor = floorOfRoom.Floor;
+                        roomToUpdate.Room.Floor.Building = buildingOfFloor.Building;
                         loop = false;
                         break;
                     default:
@@ -822,7 +854,7 @@ namespace ConsoleApp
                 }
             }
                 
-
+            
             roomClient.UpdateRoom(roomToUpdate.Room);
 
             var updatedGetResponse = roomClient.GetRoom(new GetRequest() { Id = roomToUpdate.Room.Id });
@@ -840,6 +872,8 @@ namespace ConsoleApp
         public static void UpdateVariable(GrpcChannel channel)
         {
             var variableClient = new Variable.VariableClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
+            var floorClient = new Floor.FloorClient(channel);
             Console.WriteLine("Select the corresponding variable: \n");
             var allVariables = GetAllVariables(channel);
 
@@ -859,7 +893,7 @@ namespace ConsoleApp
                 }
                 else if (variableToUpdate.Variable.LocationCase is VariableDTO.LocationOneofCase.Floor)
                 {
-                    Console.WriteLine("Location: " + variableToUpdate.Variable.Floor.Location + "of Building No." + variableToUpdate.Variable.Floor.Building.Number.ToString() + "\n");
+                    Console.WriteLine("Location: " + variableToUpdate.Variable.Floor.Location + " of Building No." + variableToUpdate.Variable.Floor.Building.Number.ToString() + "\n");
                 }
                 else if (variableToUpdate.Variable.LocationCase is VariableDTO.LocationOneofCase.Room)
                 {
@@ -897,28 +931,27 @@ namespace ConsoleApp
                         {
                             case "1":
                                 Console.WriteLine("Select the corresponding building \n");
-                                var buildingClient = new Building.BuildingClient(channel);
-                                var allBuildings = GetAllVariables(channel);
+                                
+                                var allBuildings = GetAllBuildings(channel);
 
                                 var buildingLocation = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
 
                                 variableToUpdate.Variable.Building = buildingLocation.Building;
                                 variableToUpdate.Variable.LocationId = buildingLocation.Building.Id;
-                                variableToUpdate.Variable.Floor = null;
-                                variableToUpdate.Variable.Room = null;
+                                variableToUpdate.Variable.StructureType = StructureType.Building;
                                 break;
 
                             case "2":
                                 Console.WriteLine("Select the corresponding floor \n");
-                                var floorClient = new Floor.FloorClient(channel);
                                 var allFloors = GetAllFloors(channel);
 
                                 var floorLocation = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+                                var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorLocation.Floor.BuildingId });
 
-                                variableToUpdate.Variable.Building = null;
-                                variableToUpdate.Variable.Floor = floorLocation.Floor;
-                                variableToUpdate.Variable.Room = null;
+                                variableToUpdate.Variable.Floor = floorLocation.Floor;                                
                                 variableToUpdate.Variable.LocationId = floorLocation.Floor.Id;
+                                variableToUpdate.Variable.StructureType = StructureType.Floor;
+                                variableToUpdate.Variable.Floor.Building = buildingOfFloor.Building;
                                 break;
 
                             case "3":
@@ -927,10 +960,13 @@ namespace ConsoleApp
                                 var allRooms = GetAllRooms(channel);
 
                                 var roomLocation = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-                                variableToUpdate.Variable.Building = null;
-                                variableToUpdate.Variable.Floor = null;
+                                var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomLocation.Room.FloorId });
+                                var buildingOfFloor2 = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
                                 variableToUpdate.Variable.Room = roomLocation.Room;
                                 variableToUpdate.Variable.LocationId = roomLocation.Room.Id;
+                                variableToUpdate.Variable.StructureType = StructureType.Room;
+                                variableToUpdate.Variable.Floor = floorOfRoom.Floor;
+                                variableToUpdate.Variable.Floor.Building = buildingOfFloor2.Building;
                                 break;
                         }
                         break;
@@ -966,7 +1002,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Select the sample you want to modify?: \n");
             var allSamples = GetAllSampleInts(channel);
-            SampleIntDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine) - 1];
+            SampleIntDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
             if (sampleToUpdate is null)
             {
                 Console.WriteLine("Invalid input");
@@ -990,7 +1026,7 @@ namespace ConsoleApp
                     case "1":
                         Console.WriteLine("Select the new Variable\n");
                         var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine) - 1].Id;
+                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
                         break;
                     case "2":
                         Console.WriteLine("Insert the day (dd): ");
@@ -1020,6 +1056,7 @@ namespace ConsoleApp
                         break;
 
                     case "3":
+                        Console.WriteLine("Insert the value: ");
                         sampleToUpdate.Value = Convert.ToInt32(Console.ReadLine());
                         break;
                     case "4":
@@ -1050,7 +1087,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Select the sample you want to modify?: \n");
             var allSamples = GetAllSampleDoubles(channel);
-            SampleDoubleDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine) - 1];
+            SampleDoubleDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
             if (sampleToUpdate is null)
             {
                 Console.WriteLine("Invalid input");
@@ -1074,7 +1111,7 @@ namespace ConsoleApp
                     case "1":
                         Console.WriteLine("Select the new Variable\n");
                         var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine) - 1].Id;
+                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
                         break;
                     case "2":
                         Console.WriteLine("Insert the day (dd): ");
@@ -1104,7 +1141,8 @@ namespace ConsoleApp
                         break;
 
                     case "3":
-                        sampleToUpdate.Value = Convert.ToDouble(Console.ReadLine());
+                        Console.WriteLine("Insert the value: ");
+                        sampleToUpdate.Value = double.Parse(Console.ReadLine());
                         break;
                     case "4":
                         loop = false;
@@ -1134,7 +1172,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Select the sample you want to modify?: \n");
             var allSamples = GetAllSampleBools(channel);
-            SampleBoolDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine) - 1];
+            SampleBoolDTO? sampleToUpdate = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
             if (sampleToUpdate is null)
             {
                 Console.WriteLine("Invalid input");
@@ -1158,7 +1196,7 @@ namespace ConsoleApp
                     case "1":
                         Console.WriteLine("Select the new Variable\n");
                         var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine) - 1].Id;
+                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
                         break;
                     case "2":
                         Console.WriteLine("Insert the day (dd): ");
@@ -1188,6 +1226,7 @@ namespace ConsoleApp
                         break;
 
                     case "3":
+                        Console.WriteLine("Insert the value: ");
                         sampleToUpdate.Value = Convert.ToBoolean(Console.ReadLine());
                         break;
                     case "4":
@@ -1388,6 +1427,8 @@ namespace ConsoleApp
         {
             var roomClient = new Room.RoomClient(channel);
             var getResponse = roomClient.GetAllRooms(new Google.Protobuf.WellKnownTypes.Empty());
+            var floorClient = new Floor.FloorClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
 
             if (getResponse.Items is null)
             {
@@ -1398,18 +1439,27 @@ namespace ConsoleApp
             {
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
-                    Console.WriteLine(i + " - Number: " + getResponse.Items[i - 1].Number + "\n\t" +
-                        "Description: " + getResponse.Items[i - 1].Description + "\n\t" +
-                        "Floor Location: " + getResponse.Items[i - 1].Floor.Location + "\n\t" +
-                        "Building Number: " + getResponse.Items[i - 1].Floor.Building.Number + "\n\t" +
-                        "Building Address: " + getResponse.Items[i - 1].Floor.Building.Address + "\n\t");
+                    var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = getResponse.Items[i - 1].FloorId });
+                    var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
+
+                    
                     if (getResponse.Items[i - 1].IsProduction is true)
                     {
-                        Console.WriteLine("Type: Production \n");
+                        Console.WriteLine(i + " - Number: " + getResponse.Items[i - 1].Number + "\n\t" +
+                        "Description: " + getResponse.Items[i - 1].Description + "\n\t" +
+                        "Floor Location: " + floorOfRoom.Floor.Location + "\n\t" +
+                        "Building Number: " + buildingOfFloor.Building.Number + "\n\t" +
+                        "Building Address: " + buildingOfFloor.Building.Address + "\n\t" +
+                        "Type: Production \n");
                     }
                     else
                     {
-                        Console.WriteLine("Type: Office \n");
+                        Console.WriteLine(i + " - Number: " + getResponse.Items[i - 1].Number + "\n\t" +
+                        "Description: " + getResponse.Items[i - 1].Description + "\n\t" +
+                        "Floor Location: " + floorOfRoom.Floor.Location + "\n\t" +
+                        "Building Number: " + buildingOfFloor.Building.Number + "\n\t" +
+                        "Building Address: " + buildingOfFloor.Building.Address + "\n\t" +
+                        "Type: Office \n");
                     }
                 }
             }
@@ -1419,6 +1469,10 @@ namespace ConsoleApp
         public static Variables? GetAllVariables(GrpcChannel channel)
         {
             var variableClient = new Variable.VariableClient(channel);
+            var buildingClient = new Building.BuildingClient(channel);
+            var floorClient = new Floor.FloorClient(channel);
+            var roomClient = new Room.RoomClient(channel);
+
             var getResponse = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
 
             if (getResponse.Items is null)
@@ -1430,20 +1484,35 @@ namespace ConsoleApp
             {
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
-                    Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
+                                        
+                    if (getResponse.Items[i - 1].StructureType == StructureType.Building)
+                    {
+                        var buildingOfVariable = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].LocationId});
+                        Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
                         "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
-                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t");
-                    if (getResponse.Items[i - 1].LocationCase is VariableDTO.LocationOneofCase.Building)
-                    {
-                        Console.WriteLine("Location: Building No." + getResponse.Items[i - 1].Building.Number.ToString() + "\n");
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Location: Building No." + buildingOfVariable.Building.Number.ToString() + "\n");
                     }
-                    else if (getResponse.Items[i - 1].LocationCase is VariableDTO.LocationOneofCase.Floor)
+                    else if (getResponse.Items[i - 1].StructureType == StructureType.Floor)
                     {
-                        Console.WriteLine("Location: " + getResponse.Items[i - 1].Floor.Location + "of Building No." + getResponse.Items[i - 1].Floor.Building.Number.ToString() + "\n");
+                        var floorOfVariable = floorClient.GetFloor(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
+                        var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfVariable.Floor.BuildingId });
+                        var buildingOfVariable = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
+                        Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
+                        "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Location: " + floorOfVariable.Floor.Location + " of Building No." + buildingOfFloor.Building.Number.ToString() + "\n");
                     }
-                    else if (getResponse.Items[i - 1].LocationCase is VariableDTO.LocationOneofCase.Room)
+                    else 
                     {
-                        Console.WriteLine("Location: Room No." + getResponse.Items[i - 1].Room.Number.ToString() + " of " + getResponse.Items[i - 1].Room.Floor.Location + " of Building No." + getResponse.Items[i - 1].Room.Floor.Building.Number.ToString() + "\n");
+                        var roomOfVariable = roomClient.GetRoom(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
+                        var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.Room.FloorId});
+                        var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
+                        Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
+                        "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Location: Room No." + roomOfVariable.Room.Number.ToString() + " of " + floorOfRoom.Floor.Location +
+                        " of Building No." + buildingOfFloor.Building.Number.ToString() + "\n");
                     }
                 };
             }

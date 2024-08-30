@@ -27,10 +27,11 @@ namespace Application.Structures.Commands.CreateFloor
         public Task<Floor> Handle(CreateFloorCommand request, 
             CancellationToken cancellationToken)
         {
+            Building building = _structureRepository.GetStructureById<Building>(request.Building.Id);
             Floor result = new Floor(
                 Guid.NewGuid(),
                 request.Location,
-                request.Building);
+                building);
 
             _structureRepository.AddStructure(result);
             _unitOfWork.SaveChanges();

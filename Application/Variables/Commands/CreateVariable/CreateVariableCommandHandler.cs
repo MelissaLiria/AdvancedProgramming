@@ -1,5 +1,6 @@
 ﻿using Application.Abstract;
 using Contracts;
+using Contracts.Structures;
 using Contracts.Variables;
 using Domain.Entities.ConfigurationData;
 using System;
@@ -15,18 +16,28 @@ namespace Application.Variables.Commands.CreateVariable
     {
         private readonly IVariableRepository _variableRepository;
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IStructureRepository _structureRepository;
 
-        public CreateVariableCommandHandler(IVariableRepository variableRepository, IUnitOfWork unitOfWork)
+        public CreateVariableCommandHandler(IVariableRepository variableRepository, IUnitOfWork unitOfWork, IStructureRepository structureRepository)
         {
             _variableRepository = variableRepository;
             _unitOfWork = unitOfWork;
+            _structureRepository = structureRepository;
         }
 
         public Task<Variable> Handle(CreateVariableCommand request, CancellationToken cancellationToken)
         {
+            Structure location;
+            if (request.Location is Building)
+                location = _structureRepository.GetStructureById<Building>(request.Location.Id);
+            else if (request.Location is Floor)
+                location = _structureRepository.GetStructureById<Floor>(request.Location.Id);
+            else
+                location = _structureRepository.GetStructureById<Room>(request.Location.Id);
+
             Variable result = new Variable(
                 Guid.NewGuid(),
-                request.Location,
+                location,
                 request.Variabletype,
                 request.Code);
 
