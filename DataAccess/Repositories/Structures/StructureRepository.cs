@@ -41,7 +41,7 @@ namespace DataAccess.Repositories.Structures
         }
 
         public IEnumerable<T> GetAllStructures<T>() where T : Structure
-        {
+        {           
             return _context.Set<T>().ToList();
         }
 

@@ -1,13 +1,14 @@
 ﻿
 using Grpc.Net.Client;
 using GrpcProtos;
+using System.Globalization;
 
 namespace ConsoleApp
 {
     internal class Program
     {
         static void Main(string[] args)
-       {
+        {
             bool loop = true;
             Console.WriteLine("Press any key to start the connection\n");
             Console.ReadKey();
@@ -384,7 +385,7 @@ namespace ConsoleApp
             }
             else
             {
-                Console.WriteLine($"Creación exitosa.");
+                Console.WriteLine($"Succesfully Created\n");
             }
         }
 
@@ -416,7 +417,7 @@ namespace ConsoleApp
             }
             else
             {
-                Console.WriteLine($"Creación exitosa.");
+                Console.WriteLine($"Succesfully Created\n");
             }
         }
 
@@ -451,7 +452,7 @@ namespace ConsoleApp
 
             Console.WriteLine("Select the corresponding floor: \n");
             var allFloors = GetAllFloors(channel);
-            
+
             int position = Convert.ToInt32(Console.ReadLine()) - 1;
             if (position > allFloors.Items.Count || position < 0)
             {
@@ -467,7 +468,7 @@ namespace ConsoleApp
                 Description = description,
                 IsProduction = isProduction,
                 Floor = floorOfRoom
-                
+
             });
 
 
@@ -479,7 +480,7 @@ namespace ConsoleApp
             }
             else
             {
-                Console.WriteLine($"Creación exitosa.");
+                Console.WriteLine($"Succesfully Created\n");
             }
         }
 
@@ -567,7 +568,7 @@ namespace ConsoleApp
             }
             else
             {
-                Console.WriteLine($"Creación exitosa.");
+                Console.WriteLine($"Succesfully Created\n");
             }
         }
 
@@ -607,7 +608,7 @@ namespace ConsoleApp
                     }
                     else
                     {
-                        Console.WriteLine($"Creación exitosa.");
+                        Console.WriteLine($"Succesfully Created\n");
                     }
                     break;
 
@@ -627,7 +628,7 @@ namespace ConsoleApp
                     }
                     else
                     {
-                        Console.WriteLine($"Creación exitosa.");
+                        Console.WriteLine($"Succesfully Created\n");
                     }
                     break;
 
@@ -647,7 +648,7 @@ namespace ConsoleApp
                     }
                     else
                     {
-                        Console.WriteLine($"Creación exitosa.");
+                        Console.WriteLine($"Succesfully Created\n");
                     }
                     break;
 
@@ -673,7 +674,7 @@ namespace ConsoleApp
             bool loop = true;
 
             while (loop)
-            { 
+            {
                 Console.WriteLine("What do you want to modify? \n" +
                     "Number: " + buildingToUpdate.Building.Number + "\n" +
                     "Address: " + buildingToUpdate.Building.Address + "\n" +
@@ -710,7 +711,7 @@ namespace ConsoleApp
                 updatedGetResponse.Building.Number == buildingToUpdate.Building.Number &&
                 updatedGetResponse.Building.Address == buildingToUpdate.Building.Address)
             {
-                Console.WriteLine($"Modificación exitosa.");
+                Console.WriteLine($"Succesfully Updated\n");
             }
         }
 
@@ -722,7 +723,7 @@ namespace ConsoleApp
             Console.WriteLine("Select the corresponding floor \n");
             var allFloors = GetAllFloors(channel);
             int position = Convert.ToInt32(Console.ReadLine()) - 1;
-            if (position > allFloors.Items.Count - 1  || position < 0)
+            if (position > allFloors.Items.Count - 1 || position < 0)
             {
                 Console.WriteLine("Input Out of Range");
                 return;
@@ -759,7 +760,7 @@ namespace ConsoleApp
                         floorToUpdate.Floor.BuildingId = floorToUpdate.Floor.Building.Id;
                         break;
 
-                    case"3":
+                    case "3":
                         loop = false;
                         break;
 
@@ -768,7 +769,7 @@ namespace ConsoleApp
                         break;
                 }
             }
-            
+
             floorClient.UpdateFloor(floorToUpdate.Floor);
 
             var updatedGetResponse = floorClient.GetFloor(new GetRequest() { Id = floorToUpdate.Floor.Id });
@@ -777,7 +778,7 @@ namespace ConsoleApp
                 updatedGetResponse.Floor.Location == floorToUpdate.Floor.Location &&
                 updatedGetResponse.Floor.BuildingId == floorToUpdate.Floor.BuildingId)
             {
-                Console.WriteLine($"Modificación exitosa.");
+                Console.WriteLine($"Succesfully Updated\n");
             }
         }
 
@@ -796,9 +797,9 @@ namespace ConsoleApp
 
             while (loop)
             {
-                var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomToUpdate.Room.FloorId});
+                var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomToUpdate.Room.FloorId });
                 var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
-                
+
                 if (roomToUpdate.Room.IsProduction is true)
                 {
                     Console.WriteLine("What do you want to modify? \n" +
@@ -853,8 +854,8 @@ namespace ConsoleApp
                         break;
                 }
             }
-                
-            
+
+
             roomClient.UpdateRoom(roomToUpdate.Room);
 
             var updatedGetResponse = roomClient.GetRoom(new GetRequest() { Id = roomToUpdate.Room.Id });
@@ -864,7 +865,7 @@ namespace ConsoleApp
                 updatedGetResponse.Room.Floor == roomToUpdate.Room.Floor &&
                 updatedGetResponse.Room.Floor.Building == roomToUpdate.Room.Floor.Building)
             {
-                Console.WriteLine($"Modificación exitosa.");
+                Console.WriteLine($"Succesfully Updated\n");
             }
 
         }
@@ -931,7 +932,7 @@ namespace ConsoleApp
                         {
                             case "1":
                                 Console.WriteLine("Select the corresponding building \n");
-                                
+
                                 var allBuildings = GetAllBuildings(channel);
 
                                 var buildingLocation = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
@@ -948,7 +949,7 @@ namespace ConsoleApp
                                 var floorLocation = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
                                 var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorLocation.Floor.BuildingId });
 
-                                variableToUpdate.Variable.Floor = floorLocation.Floor;                                
+                                variableToUpdate.Variable.Floor = floorLocation.Floor;
                                 variableToUpdate.Variable.LocationId = floorLocation.Floor.Id;
                                 variableToUpdate.Variable.StructureType = StructureType.Floor;
                                 variableToUpdate.Variable.Floor.Building = buildingOfFloor.Building;
@@ -991,7 +992,7 @@ namespace ConsoleApp
                 updatedGetResponse.Variable.VariableType == variableToUpdate.Variable.VariableType &&
                 updatedGetResponse.Variable.LocationCase == variableToUpdate.Variable.LocationCase)
             {
-                Console.WriteLine($"Updated succesfully.\n");
+                Console.WriteLine($"Succesfully Updated\n");
             }
         }
 
@@ -1013,59 +1014,18 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("What do you want to modify? \n" +
+                Console.WriteLine("Selected Sample \n" +
                 "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + sampleToUpdate.DateTime + "\n" +
+                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.WriteLine("Write 1 for Variable, 2 for Date & Time or 3 for Value\n" +
-                    "Press 4 to save");
+                Console.Write("Insert the new value: ");
+                sampleToUpdate.Value = Convert.ToInt32(Console.ReadLine());
 
-                switch (Console.ReadLine())
-                {
-                    case "1":
-                        Console.WriteLine("Select the new Variable\n");
-                        var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
-                        break;
-                    case "2":
-                        Console.WriteLine("Insert the day (dd): ");
-                        string dateTime = Console.ReadLine();
-                        Console.WriteLine("Insert the month (mm): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the year (yyyy): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the hour (hh): ");
-                        dateTime = dateTime + " " + Console.ReadLine();
-                        Console.WriteLine("Insert the minutes (mm): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
-                        Console.WriteLine("Insert the seconds (ss): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
+                Console.Write("Save this value?(1 = yes / 0 = no): ");
+                if (Console.ReadLine() == "1")
+                    loop = false;
 
-
-                        try
-                        {
-                            DateTime format = System.DateTime.Parse(dateTime);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Invalid format");
-                            break;
-                        }
-                        sampleToUpdate.DateTime = dateTime;
-                        break;
-
-                    case "3":
-                        Console.WriteLine("Insert the value: ");
-                        sampleToUpdate.Value = Convert.ToInt32(Console.ReadLine());
-                        break;
-                    case "4":
-                        loop = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        break;
-                }
             }
 
             sampleClient.UpdateSampleInt(sampleToUpdate);
@@ -1076,7 +1036,7 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
-                        Console.WriteLine($"Updated succesfully.\n");
+                        Console.WriteLine($"Succesfully Updated\n");
             }
         }
 
@@ -1098,60 +1058,20 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("What do you want to modify? \n" +
+                Console.WriteLine("Selected Sample \n" +
                 "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + sampleToUpdate.DateTime + "\n" +
+                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.WriteLine("Write 1 for Variable, 2 for Date & Time or 3 for Value\n" +
-                    "Press 4 to save");
+                Console.Write("Insert the new value: ");
+                sampleToUpdate.Value = Convert.ToDouble(Console.ReadLine());
 
-                switch (Console.ReadLine())
-                {
-                    case "1":
-                        Console.WriteLine("Select the new Variable\n");
-                        var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
-                        break;
-                    case "2":
-                        Console.WriteLine("Insert the day (dd): ");
-                        string dateTime = Console.ReadLine();
-                        Console.WriteLine("Insert the month (mm): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the year (yyyy): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the hour (hh): ");
-                        dateTime = dateTime + " " + Console.ReadLine();
-                        Console.WriteLine("Insert the minutes (mm): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
-                        Console.WriteLine("Insert the seconds (ss): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
+                Console.Write("Save this value?(1 = yes / 0 = no): ");
+                if (Console.ReadLine() == "1")
+                    loop = false;
 
-
-                        try
-                        {
-                            DateTime format = System.DateTime.Parse(dateTime);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Invalid format");
-                            break;
-                        }
-                        sampleToUpdate.DateTime = dateTime;
-                        break;
-
-                    case "3":
-                        Console.WriteLine("Insert the value: ");
-                        sampleToUpdate.Value = double.Parse(Console.ReadLine());
-                        break;
-                    case "4":
-                        loop = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        break;
-                }
             }
+
 
             sampleClient.UpdateSampleDouble(sampleToUpdate);
 
@@ -1161,7 +1081,7 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
-                        Console.WriteLine($"Updated succesfully.\n");
+                        Console.WriteLine($"Succesfully Updated\n");
             }
         }
 
@@ -1183,59 +1103,18 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("What do you want to modify? \n" +
+                Console.WriteLine("Selected Sample \n" +
                 "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + sampleToUpdate.DateTime + "\n" +
+                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.WriteLine("Write 1 for Variable, 2 for Date & Time or 3 for Value\n" +
-                    "Press 4 to save");
+                Console.Write("Insert the new value: ");
+                sampleToUpdate.Value = Convert.ToBoolean(Console.ReadLine());
 
-                switch (Console.ReadLine())
-                {
-                    case "1":
-                        Console.WriteLine("Select the new Variable\n");
-                        var allVariables = GetAllVariables(channel);
-                        sampleToUpdate.VariableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
-                        break;
-                    case "2":
-                        Console.WriteLine("Insert the day (dd): ");
-                        string dateTime = Console.ReadLine();
-                        Console.WriteLine("Insert the month (mm): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the year (yyyy): ");
-                        dateTime = dateTime + "/" + Console.ReadLine();
-                        Console.WriteLine("Insert the hour (hh): ");
-                        dateTime = dateTime + " " + Console.ReadLine();
-                        Console.WriteLine("Insert the minutes (mm): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
-                        Console.WriteLine("Insert the seconds (ss): ");
-                        dateTime = dateTime + ":" + Console.ReadLine();
+                Console.Write("Save this value?(1 = yes / 0 = no): ");
+                if (Console.ReadLine() == "1")
+                    loop = false;
 
-
-                        try
-                        {
-                            DateTime format = System.DateTime.Parse(dateTime);
-                        }
-                        catch
-                        {
-                            Console.WriteLine("Invalid format");
-                            break;
-                        }
-                        sampleToUpdate.DateTime = dateTime;
-                        break;
-
-                    case "3":
-                        Console.WriteLine("Insert the value: ");
-                        sampleToUpdate.Value = Convert.ToBoolean(Console.ReadLine());
-                        break;
-                    case "4":
-                        loop = false;
-                        break;
-                    default:
-                        Console.WriteLine("Invalid input");
-                        break;
-                }
             }
 
             sampleClient.UpdateSampleBool(sampleToUpdate);
@@ -1246,7 +1125,7 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
-                        Console.WriteLine($"Updated succesfully.\n");
+                        Console.WriteLine($"Succesfully Updated\n");
             }
 
         }
@@ -1263,7 +1142,7 @@ namespace ConsoleApp
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableBuildingDTO.KindOneofCase.Building)
             {
-                Console.WriteLine($"Eliminación exitosa.");
+                Console.WriteLine($"Succesfully Deleted\n");
             }
         }
 
@@ -1279,7 +1158,7 @@ namespace ConsoleApp
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableFloorDTO.KindOneofCase.Floor)
             {
-                Console.WriteLine($"Eliminación exitosa.");
+                Console.WriteLine($"Succesfully Deleted\n");
             }
         }
 
@@ -1295,7 +1174,7 @@ namespace ConsoleApp
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableRoomDTO.KindOneofCase.Room)
             {
-                Console.WriteLine($"Eliminación exitosa.");
+                Console.WriteLine($"Succesfully Deleted\n");
             }
         }
 
@@ -1311,7 +1190,7 @@ namespace ConsoleApp
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableVariableDTO.KindOneofCase.Variable)
             {
-                Console.WriteLine($"Deleted successfully");
+                Console.WriteLine($"Succesfully Deleted\n");
             }
         }
 
@@ -1333,7 +1212,7 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Deleted successfully");
+                Console.WriteLine($"Succesfully Deleted\n");
         }
 
         public static void DeleteSampleDouble(GrpcChannel channel)
@@ -1354,8 +1233,9 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Deleted successfully");
+                Console.WriteLine($"Succesfully Deleted\n");
         }
+
         public static void DeleteSampleBool(GrpcChannel channel)
         {
             var sampleClient = new SampleBool.SampleBoolClient(channel);
@@ -1374,7 +1254,7 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Deleted successfully");
+                Console.WriteLine($"Succesfully Deleted\n");
         }
 
         public static Buildings? GetAllBuildings(GrpcChannel channel)
@@ -1411,7 +1291,7 @@ namespace ConsoleApp
             }
             else
             {
-                
+
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var building = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].BuildingId });
@@ -1442,7 +1322,7 @@ namespace ConsoleApp
                     var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = getResponse.Items[i - 1].FloorId });
                     var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
 
-                    
+
                     if (getResponse.Items[i - 1].IsProduction is true)
                     {
                         Console.WriteLine(i + " - Number: " + getResponse.Items[i - 1].Number + "\n\t" +
@@ -1484,13 +1364,13 @@ namespace ConsoleApp
             {
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
-                                        
+
                     if (getResponse.Items[i - 1].StructureType == StructureType.Building)
                     {
-                        var buildingOfVariable = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].LocationId});
+                        var buildingOfVariable = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
                         Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
                         "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
-                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" +
                         "Location: Building No." + buildingOfVariable.Building.Number.ToString() + "\n");
                     }
                     else if (getResponse.Items[i - 1].StructureType == StructureType.Floor)
@@ -1500,17 +1380,17 @@ namespace ConsoleApp
                         var buildingOfVariable = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
                         Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
                         "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
-                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" +
                         "Location: " + floorOfVariable.Floor.Location + " of Building No." + buildingOfFloor.Building.Number.ToString() + "\n");
                     }
-                    else 
+                    else
                     {
                         var roomOfVariable = roomClient.GetRoom(new GetRequest() { Id = getResponse.Items[i - 1].LocationId });
-                        var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.Room.FloorId});
+                        var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.Room.FloorId });
                         var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
                         Console.WriteLine(i + " - Code: " + getResponse.Items[i - 1].Code + "\n\t" +
                         "Name: " + getResponse.Items[i - 1].VariableType.Name + "\n\t" +
-                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" + 
+                        "Measurement unit: " + getResponse.Items[i - 1].VariableType.MeasurementUnit + "\n\t" +
                         "Location: Room No." + roomOfVariable.Room.Number.ToString() + " of " + floorOfRoom.Floor.Location +
                         " of Building No." + buildingOfFloor.Building.Number.ToString() + "\n");
                     }
@@ -1536,9 +1416,14 @@ namespace ConsoleApp
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
-                    Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
-                        "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
+                    if(variable.Variable != null) 
+                        Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
+                            "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
+                            "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
+                    else
+                        Console.WriteLine(i + " - Variable Code: ERASED VARIABLE\n\t" +
+                            "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
+                            "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
             return getResponse;
@@ -1562,7 +1447,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1587,7 +1472,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1609,7 +1494,7 @@ namespace ConsoleApp
             var allFloors = floorClient.GetAllFloors(new Google.Protobuf.WellKnownTypes.Empty());
             Console.WriteLine("\nFloors List: \n");
             int i = 1;
-            foreach(FloorDTO floor in allFloors.Items)
+            foreach (FloorDTO floor in allFloors.Items)
             {
                 if (floor.BuildingId == getResponse.Building.Id)
                 {
@@ -1672,7 +1557,7 @@ namespace ConsoleApp
             }
             return getResponse;
         }
-    
+
         public static NullableRoomDTO GetRoom(GrpcChannel channel)
         {
             var roomClient = new Room.RoomClient(channel);
@@ -1684,7 +1569,7 @@ namespace ConsoleApp
             var getResponse = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
             Console.WriteLine("SELECTED Room No." + getResponse.Room.Number.ToString() + " Description: " + getResponse.Room.Description + "\n");
 
-            
+
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             int i = 1;
             Console.WriteLine("\nVariables List: \n");
@@ -1721,7 +1606,7 @@ namespace ConsoleApp
             {
                 if (sample.VariableId == getResponse.Variable.Id)
                 {
-                    Console.WriteLine(i + " - Date&Time: " + sample.DateTime + "\t" +
+                    Console.WriteLine(i + " - Date&Time: " + ParseDateTimeExactToSimple(sample.DateTime) + "\t" +
                         "Value: " + sample.Value.ToString() + "\n");
                     i++;
                 }
@@ -1731,7 +1616,7 @@ namespace ConsoleApp
             {
                 if (sample.VariableId == getResponse.Variable.Id)
                 {
-                    Console.WriteLine(i + " - Date&Time: " + sample.DateTime + "\t" +
+                    Console.WriteLine(i + " - Date&Time: " + ParseDateTimeExactToSimple(sample.DateTime) + "\t" +
                         "Value: " + sample.Value.ToString() + "\n");
                     i++;
                 }
@@ -1741,7 +1626,7 @@ namespace ConsoleApp
             {
                 if (sample.VariableId == getResponse.Variable.Id)
                 {
-                    Console.WriteLine(i + " - Date&Time: " + sample.DateTime + "\t" +
+                    Console.WriteLine(i + " - Date&Time: " + ParseDateTimeExactToSimple(sample.DateTime) + "\t" +
                         "Value: " + sample.Value.ToString() + "\n");
                     i++;
                 }
@@ -1753,7 +1638,10 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleInt.SampleIntClient(channel);
-            var getResponse = sampleClient.GetAllSampleInts(new Google.Protobuf.WellKnownTypes.Empty());
+            Console.WriteLine("Select the Variable you want to get its samples: ");
+            var allVariables = GetAllVariables(channel);
+
+            var getResponse = sampleClient.GetSampleIntByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
 
             if (getResponse.Items is null)
             {
@@ -1767,7 +1655,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1778,7 +1666,10 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            var getResponse = sampleClient.GetAllSampleDoubles(new Google.Protobuf.WellKnownTypes.Empty());
+            Console.WriteLine("Select the Variable you want to get its samples: ");
+            var allVariables = GetAllVariables(channel);
+
+            var getResponse = sampleClient.GetSampleDoubleByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
 
             if (getResponse.Items is null)
             {
@@ -1792,7 +1683,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1803,7 +1694,10 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            var getResponse = sampleClient.GetAllSampleBools(new Google.Protobuf.WellKnownTypes.Empty());
+            Console.WriteLine("Select the Variable you want to get its samples: ");
+            var allVariables = GetAllVariables(channel);
+
+            var getResponse = sampleClient.GetSampleBoolByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
 
             if (getResponse.Items is null)
             {
@@ -1817,7 +1711,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1828,7 +1722,54 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleInt.SampleIntClient(channel);
-            var getResponse = sampleClient.GetAllSampleInts(new Google.Protobuf.WellKnownTypes.Empty());
+
+            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+            string start = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            start = start + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            start = start + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            start = start + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(start);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+            string end = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            end = end + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            end = end + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            end = end + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(end);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            var getResponse = sampleClient.GetSampleIntByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
             if (getResponse.Items is null)
             {
@@ -1842,7 +1783,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1853,7 +1794,53 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            var getResponse = sampleClient.GetAllSampleDoubles(new Google.Protobuf.WellKnownTypes.Empty());
+            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+            string start = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            start = start + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            start = start + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            start = start + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(start);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+            string end = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            end = end + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            end = end + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            end = end + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(end);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            var getResponse = sampleClient.GetSampleDoubleByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
             if (getResponse.Items is null)
             {
@@ -1867,7 +1854,7 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
@@ -1878,7 +1865,53 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            var getResponse = sampleClient.GetAllSampleBools(new Google.Protobuf.WellKnownTypes.Empty());
+            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+            string start = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            start = start + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            start = start + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            start = start + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            start = start + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(start);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+            string end = Console.ReadLine();
+            Console.Write("Insert the month (mm): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the year (yyyy): ");
+            end = end + "/" + Console.ReadLine();
+            Console.Write("Insert the hour (hh): ");
+            end = end + " " + Console.ReadLine();
+            Console.Write("Insert the minutes (mm): ");
+            end = end + ":" + Console.ReadLine();
+            Console.Write("Insert the seconds (ss): ");
+            end = end + ":" + Console.ReadLine();
+
+            try
+            {
+                DateTime format = System.DateTime.Parse(end);
+            }
+            catch
+            {
+                Console.WriteLine("Invalid format");
+                return null;
+            }
+
+            var getResponse = sampleClient.GetSampleBoolByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
             if (getResponse.Items is null)
             {
@@ -1892,11 +1925,21 @@ namespace ConsoleApp
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
                     Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
-                        "Date&Time: " + getResponse.Items[i - 1].DateTime + "\n\t" +
+                        "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                         "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
             return getResponse;
+        }
+
+        public static string ParseDateTimeSimpleToExact(string DateTimeSimple)
+        {
+            return DateTime.Parse(DateTimeSimple).ToString("yyyy-MM-ddTHH:mm:ss.fffffffK");
+        }
+
+        public static string ParseDateTimeExactToSimple(string DateTimeExact)
+        {
+            return DateTime.ParseExact(DateTimeExact, "yyyy-MM-ddTHH:mm:ss.fffffffK", System.Globalization.CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind).ToString();
         }
     }
 
