@@ -28,7 +28,11 @@ namespace ConsoleApp
             object? Object = null;
             while (loop is true)
             {
-                Console.WriteLine("Options: \n" +
+                Console.WriteLine("\n" +
+                    "___________\n" +
+                    "|MAIN MENU|\n" +
+                    "¯¯¯¯¯¯¯¯¯¯¯\n" +
+                    "Options: \n" +
                 "1 - Create \n" +
                 "2 - Get \n" +
                 "3 - Finish conection \n");
@@ -66,12 +70,13 @@ namespace ConsoleApp
                                 break;
 
                             default:
-                                Console.WriteLine("Invalid input");
+                                Console.WriteLine("Invalid input\n");
                                 break;
                         } //Se crea el objeto 
                         break;
 
                     case "2":
+                        bool cont = true;
                         Console.WriteLine("Select the data type: \n" +
                            "1 - Building \n" +
                            "2 - Floor \n" +
@@ -86,18 +91,42 @@ namespace ConsoleApp
                         {
                             case "1":
                                 allObjects = GetAllBuildings(channel);
+                                var buildings = allObjects as Buildings;
+                                if (buildings.Items.Count == 0)
+                                {
+                                    Console.WriteLine("Empty List\n");
+                                    cont = false;
+                                }
                                 break;
 
                             case "2":
                                 allObjects = GetAllFloors(channel);
+                                var floors = allObjects as Floors;
+                                if (floors.Items.Count == 0)
+                                {
+                                    Console.WriteLine("Empty List\n");
+                                    cont = false;
+                                }
                                 break;
 
                             case "3":
                                 allObjects = GetAllRooms(channel);
+                                var rooms = allObjects as Rooms;
+                                if (rooms.Items.Count == 0)
+                                {
+                                    Console.WriteLine("Empty List\n");
+                                    cont = false;
+                                }
                                 break;
 
                             case "4":
                                 allObjects = GetAllVariables(channel);
+                                var variables = allObjects as Variables;
+                                if (variables.Items.Count == 0)
+                                {
+                                    Console.WriteLine("Empty List\n");
+                                    cont = false;
+                                }
                                 break;
 
                             case "5":
@@ -106,6 +135,13 @@ namespace ConsoleApp
                                             "2 - Double\n" +
                                             "3 - Bool\n");
                                 SampleTypeSelection = Console.ReadLine();
+                                if (SampleTypeSelection != "1" && SampleTypeSelection != "2" && SampleTypeSelection != "3")
+                                {
+                                    Console.WriteLine("Invalid Input\n");
+                                    cont = false;
+                                    break;
+                                }
+
 
                                 Console.WriteLine("Do you want to search by: \n" +
                                     "1 - Variable \n" +
@@ -119,18 +155,37 @@ namespace ConsoleApp
                                         {
                                             case "1":
                                                 allObjects = GetSampleIntByVariableId(channel);
+                                                var sampleInts = allObjects as SampleInts;
+                                                if (sampleInts.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             case "2":
                                                 allObjects = GetSampleDoubleByVariableId(channel);
+                                                var sampleDoubles = allObjects as SampleDoubles;
+                                                if (sampleDoubles.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             case "3":
                                                 allObjects = GetSampleBoolByVariableId(channel);
+                                                var sampleBools = allObjects as SampleBools;
+                                                if (sampleBools.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             default:
-                                                Console.WriteLine("Invalid input");
+                                                Console.WriteLine("Invalid input\n");
+                                                cont = false;
                                                 break;
                                         }//Muestra todos los samples int, double o bool de una variable
                                         break;
@@ -140,18 +195,37 @@ namespace ConsoleApp
                                         {
                                             case "1":
                                                 allObjects = GetSampleIntByTimeSpan(channel);
+                                                var sampleInts = allObjects as SampleInts;
+                                                if (sampleInts.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             case "2":
                                                 allObjects = GetSampleDoubleByTimeSpan(channel);
+                                                var sampleDoubles = allObjects as SampleDoubles;
+                                                if (sampleDoubles.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             case "3":
                                                 allObjects = GetSampleBoolByTimeSpan(channel);
+                                                var sampleBools = allObjects as SampleBools;
+                                                if (sampleBools.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             default:
-                                                Console.WriteLine("Invalid input");
+                                                Console.WriteLine("Invalid input\n");
+                                                cont = false;
                                                 break;
                                         }//Muestra todos los samples int, double o bool en un intervalo de tiempo
                                         break;
@@ -161,87 +235,120 @@ namespace ConsoleApp
                                         {
                                             case "1":
                                                 allObjects = GetAllSampleInts(channel);
+                                                var sampleInts = allObjects as SampleInts;
+                                                if (sampleInts.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }                                                
                                                 break;
 
                                             case "2":
                                                 allObjects = GetAllSampleDoubles(channel);
-                                                break;
+                                                var sampleDoubles = allObjects as SampleDoubles;
+                                                if (sampleDoubles.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
+                                                break;                                                
 
                                             case "3":
                                                 allObjects = GetAllSampleBools(channel);
+                                                var sampleBools = allObjects as SampleBools;
+                                                if (sampleBools.Items.Count == 0)
+                                                {
+                                                    Console.WriteLine("Empty List\n");
+                                                    cont = false;
+                                                }
                                                 break;
 
                                             default:
-                                                Console.WriteLine("Invalid input");
+                                                Console.WriteLine("Invalid input\n");
+                                                cont = false;
                                                 break;
                                         }//Muestra todos los samples int, double o bool
                                         break;
 
                                     default:
-                                        Console.WriteLine("Invalid input");
+                                        Console.WriteLine("Invalid input\n");
+                                        cont = false;
                                         break;
                                 }
                                 break;
 
                             default:
-                                Console.WriteLine("Invalid input");
+                                Console.WriteLine("Invalid input\n");
+                                cont = false;
                                 break;
                         }// Muestra todos los objetos de un tipo
 
-                        Console.WriteLine("Options: \n" +
-                            "1 - Select \n" +
-                            "2 - Return to main menu \n");
-
-                        switch(Console.ReadLine())
+                        if (cont is true)
                         {
-                            case "1":
-                                switch(DataTypeSelection)
-                                {
-                                    case "1":
-                                        Object = GetBuilding(channel, allObjects as Buildings);
-                                        break;
+                            bool cont2 = true;
+                            Console.WriteLine("Options: \n" +
+                                "1 - Select \n" +
+                                "2 - Return to main menu \n");
 
-                                    case "2":
-                                        Object = GetFloor(channel, allObjects as Floors);
-                                        break;
+                            switch (Console.ReadLine())
+                            {
+                                case "1":
+                                    switch (DataTypeSelection)
+                                    {
+                                        case "1":
+                                            Object = GetBuilding(channel, allObjects as Buildings).Building;
+                                            break;
 
-                                    case "3":
-                                        Object = GetRoom(channel, allObjects as Rooms);
-                                        break;
+                                        case "2":
+                                            Object = GetFloor(channel, allObjects as Floors).Floor;
+                                            break;
 
-                                    case "4":
-                                        Object = GetVariable(channel, allObjects as Variables);
-                                        break;
+                                        case "3":
+                                            Object = GetRoom(channel, allObjects as Rooms).Room;
+                                            break;
 
-                                    case "5":
-                                       switch(SampleTypeSelection)
-                                       {
-                                            case "1":
-                                                Object = GetSampleInt(channel, allObjects as SampleInts);
-                                                break;
-                                            case "2":
-                                                Object = GetSampleDouble(channel, allObjects as SampleDoubles);
-                                                break;
-                                            case "3":
-                                                Object = GetSampleBool(channel, allObjects as SampleBools);
-                                                break;
-                                       }
-                                        break;
+                                        case "4":
+                                            Object = GetVariable(channel, allObjects as Variables).Variable;
+                                            break;
 
-                                    default:
-                                        Console.WriteLine("Invalid input");
-                                        break;
-                                }
-                                break;
+                                        case "5":
+                                            switch (SampleTypeSelection)
+                                            {
+                                                case "1":
+                                                    Object = GetSampleInt(channel, allObjects as SampleInts).SampleInt;
+                                                    break;
+                                                case "2":
+                                                    Object = GetSampleDouble(channel, allObjects as SampleDoubles).SampleDouble;
+                                                    break;
+                                                case "3":
+                                                    Object = GetSampleBool(channel, allObjects as SampleBools).SampleBool;
+                                                    break;
+                                            }
+                                            break;
 
-                            case "2":
-                                break;
-                        }//Muestra la informacion del objeto seleccionado
+                                        default:
+                                            Console.WriteLine("Invalid input\n");
+                                            cont2 = false;
+                                            break;
+                                    }
+                                    break;
 
-                        Console.WriteLine("Options: \n" +
-                            "1 - Update \n" +
-                            "2 - Delete \n" +
-                            "3 - Return to main menu");
+                                case "2":
+                                    cont2 = false;
+                                    break;
+
+                                default:
+                                    Console.WriteLine("Invalid input\n");
+                                    cont2 = false;
+                                    break;
+                            }//Muestra la informacion del objeto seleccionado
+
+                            if (cont2 is true)
+                            { 
+                                Console.WriteLine("Options: \n" +
+                                    "1 - Update \n" +
+                                    "2 - Delete \n" +
+                                    "3 - Return to main menu");
 
                         switch(Console.ReadLine())
                         {
@@ -279,71 +386,73 @@ namespace ConsoleApp
                                                 UpdateSampleBool(channel, Object as SampleBoolDTO);
                                                 break;
 
-                                            default:
-                                                Console.WriteLine("Invalid input");
+                                                    default:
+                                                        Console.WriteLine("Invalid input");
+                                                        break;
+                                                }
                                                 break;
-                                        }
-                                        break;
 
-                                    default:
-                                        Console.WriteLine("Invalid input");
-                                        break;
-                                }//Se actualizan los objetos
-                                break;
-
-                            case "2":
-                                switch (DataTypeSelection)
-                                {
-                                    case "1":
-                                        DeleteBuilding(channel, Object);
+                                            default:
+                                                Console.WriteLine("Invalid input\n");
+                                                break;
+                                        }//Se actualizan los objetos
                                         break;
 
                                     case "2":
-                                        DeleteFloor(channel, Object);
-                                        break;
+                                    switch (DataTypeSelection)
+                                    {
+                                        case "1":
+                                            DeleteBuilding(channel, Object as BuildingDTO);
+                                            break;
 
+                                        case "2":
+                                            DeleteFloor(channel, Object as FloorDTO);
+                                            break;
+
+                                        case "3":
+                                            DeleteRoom(channel, Object as RoomDTO);
+                                            break;
+
+                                        case "4":
+                                            DeleteVariable(channel, Object as VariableDTO);
+                                            break;
+
+                                        case "5":
+                                            switch (SampleTypeSelection)
+                                            {
+                                                case "1":
+                                                    DeleteSampleInt(channel, Object as SampleIntDTO);
+                                                    break;
+
+                                                case "2":
+                                                    DeleteSampleDouble(channel, Object as SampleDoubleDTO);
+                                                    break;
+
+                                                case "3":
+                                                    DeleteSampleBool(channel, Object as SampleBoolDTO);
+                                                    break;
+
+                                                default:
+                                                    Console.WriteLine("Invalid input\n");
+                                                    break;
+                                            }
+                                            break;
+
+                                        default:
+                                            Console.WriteLine("Invalid input\n");
+                                            break;
+                                    }//Se eliminan los objetos
+                                    break;
+                                    
                                     case "3":
-                                        DeleteRoom(channel, Object);
-                                        break;
-
-                                    case "4":
-                                        DeleteVariable(channel, Object);
-                                        break;
-
-                                    case "5":
-                                        switch (SampleTypeSelection)
-                                        {
-                                            case "1":
-                                                DeleteSampleInt(channel, Object);
-                                                break;
-
-                                            case "2":
-                                                DeleteSampleDouble(channel, Object);
-                                                break;
-
-                                            case "3":
-                                                DeleteSampleBool(channel, Object);
-                                                break;
-
-                                            default:
-                                                Console.WriteLine("Invalid input");
-                                                break;
-                                        }
                                         break;
 
                                     default:
-                                        Console.WriteLine("Invalid input");
+                                        Console.WriteLine("Invalid input\n");
                                         break;
-                                }//Se eliminan los objetos
-                                break;
-
-                            case "3":
-                                break;
-
-                            default:
-                                Console.WriteLine("Invalid input");
-                                break;
-                        }
+                                }
+                            }
+                        }                        
                         break;
 
                     case "3":
@@ -351,7 +460,7 @@ namespace ConsoleApp
                         return;
 
                     case "4":
-                        Console.WriteLine("Invalid action");
+                        Console.WriteLine("Invalid action\n");
                         break;
                 }
             }
@@ -393,24 +502,45 @@ namespace ConsoleApp
             Console.Write("\nSelect the corresponding building: \n");
 
             var allBuildings = GetAllBuildings(channel);
-            int position = Convert.ToInt32(Console.ReadLine()) - 1;
-            if (position > allBuildings.Items.Count || position < 0)
+            if (allBuildings.Items.Count == 0)
             {
-                Console.Write("Input Out of Range");
+                Console.WriteLine("No building in the DataBase");
+                Console.WriteLine("Cannot create floor");
                 return;
+            }
+
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Building: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allBuildings.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
             }
 
             var createResponse = floorClient.CreateFloor(new CreateFloorRequest()
             {
                 Location = location,
-                Building = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1]
+                Building = allBuildings.Items[position]
             });
 
 
             if (createResponse is null)
             {
                 Console.WriteLine("Cannot create floor");
-                channel.Dispose();
                 return;
             }
             else
@@ -446,16 +576,38 @@ namespace ConsoleApp
                 isProduction = false;
             }
 
-            Console.Write("Select the corresponding floor: \n");
             var allFloors = GetAllFloors(channel);
 
-            int position = Convert.ToInt32(Console.ReadLine()) - 1;
-            if (position > allFloors.Items.Count || position < 0)
+            if (allFloors.Items.Count == 0)
             {
-                Console.Write("Input Out of Range");
+                Console.WriteLine("No floor in the DataBase");
+                Console.WriteLine("Cannot create room");
                 return;
             }
 
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Floor: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allFloors.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId });
             var floorOfRoom = allFloors.Items[position];
             floorOfRoom.Building = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId }).Building;
               
@@ -470,7 +622,6 @@ namespace ConsoleApp
             if (createResponse is null)
             {
                 Console.WriteLine("Cannot create room");
-                channel.Dispose();
                 return;
             }
             else
@@ -508,8 +659,38 @@ namespace ConsoleApp
                 case "1":
                     Console.WriteLine("Select the corresponding building: \n");
                     var allBuildings = GetAllBuildings(channel);
-                    var buildingOfVariable = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-                    createResponse = variableClient.CreateVariable(new CreateVariableRequest()
+
+                    if (allBuildings.Items.Count == 0)
+                    {
+                        Console.WriteLine("No building in the DataBase");
+                        Console.WriteLine("Cannot create variable");
+                        return;
+                    }
+
+                    int position = 0;
+                    bool loop = true;
+                    while (loop)
+                    {
+                        Console.Write("Select the Building: ");
+                        try
+                        {
+                            loop = false;
+                            position = Convert.ToInt32(Console.ReadLine()) - 1;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                        if (position < 0 || position >= allBuildings.Items.Count())
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                    }
+
+                    var buildingOfVariable = allBuildings.Items[position];
+                    createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
@@ -521,9 +702,40 @@ namespace ConsoleApp
 
                     Console.WriteLine("Select the corresponding floor: \n");
                     var allFloors = GetAllFloors(channel);
-                    var floorOfVariable = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-                    floorOfVariable.Building = buildingClient.GetBuilding(new GetRequest() { Id = floorOfVariable.BuildingId }).Building;
-                    createResponse = variableClient.CreateVariable(new CreateVariableRequest()
+                    if (allFloors.Items.Count == 0)
+                    {
+                        Console.WriteLine("No floor in the DataBase");
+                        Console.WriteLine("Cannot create variable");
+                        return;
+                    }
+
+                    int position2 = 0;
+                    bool loop2 = true;
+                    while (loop2)
+                    {
+                        Console.Write("Select the Floor: ");
+                        try
+                        {
+                            loop = false;
+                            position2 = Convert.ToInt32(Console.ReadLine()) - 1;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                        if (position2 < 0 || position2 >= allFloors.Items.Count())
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                    }
+
+
+                    var floorOfVariable = allFloors.Items[position2];
+                    var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = floorOfVariable.BuildingId });
+                    floorOfVariable.Building = buildingOfFloor.Building;
+                    createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
@@ -535,9 +747,41 @@ namespace ConsoleApp
 
                     Console.WriteLine("Select the corresponding room: \n");
                     var allRooms = GetAllRooms(channel);
-                    var roomOfVariable = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-                    roomOfVariable.Floor = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.FloorId }).Floor;
-                    roomOfVariable.Floor.Building = buildingClient.GetBuilding(new GetRequest() { Id = roomOfVariable.Floor.BuildingId }).Building;
+                    if (allRooms.Items.Count == 0)
+                    {
+                        Console.WriteLine("No room in the DataBase");
+                        Console.WriteLine("Cannot create variable");
+                        return;
+                    }
+
+                    int position3 = 0;
+                    bool loop3 = true;
+                    while (loop3)
+                    {
+                        Console.Write("Select the Room: ");
+                        try
+                        {
+                            loop = false;
+                            position3 = Convert.ToInt32(Console.ReadLine()) - 1;
+                        }
+                        catch
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                        if (position3 < 0 || position3 >= allRooms.Items.Count())
+                        {
+                            Console.WriteLine("Invalid Input\n");
+                            loop = true;
+                        }
+                    }
+
+
+                    var roomOfVariable = allRooms.Items[position3];
+                    var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = roomOfVariable.FloorId });
+                    var buildingOfRoom = buildingClient.GetBuilding(new GetRequest() { Id = floorOfRoom.Floor.BuildingId });
+                    roomOfVariable.Floor = floorOfRoom.Floor;
+                    roomOfVariable.Floor.Building = buildingOfRoom.Building;
 
                     createResponse = variableClient.CreateVariable(new CreateVariableRequest()
                     {
@@ -555,7 +799,6 @@ namespace ConsoleApp
             if (createResponse is null)
             {
                 Console.WriteLine("Cannot create variable");
-                channel.Dispose();
                 return;
             }
             else
@@ -571,11 +814,39 @@ namespace ConsoleApp
             var sampleDoubleClient = new SampleDouble.SampleDoubleClient(channel);
             var sampleBoolClient = new SampleBool.SampleBoolClient(channel);
 
-            Console.WriteLine("Select the Variable: \n");
 
             var allVariables = GetAllVariables(channel);
+            if (allVariables.Items.Count == 0)
+            {
+                Console.WriteLine("No variable in the DataBase");
+                Console.WriteLine("Cannot create sample");
+                return;
+            }
 
-            string variableId = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id;
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Variable: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allVariables.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+
+            string variableId = allVariables.Items[position].Id;
 
             Console.WriteLine("Select the Sample DataType: \n" +
                 "1 - Int\n" +
@@ -595,7 +866,6 @@ namespace ConsoleApp
                     if (createResponseInt is null)
                     {
                         Console.WriteLine("Cannot create variable");
-                        channel.Dispose();
                         return;
                     }
                     else
@@ -615,7 +885,6 @@ namespace ConsoleApp
                     if (createResponseDouble is null)
                     {
                         Console.WriteLine("Cannot create variable");
-                        channel.Dispose();
                         return;
                     }
                     else
@@ -635,7 +904,6 @@ namespace ConsoleApp
                     if (createResponseBool is null)
                     {
                         Console.WriteLine("Cannot create variable");
-                        channel.Dispose();
                         return;
                     }
                     else
@@ -1051,15 +1319,12 @@ namespace ConsoleApp
             }
         }
 
-        public static void DeleteBuilding(GrpcChannel channel)
+        public static void DeleteBuilding(GrpcChannel channel, BuildingDTO buildingToDelete)
         {
             var buildingClient = new Building.BuildingClient(channel);
-            Console.WriteLine("Select the corresponding building \n");
-            var allBuildings = GetAllBuildings(channel);
-
-            var buildingToDelete = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-            buildingClient.DeleteBuilding(new DeleteRequest() { Id = buildingToDelete.Building.Id });
-            var deletedGetResponse = buildingClient.GetBuilding(new GetRequest() { Id = buildingToDelete.Building.Id });
+            
+            buildingClient.DeleteBuilding(new DeleteRequest() { Id = buildingToDelete.Id });
+            var deletedGetResponse = buildingClient.GetBuilding(new GetRequest() { Id = buildingToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableBuildingDTO.KindOneofCase.Building)
             {
@@ -1067,15 +1332,12 @@ namespace ConsoleApp
             }
         }
 
-        public static void DeleteFloor(GrpcChannel channel)
+        public static void DeleteFloor(GrpcChannel channel, FloorDTO floorToDelete)
         {
             var floorClient = new Floor.FloorClient(channel);
-            Console.WriteLine("Select the corresponding floor \n");
-            var allFloors = GetAllFloors(channel);
-
-            var floorToDelete = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-            floorClient.DeleteFloor(new DeleteRequest() { Id = floorToDelete.Floor.Id });
-            var deletedGetResponse = floorClient.GetFloor(new GetRequest() { Id = floorToDelete.Floor.Id });
+            
+            floorClient.DeleteFloor(new DeleteRequest() { Id = floorToDelete.Id });
+            var deletedGetResponse = floorClient.GetFloor(new GetRequest() { Id = floorToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableFloorDTO.KindOneofCase.Floor)
             {
@@ -1083,15 +1345,12 @@ namespace ConsoleApp
             }
         }
 
-        public static void DeleteRoom(GrpcChannel channel)
+        public static void DeleteRoom(GrpcChannel channel, RoomDTO roomToDelete)
         {
             var roomClient = new Room.RoomClient(channel);
-            Console.WriteLine("Select the corresponding room: \n");
-            var allRooms = GetAllRooms(channel);
-
-            var roomToDelete = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-            roomClient.DeleteRoom(new DeleteRequest() { Id = roomToDelete.Room.Id });
-            var deletedGetResponse = roomClient.GetRoom(new GetRequest() { Id = roomToDelete.Room.Id });
+            
+            roomClient.DeleteRoom(new DeleteRequest() { Id = roomToDelete.Id });
+            var deletedGetResponse = roomClient.GetRoom(new GetRequest() { Id = roomToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableRoomDTO.KindOneofCase.Room)
             {
@@ -1099,15 +1358,12 @@ namespace ConsoleApp
             }
         }
 
-        public static void DeleteVariable(GrpcChannel channel)
+        public static void DeleteVariable(GrpcChannel channel, VariableDTO variableToDelete)
         {
             var variableClient = new Variable.VariableClient(channel);
-            Console.WriteLine("Select the corresponding variable: \n");
-            var allVariables = GetAllVariables(channel);
-
-            var variableToDelete = variableClient.GetVariable(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
-            variableClient.DeleteVariable(new DeleteRequest() { Id = variableToDelete.Variable.Id });
-            var deletedGetResponse = variableClient.GetVariable(new GetRequest() { Id = variableToDelete.Variable.Id });
+            
+            variableClient.DeleteVariable(new DeleteRequest() { Id = variableToDelete.Id });
+            var deletedGetResponse = variableClient.GetVariable(new GetRequest() { Id = variableToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableVariableDTO.KindOneofCase.Variable)
             {
@@ -1115,12 +1371,10 @@ namespace ConsoleApp
             }
         }
 
-        public static void DeleteSampleInt(GrpcChannel channel)
+        public static void DeleteSampleInt(GrpcChannel channel, SampleIntDTO sampleToDelete)
         {
             var sampleClient = new SampleInt.SampleIntClient(channel);
-            Console.WriteLine("Select the corresponding Sample");
-            var allSamples = GetAllSampleInts(channel);
-            var sampleToDelete = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+            
             sampleClient.DeleteSampleInt(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleIntByTimeSpan(
@@ -1136,12 +1390,10 @@ namespace ConsoleApp
                 Console.WriteLine($"Succesfully Deleted\n");
         }
 
-        public static void DeleteSampleDouble(GrpcChannel channel)
+        public static void DeleteSampleDouble(GrpcChannel channel, SampleDoubleDTO sampleToDelete)
         {
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            Console.WriteLine("Select the corresponding Sample");
-            var allSamples = GetAllSampleDoubles(channel);
-            var sampleToDelete = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+            
             sampleClient.DeleteSampleDouble(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleDoubleByTimeSpan(
@@ -1157,12 +1409,10 @@ namespace ConsoleApp
                 Console.WriteLine($"Succesfully Deleted\n");
         }
 
-        public static void DeleteSampleBool(GrpcChannel channel)
+        public static void DeleteSampleBool(GrpcChannel channel, SampleBoolDTO sampleToDelete)
         {
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            Console.WriteLine("Select the corresponding Sample");
-            var allSamples = GetAllSampleBools(channel);
-            var sampleToDelete = allSamples.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+            
             sampleClient.DeleteSampleBool(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleBoolByTimeSpan(
@@ -1399,20 +1649,43 @@ namespace ConsoleApp
             return getResponse;
         }
 
-        public static NullableBuildingDTO GetBuilding(GrpcChannel channel)
+        public static NullableBuildingDTO GetBuilding(GrpcChannel channel, Buildings allBuildings)
         {
+            if (allBuildings.Items.Count == 0)
+                return new NullableBuildingDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue};
+
             var buildingClient = new Building.BuildingClient(channel);
             var floorClient = new Floor.FloorClient(channel);
             var variableClient = new Variable.VariableClient(channel);
 
-            Console.WriteLine("Select the Building: \n");
-            var allBuildings = GetAllBuildings(channel);
-
-            var getResponse = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Building: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine())-1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if(position < 0 || position >= allBuildings.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+            
+            
+            var getResponse = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[position].Id });
             Console.WriteLine("SELECTED Building No." + getResponse.Building.Number.ToString() + " Address: " + getResponse.Building.Address + "\n");
 
             var allFloors = floorClient.GetAllFloors(new Google.Protobuf.WellKnownTypes.Empty());
-            Console.WriteLine("\nFloors List: \n");
+            Console.WriteLine("Floors List: ");
             int i = 1;
             foreach (FloorDTO floor in allFloors.Items)
             {
@@ -1424,7 +1697,7 @@ namespace ConsoleApp
             }
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             i = 1;
-            Console.WriteLine("\nVariables List: \n");
+            Console.WriteLine("Variables List: ");
             foreach (VariableDTO variable in allVariables.Items)
             {
                 if (variable.LocationId == getResponse.Building.Id)
@@ -1438,20 +1711,43 @@ namespace ConsoleApp
             return getResponse;
         }
 
-        public static NullableFloorDTO GetFloor(GrpcChannel channel)
+        public static NullableFloorDTO GetFloor(GrpcChannel channel, Floors allFloors)
         {
+            if (allFloors.Items.Count == 0)
+                return new NullableFloorDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var roomClient = new Room.RoomClient(channel);
             var floorClient = new Floor.FloorClient(channel);
             var variableClient = new Variable.VariableClient(channel);
 
-            Console.WriteLine("Select the Floor: \n");
-            var allFloors = GetAllFloors(channel);
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Floor: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allFloors.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+            
 
-            var getResponse = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            var getResponse = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[position].Id });
             Console.WriteLine("SELECTED Floor " + getResponse.Floor.Location + "\n");
 
             var allRooms = roomClient.GetAllRooms(new Google.Protobuf.WellKnownTypes.Empty());
-            Console.WriteLine("\nRooms List: \n");
+            Console.WriteLine("Rooms List: ");
             int i = 1;
             foreach (RoomDTO room in allRooms.Items)
             {
@@ -1464,7 +1760,7 @@ namespace ConsoleApp
             }
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             i = 1;
-            Console.WriteLine("\nVariables List: \n");
+            Console.WriteLine("Variables List: ");
             foreach (VariableDTO variable in allVariables.Items)
             {
                 if (variable.LocationId == getResponse.Floor.Id)
@@ -1478,21 +1774,43 @@ namespace ConsoleApp
             return getResponse;
         }
 
-        public static NullableRoomDTO GetRoom(GrpcChannel channel)
+        public static NullableRoomDTO GetRoom(GrpcChannel channel, Rooms allRooms)
         {
+            if (allRooms.Items.Count == 0)
+                return new NullableRoomDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var roomClient = new Room.RoomClient(channel);
             var variableClient = new Variable.VariableClient(channel);
 
-            Console.WriteLine("Select the Room: \n");
-            var allRooms = GetAllRooms(channel);
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Room: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allRooms.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
 
-            var getResponse = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            var getResponse = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[position].Id });
             Console.WriteLine("SELECTED Room No." + getResponse.Room.Number.ToString() + " Description: " + getResponse.Room.Description + "\n");
 
 
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             int i = 1;
-            Console.WriteLine("\nVariables List: \n");
+            Console.WriteLine("Variables List: ");
             foreach (VariableDTO variable in allVariables.Items)
             {
                 if (variable.LocationId == getResponse.Room.Id)
@@ -1506,21 +1824,43 @@ namespace ConsoleApp
             return getResponse;
         }
 
-        public static NullableVariableDTO GetVariable(GrpcChannel channel)
+        public static NullableVariableDTO GetVariable(GrpcChannel channel, Variables allVariables)
         {
+            if (allVariables.Items.Count == 0)
+                return new NullableVariableDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var variableClient = new Variable.VariableClient(channel);
             var sampleIntClient = new SampleInt.SampleIntClient(channel);
             var sampleDoubleClient = new SampleDouble.SampleDoubleClient(channel);
             var sampleBoolClient = new SampleBool.SampleBoolClient(channel);
 
-            Console.WriteLine("Select the Variable: \n");
-            var allVariables = GetAllVariables(channel);
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Variable: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allVariables.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
 
-            var getResponse = variableClient.GetVariable(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            var getResponse = variableClient.GetVariable(new GetRequest() { Id = allVariables.Items[position].Id });
             Console.WriteLine("SELECTED Variable Code: " + getResponse.Variable.Code + " Name: " + getResponse.Variable.VariableType.Name + " MeasurementUnit: " + getResponse.Variable.VariableType.MeasurementUnit + "\n");
 
             int i = 1;
-            Console.WriteLine("\nSamples List: \n");
+            Console.WriteLine("Samples List: ");
             var allSampleInts = sampleIntClient.GetAllSampleInts(new Google.Protobuf.WellKnownTypes.Empty());
             foreach (SampleIntDTO sample in allSampleInts.Items)
             {
@@ -1554,43 +1894,127 @@ namespace ConsoleApp
             return getResponse;
         }
 
-        public static NullableSampleIntDTO GetSampleInt(GrpcChannel channel, SampleInts allSampleInts)
+        public static NullableSampleIntDTO GetSampleInt(GrpcChannel channel, SampleInts allSamples)
         {
+            if (allSamples.Items.Count == 0)
+                return new NullableSampleIntDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var variableClient = new Variable.VariableClient(channel);
-            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = allSampleInts.Items[Convert.ToInt32(Console.ReadLine()) - 1].VariableId }).Variable;
-            Console.WriteLine("Select the corresponding sample. \n");
+
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Sample: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allSamples.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = allSamples.Items[position];
+
+            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.VariableId }).Variable;
+            
             Console.WriteLine("SELECTED SAMPLE \n" +
             "Variable: " + variable.Code + "\n" +
-            "Date & Time: " + allSampleInts.Items[Convert.ToInt32(Console.ReadLine()) - 1].DateTime + "\n" +
-            "Value: " + allSampleInts.Items[Convert.ToInt32(Console.ReadLine()) - 1].Value.ToString() + "\n");
-            var getResponse = allSampleInts.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-            return getResponse;
+            "Date & Time: " + getResponse.DateTime + "\n" +
+            "Value: " + getResponse.Value.ToString() + "\n");
+
+            return new NullableSampleIntDTO() {SampleInt = getResponse};
         }
 
-        public static NullableSampleDoubleDTO GetSampleDouble(GrpcChannel channel, SampleDoubles allSampleDoubles)
+        public static NullableSampleDoubleDTO GetSampleDouble(GrpcChannel channel, SampleDoubles allSamples)
         {
+            if (allSamples.Items.Count == 0)
+                return new NullableSampleDoubleDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var variableClient = new Variable.VariableClient(channel);
-            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = allSampleDoubles.Items[Convert.ToInt32(Console.ReadLine()) - 1].VariableId }).Variable;
-            Console.WriteLine("Select the corresponding sample. \n");
+
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Sample: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allSamples.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = allSamples.Items[position];
+
+            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.VariableId }).Variable;
+
             Console.WriteLine("SELECTED SAMPLE \n" +
             "Variable: " + variable.Code + "\n" +
-            "Date & Time: " + allSampleDoubles.Items[Convert.ToInt32(Console.ReadLine()) - 1].DateTime + "\n" +
-            "Value: " + allSampleDoubles.Items[Convert.ToInt32(Console.ReadLine()) - 1].Value.ToString() + "\n");
-            var getResponse = allSampleDoubles.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-            return getResponse;
+            "Date & Time: " + getResponse.DateTime + "\n" +
+            "Value: " + getResponse.Value.ToString() + "\n");
+
+            return new NullableSampleDoubleDTO() { SampleDouble = getResponse};
         }
 
-        public static NullableSampleBoolDTO GetSampleBool(GrpcChannel channel, SampleBools allSampleBools)
+        public static NullableSampleBoolDTO GetSampleBool(GrpcChannel channel, SampleBools allSamples)
         {
+            if (allSamples.Items.Count == 0)
+                return new NullableSampleBoolDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
+
             var variableClient = new Variable.VariableClient(channel);
-            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = allSampleBools.Items[Convert.ToInt32(Console.ReadLine()) - 1].VariableId }).Variable;
-            Console.WriteLine("Select the corresponding sample. \n");
+
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Sample: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allSamples.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = allSamples.Items[position];
+
+            VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.VariableId }).Variable;
+
             Console.WriteLine("SELECTED SAMPLE \n" +
             "Variable: " + variable.Code + "\n" +
-            "Date & Time: " + allSampleBools.Items[Convert.ToInt32(Console.ReadLine()) - 1].DateTime + "\n" +
-            "Value: " + allSampleBools.Items[Convert.ToInt32(Console.ReadLine()) - 1].Value.ToString() + "\n");
-            var getResponse = allSampleBools.Items[Convert.ToInt32(Console.ReadLine()) - 1];
-            return getResponse;
+            "Date & Time: " + getResponse.DateTime + "\n" +
+            "Value: " + getResponse.Value.ToString() + "\n");
+
+            return new NullableSampleBoolDTO() { SampleBool = getResponse };
         }
 
         public static SampleInts? GetSampleIntByVariableId(GrpcChannel channel)
