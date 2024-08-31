@@ -14,8 +14,7 @@ namespace ConsoleApp
             Console.ReadKey();
 
             Console.WriteLine("Connecting...\n");
-            var httpHandler = new HttpClientHandler();
-            httpHandler.ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator;
+            var httpHandler = new HttpClientHandler() { ServerCertificateCustomValidationCallback = HttpClientHandler.DangerousAcceptAnyServerCertificateValidator };
             var channel = GrpcChannel.ForAddress("http://localhost:5094", new GrpcChannelOptions { HttpHandler = httpHandler });
             if (channel is null)
             {
@@ -1673,7 +1672,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if(position < 0 || position >= allBuildings.Items.Count())
+                if(position < 0 || position >= allBuildings.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1735,7 +1734,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allFloors.Items.Count())
+                if (position < 0 || position >= allFloors.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1797,7 +1796,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allRooms.Items.Count())
+                if (position < 0 || position >= allRooms.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1849,7 +1848,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allVariables.Items.Count())
+                if (position < 0 || position >= allVariables.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1916,7 +1915,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allSamples.Items.Count())
+                if (position < 0 || position >= allSamples.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1957,7 +1956,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allSamples.Items.Count())
+                if (position < 0 || position >= allSamples.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
@@ -1998,7 +1997,7 @@ namespace ConsoleApp
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
                 }
-                if (position < 0 || position >= allSamples.Items.Count())
+                if (position < 0 || position >= allSamples.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
                     loop = true;
