@@ -353,7 +353,7 @@ namespace ConsoleApp
                                 switch (Console.ReadLine())
                                 {
                                     case "1":
-                                        /*switch (DataTypeSelection)
+                                        switch (DataTypeSelection)
                                         {
                                             case "1":
                                                 UpdateBuilding(channel , Object);
@@ -395,7 +395,7 @@ namespace ConsoleApp
                                             default:
                                                 Console.WriteLine("Invalid input\n");
                                                 break;
-                                        }//Se actualizan los objetos*/
+                                        }//Se actualizan los objetos
                                         break;
 
                                     case "2":
