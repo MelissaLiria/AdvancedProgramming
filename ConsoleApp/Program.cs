@@ -458,7 +458,7 @@ namespace ConsoleApp
                         channel.Dispose();
                         return;
 
-                    case "4":
+                    default:
                         Console.WriteLine("Invalid action\n");
                         break;
                 }
@@ -470,8 +470,24 @@ namespace ConsoleApp
             Console.Write("Insert the following data: \n" +
                            "Address: ");
             var address = Console.ReadLine();
-            Console.Write("\nNumber: ");
-            var number = Convert.ToInt32(Console.ReadLine());
+
+            bool loop = true;
+            int number = 0;
+            while (loop)
+            {
+                Console.Write("Number: ");
+                try
+                {
+
+                    number = Convert.ToInt32(Console.ReadLine());
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
             var createResponse = buildingClient.CreateBuilding(new CreateBuildingRequest()
             {
                 Address = address,
@@ -497,8 +513,6 @@ namespace ConsoleApp
             Console.Write("Insert the following data: \n" +
                 "Location: ");
             var location = Console.ReadLine();
-
-            Console.Write("\nSelect the corresponding building: \n");
 
             var allBuildings = GetAllBuildings(channel);
             if (allBuildings.Items.Count == 0)
@@ -552,29 +566,54 @@ namespace ConsoleApp
         {
             var roomClient = new Room.RoomClient(channel);
             var buildingClient = new Building.BuildingClient(channel);
-
-            Console.Write("Insert the following data: \n" +
-                "Number: ");
-            var roomNumber = Convert.ToInt32(Console.ReadLine());
-
-            Console.Write("\n Description: ");
+           
+            Console.WriteLine("Insert the following data:"); 
+            bool loop = true;
+            int roomNumber = 0;
+            while (loop)
+            {
+                 Console.Write("Number: ");
+                try
+                {
+                    
+                    roomNumber = Convert.ToInt32(Console.ReadLine());
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+            
+            Console.Write("\nDescription: ");
             var description = Console.ReadLine();
-
-            Console.Write("\n Is a production room or an office ? \n" +
+            
+            bool isProduction = false;
+            bool loop2 = true;
+            while (loop2)
+            {
+                Console.Write("\nIs a production room or an office ? \n" +
                 "1 - Production \n" +
                 "2 - Office\n");
+                if (Console.ReadLine() == "1")
+                {
+                    isProduction = true;
+                    loop2 = false;
+                }
+                else if(Console.ReadLine() == "2")
+                {
+                    isProduction = false;
+                    loop2 = false;
+                }
+                else
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop2 = true;
 
-            bool isProduction;
-
-            if (Console.ReadLine() == "1")
-            {
-                isProduction = true;
+                }
             }
-            else 
-            {
-                isProduction = false;
-            }
-
+            
             var allFloors = GetAllFloors(channel);
 
             if (allFloors.Items.Count == 0)
@@ -585,28 +624,27 @@ namespace ConsoleApp
             }
 
             int position = 0;
-            bool loop = true;
-            while (loop)
+            bool loop3 = true;
+            while (loop3)
             {
                 Console.Write("Select the Floor: ");
                 try
                 {
-                    loop = false;
+                    loop3 = false;
                     position = Convert.ToInt32(Console.ReadLine()) - 1;
                 }
                 catch
                 {
                     Console.WriteLine("Invalid Input\n");
-                    loop = true;
+                    loop3 = true;
                 }
-                if (position < 0 || position >= allFloors.Items.Count())
+                if (position < 0 || position >= allFloors.Items.Count)
                 {
                     Console.WriteLine("Invalid Input\n");
-                    loop = true;
+                    loop3 = true;
                 }
             }
 
-            var buildingOfFloor = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId });
             var floorOfRoom = allFloors.Items[position];
             floorOfRoom.Building = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId }).Building;
               
@@ -644,16 +682,31 @@ namespace ConsoleApp
 
             Console.Write("\nMeasurement unit: ");
             var measurementUnit = Console.ReadLine();
+            string locationPosition = null;
+            bool loop0 = true;
+            while (loop0)
+            {
 
-            Console.Write("\n Where is located? \n" +
-                "1 - Building \n" +
-                "2 - Floor \n" +
-                "3 - Room \n");
+            
+                Console.Write("\nWhere is located? \n" +
+                    "1 - Building \n" +
+                    "2 - Floor \n" +
+                    "3 - Room \n");
 
-            VariableDTO createResponse = null;
+                locationPosition = Console.ReadLine();
+                if (locationPosition == "1" || locationPosition == "2" || locationPosition == "3") 
+                    loop0 = false;
+                else
+                    Console.WriteLine("Invalid Input\n");
+
+            }
+            
 
             //Lista de Edificios, pisos o habitaciones para escoger la ubicacion de la variable
-            switch (Console.ReadLine())
+            
+            
+            VariableDTO createResponse = null;
+            switch (locationPosition)
             {
                 case "1":
                     Console.WriteLine("Select the corresponding building: \n");
@@ -681,7 +734,7 @@ namespace ConsoleApp
                             Console.WriteLine("Invalid Input\n");
                             loop = true;
                         }
-                        if (position < 0 || position >= allBuildings.Items.Count())
+                        if (position < 0 || position >= allBuildings.Items.Count)
                         {
                             Console.WriteLine("Invalid Input\n");
                             loop = true;
@@ -715,18 +768,18 @@ namespace ConsoleApp
                         Console.Write("Select the Floor: ");
                         try
                         {
-                            loop = false;
+                            loop2 = false;
                             position2 = Convert.ToInt32(Console.ReadLine()) - 1;
                         }
                         catch
                         {
                             Console.WriteLine("Invalid Input\n");
-                            loop = true;
+                            loop2 = true;
                         }
-                        if (position2 < 0 || position2 >= allFloors.Items.Count())
+                        if (position2 < 0 || position2 >= allFloors.Items.Count)
                         {
                             Console.WriteLine("Invalid Input\n");
-                            loop = true;
+                            loop2 = true;
                         }
                     }
 
@@ -760,18 +813,18 @@ namespace ConsoleApp
                         Console.Write("Select the Room: ");
                         try
                         {
-                            loop = false;
+                            loop3 = false;
                             position3 = Convert.ToInt32(Console.ReadLine()) - 1;
                         }
                         catch
                         {
                             Console.WriteLine("Invalid Input\n");
-                            loop = true;
+                            loop3 = true;
                         }
                         if (position3 < 0 || position3 >= allRooms.Items.Count())
                         {
                             Console.WriteLine("Invalid Input\n");
-                            loop = true;
+                            loop3 = true;
                         }
                     }
 
@@ -847,21 +900,43 @@ namespace ConsoleApp
 
             string variableId = allVariables.Items[position].Id;
 
-            Console.WriteLine("Select the Sample DataType: \n" +
+            string sampleTypePosition = null;
+            bool loop0 = true;
+            while (loop0)
+            {
+                Console.WriteLine("Select the Sample DataType: \n" +
                 "1 - Int\n" +
                 "2 - Double\n" +
                 "3 - Boolean\n");
 
-            switch (Console.ReadLine())
+                sampleTypePosition = Console.ReadLine();
+                if (sampleTypePosition == "1" || sampleTypePosition == "2" || sampleTypePosition == "3")
+                    loop0 = false;
+                else
+                    Console.WriteLine("Invalid Input\n");
+
+            }
+
+            switch (sampleTypePosition)
             {
                 case "1":
-                    Console.WriteLine("Insert Value: ");
-                    var createResponseInt = sampleIntClient.CreateSampleInt(new CreateSampleIntRequest()
+                    Console.Write("Insert Value: ");
+                    SampleIntDTO createResponseInt;
+                    try
                     {
-                        VariableId = variableId,
-                        Value = Convert.ToInt32(Console.ReadLine())
-                    });
-
+                        createResponseInt = sampleIntClient.CreateSampleInt(new CreateSampleIntRequest()
+                        {
+                            VariableId = variableId,
+                            Value = Convert.ToInt32(Console.ReadLine())
+                        });
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid Input\n" +
+                            "Cannot create variable\n");
+                        return;
+                    }             
+                    
                     if (createResponseInt is null)
                     {
                         Console.WriteLine("Cannot create variable");
@@ -874,12 +949,22 @@ namespace ConsoleApp
                     break;
 
                 case "2":
-                    Console.WriteLine("Insert Value: ");
-                    var createResponseDouble = sampleDoubleClient.CreateSampleDouble(new CreateSampleDoubleRequest()
+                    Console.Write("Insert Value: ");
+                    SampleDoubleDTO createResponseDouble;
+                    try
                     {
-                        VariableId = variableId,
-                        Value = Convert.ToDouble(Console.ReadLine())
-                    });
+                        createResponseDouble = sampleDoubleClient.CreateSampleDouble(new CreateSampleDoubleRequest()
+                        {
+                            VariableId = variableId,
+                            Value = Convert.ToDouble(Console.ReadLine())
+                        });
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid Input\n" +
+                            "Cannot create variable\n");
+                        return;
+                    }
 
                     if (createResponseDouble is null)
                     {
@@ -893,12 +978,22 @@ namespace ConsoleApp
                     break;
 
                 case "3":
-                    Console.WriteLine("Insert Value (true/false): ");
-                    var createResponseBool = sampleBoolClient.CreateSampleBool(new CreateSampleBoolRequest()
+                    Console.Write("Insert Value (true/false): ");
+                    SampleBoolDTO createResponseBool;
+                    try
                     {
-                        VariableId = variableId,
-                        Value = Convert.ToBoolean(Console.ReadLine())
-                    });
+                        createResponseBool = sampleBoolClient.CreateSampleBool(new CreateSampleBoolRequest()
+                        {
+                            VariableId = variableId,
+                            Value = Convert.ToBoolean(Console.ReadLine())
+                        });
+                    }
+                    catch
+                    {
+                        Console.WriteLine("Invalid Input\n" +
+                            "Cannot create variable\n");
+                        return;
+                    }
 
                     if (createResponseBool is null)
                     {
@@ -926,20 +1021,51 @@ namespace ConsoleApp
             {
                 Console.WriteLine("What do you want to modify? \n" +
                     "Number: " + buildingToUpdate.Number + "\n" +
-                    "Address: " + buildingToUpdate.Address + "\n" +
-                    "Write 1 for Number or 2 for Address\n" +
+                    "Address: " + buildingToUpdate.Address);
+
+                string option = null;
+                bool loopOption = true;
+                while (loopOption)
+                {
+                    Console.WriteLine("Write 1 for Number or 2 for Address\n" +
                     "Press 3 to save");
+                    option = Console.ReadLine();
+                    if (option == "1" || option == "2" || option == "3")
+                        loopOption = false;
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                                    
+                }
+                
 
                 // Se modifica el numero o la direccion.
-                switch (Console.ReadLine())
+                switch (option)
                 {
                     case "1":
-                        Console.WriteLine("Write the new number");
-                        buildingToUpdate.Number = Convert.ToInt32(Console.ReadLine());
+                        bool loop0 = true;
+                        while (loop0)
+                        {
+                            Console.Write("Write the new Number: ");
+                            try
+                            {
+
+                                buildingToUpdate.Number = Convert.ToInt32(Console.ReadLine());
+                                loop0 = false;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid Input\n");
+                                loop0 = true;
+                            }
+                        }
                         break;
 
                     case "2":
-                        Console.WriteLine("Write the new Address");
+                        Console.Write("Write the new Address: ");
                         buildingToUpdate.Address = Console.ReadLine();
                         break;
 
@@ -978,23 +1104,59 @@ namespace ConsoleApp
                 Console.WriteLine("What do you want to modify? \n" +
                     "Location: " + floorToUpdate.Location + "\n" +
                     "Building Number: " + building.Building.Number + "\n" +
-                    "Building Address: " + building.Building.Address + "\n" +
-                    "Write 1 for Location, 2 for Building\n" +
+                    "Building Address: " + building.Building.Address);
+
+                string option = null;
+                bool loopOption = true;
+                while (loopOption)
+                {
+                    Console.WriteLine("Write 1 for Location, 2 for Building\n" +
                     "Press 3 to save");
+                    option = Console.ReadLine();
+                    if (option == "1" || option == "2" || option == "3")
+                        loopOption = false;
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+
+                }
 
                 //Se modifica la locacion del piso o el edifico al que esta asosiado.
-                switch (Console.ReadLine())
+                switch (option)
                 {
                     case "1":
-                        Console.WriteLine("Write the new Location");
+                        Console.Write("Write the new Location: ");
                         floorToUpdate.Location = Console.ReadLine();
                         floorToUpdate.Building = building.Building;
                         break;
 
                     case "2":
-                        Console.WriteLine("Select the corresponding building \n");
                         var allBuildings = GetAllBuildings(channel);
-                        floorToUpdate.Building = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+                        int position = 0;
+                        bool loop0 = true;
+                        while (loop0)
+                        {
+                            Console.Write("Select the Building: ");
+                            try
+                            {
+                                loop0 = false;
+                                position = Convert.ToInt32(Console.ReadLine()) - 1;
+                            }
+                            catch
+                            {
+                                Console.WriteLine("Invalid Input\n");
+                                loop0 = true;
+                            }
+                            if (position < 0 || position >= allBuildings.Items.Count())
+                            {
+                                Console.WriteLine("Invalid Input\n");
+                                loop0 = true;
+                            }
+                        }
+                        floorToUpdate.Building = allBuildings.Items[position];
                         floorToUpdate.BuildingId = floorToUpdate.Building.Id;
                         break;
 
@@ -1048,30 +1210,119 @@ namespace ConsoleApp
                 {
                     Console.WriteLine("Type: Office");
                 }
-                Console.WriteLine("Write 1 for Number, 2 for Description or 3 for Floor\n" +
-                    "Press 4 to save");
+                
+
+                string option = null;
+                bool loopOption = true;
+                while (loopOption)
+                {
+                    Console.WriteLine("Write 1 for Number, 2 for Description, 3 for Floor or 4 for Type\n" +
+                    "Press 5 to save");
+                    option = Console.ReadLine();
+                    if (option == "1" || option == "2" || option == "3" || option == "4" || option == "5")
+                        loopOption = false;
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+
+                }
 
                 //Se modifica la descripcion de la habitacion, 
-                switch (Console.ReadLine())
+                switch (option)
                 {
                     case "1":
-                        Console.WriteLine("Write the new room number ");
+                        
                         roomToUpdate.Number = Convert.ToInt32(Console.ReadLine());
+                        bool loop0 = true;
+                        while (loop0)
+                        {
+                            Console.Write("Write the new room number: ");
+                            try
+                            {
+
+                                roomToUpdate.Number = Convert.ToInt32(Console.ReadLine());
+                                loop0 = false;
+                            }
+                            catch
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid Input\n");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                loop0 = true;
+                            }
+                        }
                         break;
 
                     case "2":
-                        Console.WriteLine("Write the new description ");
+                        Console.Write("Write the new description: ");
                         roomToUpdate.Description = Console.ReadLine();
                         break;
 
                     case "3":
-                        Console.WriteLine("Select the corresponding floor ");
                         var allFloors = GetAllFloors(channel);
-                        roomToUpdate.Floor = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1];
+
+                        int position = 0;
+                        bool loop3 = true;
+                        while (loop3)
+                        {
+                            Console.Write("Select the Floor: ");
+                            try
+                            {
+                                loop3 = false;
+                                position = Convert.ToInt32(Console.ReadLine()) - 1;
+                            }
+                            catch
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid Input\n");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                loop3 = true;
+                            }
+                            if (position < 0 || position >= allFloors.Items.Count)
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid Input\n");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                loop3 = true;
+                            }
+                        }
+                        roomToUpdate.Floor = allFloors.Items[position];
                         roomToUpdate.FloorId = roomToUpdate.Floor.Id;
                         break;
 
                     case "4":
+                        bool loop2 = true;
+                        while (loop2)
+                        {
+                            Console.Write("\nIs a production room or an office ? \n" +
+                            "1 - Production \n" +
+                            "2 - Office\n");
+                            if (Console.ReadLine() == "1")
+                            {
+                                roomToUpdate.IsProduction = true;
+                                loop2 = false;
+                            }
+                            else if (Console.ReadLine() == "2")
+                            {
+                                roomToUpdate.IsProduction = false;
+                                loop2 = false;
+                            }
+                            else
+                            {
+                                Console.ForegroundColor = ConsoleColor.Red;
+                                Console.WriteLine("Invalid Input\n");
+                                Console.ForegroundColor = ConsoleColor.Gray;
+                                loop2 = true;
+
+                            }
+                        }
+                        break;
+
+
+                    case "5":
                         roomToUpdate.Floor = floorOfRoom.Floor;
                         roomToUpdate.Floor.Building = floorOfRoom.Floor.Building;
                         loop = false;
@@ -1122,10 +1373,26 @@ namespace ConsoleApp
                     Console.WriteLine("Location: Room No." + variableToUpdate.Room.Number.ToString() + " of " + variableToUpdate.Room.Floor.Location + " of Building No." + variableToUpdate.Room.Floor.Building.Number.ToString() + "\n");
                 }
 
-                Console.WriteLine("Write 1 for Code, 2 for Name, 3 for Measurement unit or 4 for Location\n" +
+                string option = null;
+                bool loopOption = true;
+                while (loopOption)
+                {
+                    Console.WriteLine("Write 1 for Code, 2 for Name, 3 for Measurement unit or 4 for Location\n" +
                     "Press 5 to save");
+                    option = Console.ReadLine();
+                    if (option == "1" || option == "2" || option == "3" || option == "4" || option == "5")
+                        loopOption = false;
+                    else
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
 
-                switch (Console.ReadLine())
+                }
+                
+
+                switch (option)
                 {
                     case "1":
                         Console.WriteLine("Write the new code \n");
@@ -1143,19 +1410,49 @@ namespace ConsoleApp
                         break;
 
                     case "4":
-                        Console.WriteLine("Select the new location type: \n" +
+                        string locationPosition = null;
+                        bool loop0 = true;
+                        while (loop0)
+                        {
+                            Console.WriteLine("Select the new location type: \n" +
                             "1 - Building \n" +
                             "2 - Floor \n" +
                             "3 - Room \n");
 
-                        switch (Console.ReadLine())
+                            locationPosition = Console.ReadLine();
+                            if (locationPosition == "1" || locationPosition == "2" || locationPosition == "3")
+                                loop0 = false;
+                            else
+                                Console.WriteLine("Invalid Input\n");
+
+                        }
+                        
+                        switch (locationPosition)
                         {
                             case "1":
-                                Console.WriteLine("Select the corresponding building \n");
-
                                 var allBuildings = GetAllBuildings(channel);
-
-                                var buildingLocation = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+                                int position = 0;
+                                bool loop2 = true;
+                                while (loop2)
+                                {
+                                    Console.Write("Select the Building: ");
+                                    try
+                                    {
+                                        loop2 = false;
+                                        position = Convert.ToInt32(Console.ReadLine()) - 1;
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop2 = true;
+                                    }
+                                    if (position < 0 || position >= allBuildings.Items.Count)
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop2 = true;
+                                    }
+                                }
+                                var buildingLocation = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[position].Id });
 
                                 variableToUpdate.Building = buildingLocation.Building;
                                 variableToUpdate.LocationId = buildingLocation.Building.Id;
@@ -1163,10 +1460,30 @@ namespace ConsoleApp
                                 break;
 
                             case "2":
-                                Console.WriteLine("Select the corresponding floor \n");
                                 var allFloors = GetAllFloors(channel);
+                                int position2 = 0;
+                                bool loop3 = true;
+                                while (loop3)
+                                {
+                                    Console.Write("Select the Building: ");
+                                    try
+                                    {
+                                        loop3 = false;
+                                        position2 = Convert.ToInt32(Console.ReadLine()) - 1;
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop3 = true;
+                                    }
+                                    if (position2 < 0 || position2 >= allFloors.Items.Count)
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop3 = true;
+                                    }
+                                }
 
-                                var floorLocation = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+                                var floorLocation = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[position2].Id });
                                 floorLocation.Floor.Building = buildingClient.GetBuilding(new GetRequest() { Id = floorLocation.Floor.BuildingId }).Building;
 
                                 variableToUpdate.Floor = floorLocation.Floor;
@@ -1176,11 +1493,32 @@ namespace ConsoleApp
                                 break;
 
                             case "3":
-                                Console.WriteLine("Select the corresponding room: \n");
                                 var roomClient = new Room.RoomClient(channel);
                                 var allRooms = GetAllRooms(channel);
 
-                                var roomLocation = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+                                int position3 = 0;
+                                bool loop4 = true;
+                                while (loop4)
+                                {
+                                    Console.Write("Select the Building: ");
+                                    try
+                                    {
+                                        loop4 = false;
+                                        position3 = Convert.ToInt32(Console.ReadLine()) - 1;
+                                    }
+                                    catch
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop4 = true;
+                                    }
+                                    if (position3 < 0 || position3 >= allRooms.Items.Count)
+                                    {
+                                        Console.WriteLine("Invalid Input\n");
+                                        loop4 = true;
+                                    }
+                                }
+
+                                var roomLocation = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[position3].Id });
                                 roomLocation.Room.Floor = floorClient.GetFloor(new GetRequest() { Id = roomLocation.Room.FloorId }).Floor;
                                 roomLocation.Room.Floor.Building = buildingClient.GetBuilding(new GetRequest() { Id = roomLocation.Room.Floor.BuildingId }).Building;
                                 variableToUpdate.Room = roomLocation.Room;
@@ -1229,8 +1567,24 @@ namespace ConsoleApp
                 "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.Write("Insert the new value: ");
-                sampleToUpdate.Value = Convert.ToInt32(Console.ReadLine());
+                bool loop2 = true;
+                while(loop2)
+                { 
+
+                    Console.Write("Insert the new value: ");
+                    try
+                    {
+                        sampleToUpdate.Value = Convert.ToInt32(Console.ReadLine());
+                        loop2 = false;
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        loop2 = true;
+                    }
+                }
 
                 Console.Write("Save this value?(1 = yes / 0 = no): ");
                 if (Console.ReadLine() == "1")
@@ -1264,8 +1618,24 @@ namespace ConsoleApp
                 "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.Write("Insert the new value: ");
-                sampleToUpdate.Value = Convert.ToDouble(Console.ReadLine());
+                bool loop2 = true;
+                while (loop2)
+                {
+
+                    Console.Write("Insert the new value: ");
+                    try
+                    {
+                        sampleToUpdate.Value = Convert.ToDouble(Console.ReadLine());
+                        loop2 = false;
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        loop2 = true;
+                    }
+                }
 
                 Console.Write("Save this value?(1 = yes / 0 = no) ");
                 if (Console.ReadLine() == "1")
@@ -1298,8 +1668,24 @@ namespace ConsoleApp
                 "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
                 "Value: " + sampleToUpdate.Value.ToString() + "\n");
 
-                Console.Write("Insert the new value: ");
-                sampleToUpdate.Value = Convert.ToBoolean(Console.ReadLine());
+                bool loop2 = true;
+                while (loop2)
+                {
+
+                    Console.Write("Insert the new value: ");
+                    try
+                    {
+                        sampleToUpdate.Value = Convert.ToBoolean(Console.ReadLine());
+                        loop2 = false;
+                    }
+                    catch
+                    {
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        loop2 = true;
+                    }
+                }
 
                 Console.Write("Save this value?(1 = yes / 0 = no): ");
                 if (Console.ReadLine() == "1")
@@ -1439,6 +1825,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF BUILDINGS");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     Console.WriteLine(i + " - Number: " + getResponse.Items[i - 1].Number + "\n\t" +
@@ -1461,7 +1848,7 @@ namespace ConsoleApp
             }
             else
             {
-
+                Console.WriteLine("\nLIST OF FLOORS");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var building = buildingClient.GetBuilding(new GetRequest() { Id = getResponse.Items[i - 1].BuildingId });
@@ -1487,6 +1874,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF ROOMS");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var floorOfRoom = floorClient.GetFloor(new GetRequest() { Id = getResponse.Items[i - 1].FloorId });
@@ -1532,6 +1920,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF VARIABLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
 
@@ -1581,6 +1970,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLEINTS");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -1611,6 +2001,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLEDOUBLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -1636,6 +2027,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLEBOOLS");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2023,7 +2415,29 @@ namespace ConsoleApp
             Console.WriteLine("Select the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
-            var getResponse = sampleClient.GetSampleIntByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Variable: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allVariables.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = sampleClient.GetSampleIntByVariableId(new GetRequest() { Id = allVariables.Items[position].Id });
 
             if (getResponse.Items is null)
             {
@@ -2032,6 +2446,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2051,7 +2466,29 @@ namespace ConsoleApp
             Console.WriteLine("Select the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
-            var getResponse = sampleClient.GetSampleDoubleByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Variable: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allVariables.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = sampleClient.GetSampleDoubleByVariableId(new GetRequest() { Id = allVariables.Items[position].Id });
 
             if (getResponse.Items is null)
             {
@@ -2060,6 +2497,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2079,7 +2517,29 @@ namespace ConsoleApp
             Console.WriteLine("Select the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
-            var getResponse = sampleClient.GetSampleBoolByVariableId(new GetRequest() { Id = allVariables.Items[Convert.ToInt32(Console.ReadLine()) - 1].Id });
+            int position = 0;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("Select the Variable: ");
+                try
+                {
+                    loop = false;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+                if (position < 0 || position >= allVariables.Items.Count())
+                {
+                    Console.WriteLine("Invalid Input\n");
+                    loop = true;
+                }
+            }
+
+            var getResponse = sampleClient.GetSampleBoolByVariableId(new GetRequest() { Id = allVariables.Items[position].Id });
 
             if (getResponse.Items is null)
             {
@@ -2088,6 +2548,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2105,52 +2566,64 @@ namespace ConsoleApp
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleInt.SampleIntClient(channel);
 
-            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
-            string start = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            start = start + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            start = start + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            start = start + ":" + Console.ReadLine();
-
-            try
+            string start = null;
+            bool loop = true;
+            while (loop)
             {
-                DateTime format = System.DateTime.Parse(start);
-            }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
-            }
-
-            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
-            string end = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            end = end + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            end = end + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            end = end + ":" + Console.ReadLine();
-
-            try
-            {
-                DateTime format = System.DateTime.Parse(end);
-            }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
+                Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+                start = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                start = start + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                start = start + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                start = start + ":" + Console.ReadLine();
+            
+                try
+                {
+                    DateTime format = System.DateTime.Parse(start);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
             }
 
+            string end = null;
+            loop = true;
+            while (loop)
+            {
+                Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+                end = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                end = end + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                end = end + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                end = end + ":" + Console.ReadLine();
+
+                try
+                {
+                    DateTime format = System.DateTime.Parse(end);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
+            }
+            
             var getResponse = sampleClient.GetSampleIntByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
             if (getResponse.Items is null)
@@ -2160,6 +2633,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2176,51 +2650,65 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
-            string start = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            start = start + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            start = start + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            start = start + ":" + Console.ReadLine();
 
-            try
+            string start = null;
+            bool loop = true;
+            while (loop)
             {
-                DateTime format = System.DateTime.Parse(start);
-            }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
+                Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+                start = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                start = start + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                start = start + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                start = start + ":" + Console.ReadLine();
+
+                try
+                {
+                    DateTime format = System.DateTime.Parse(start);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
             }
 
-            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
-            string end = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            end = end + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            end = end + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            end = end + ":" + Console.ReadLine();
+            string end = null;
+            loop = true;
+            while (loop)
+            {
+                Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+                end = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                end = end + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                end = end + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                end = end + ":" + Console.ReadLine();
 
-            try
-            {
-                DateTime format = System.DateTime.Parse(end);
+                try
+                {
+                    DateTime format = System.DateTime.Parse(end);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
             }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
-            }
+
 
             var getResponse = sampleClient.GetSampleDoubleByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
@@ -2231,6 +2719,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
@@ -2247,50 +2736,62 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
-            string start = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            start = start + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            start = start + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            start = start + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            start = start + ":" + Console.ReadLine();
+            string start = null;
+            bool loop = true;
+            while (loop)
+            {
+                Console.Write("INITIAL DATE&TIME\nInsert the day (dd): ");
+                start = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                start = start + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                start = start + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                start = start + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                start = start + ":" + Console.ReadLine();
 
-            try
-            {
-                DateTime format = System.DateTime.Parse(start);
-            }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
+                try
+                {
+                    DateTime format = System.DateTime.Parse(start);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
             }
 
-            Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
-            string end = Console.ReadLine();
-            Console.Write("Insert the month (mm): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the year (yyyy): ");
-            end = end + "/" + Console.ReadLine();
-            Console.Write("Insert the hour (hh): ");
-            end = end + " " + Console.ReadLine();
-            Console.Write("Insert the minutes (mm): ");
-            end = end + ":" + Console.ReadLine();
-            Console.Write("Insert the seconds (ss): ");
-            end = end + ":" + Console.ReadLine();
+            string end = null;
+            loop = true;
+            while (loop)
+            {
+                Console.Write("\nFINAL DATE&TIME\nInsert the day (dd): ");
+                end = Console.ReadLine();
+                Console.Write("Insert the month (mm): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the year (yyyy): ");
+                end = end + "/" + Console.ReadLine();
+                Console.Write("Insert the hour (hh): ");
+                end = end + " " + Console.ReadLine();
+                Console.Write("Insert the minutes (mm): ");
+                end = end + ":" + Console.ReadLine();
+                Console.Write("Insert the seconds (ss): ");
+                end = end + ":" + Console.ReadLine();
 
-            try
-            {
-                DateTime format = System.DateTime.Parse(end);
-            }
-            catch
-            {
-                Console.WriteLine("Invalid format");
-                return null;
+                try
+                {
+                    DateTime format = System.DateTime.Parse(end);
+                    loop = false;
+                }
+                catch
+                {
+                    Console.WriteLine("Invalid format");
+                    loop = true;
+                }
             }
 
             var getResponse = sampleClient.GetSampleBoolByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
@@ -2302,6 +2803,7 @@ namespace ConsoleApp
             }
             else
             {
+                Console.WriteLine("\nLIST OF SAMPLES");
                 for (int i = 1; i <= getResponse.Items.Count; i++)
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
