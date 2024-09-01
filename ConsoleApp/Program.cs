@@ -18,7 +18,9 @@ namespace ConsoleApp
             var channel = GrpcChannel.ForAddress("http://localhost:5094", new GrpcChannelOptions { HttpHandler = httpHandler });
             if (channel is null)
             {
+                Console.ForegroundColor = ConsoleColor.Red;
                 Console.WriteLine("Cannot connect\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 channel.Dispose();
                 return;
             }
@@ -27,8 +29,7 @@ namespace ConsoleApp
             object? Object = null;
             while (loop is true)
             {
-                Console.WriteLine("\n" +
-                    "___________\n" +
+                Console.WriteLine("___________\n" +
                     "|MAIN MENU|\n" +
                     "¯¯¯¯¯¯¯¯¯¯¯\n" +
                     "Options: \n" +
@@ -39,7 +40,7 @@ namespace ConsoleApp
                 switch (Console.ReadLine())
                 {
                     case "1":
-                        Console.WriteLine("Select the data type: \n" +
+                        Console.WriteLine("\nSelect the data type: \n" +
                             "1 - Building \n" +
                             "2 - Floor \n" +
                             "3 - Room \n" +
@@ -78,7 +79,7 @@ namespace ConsoleApp
 
                     case "2":
                         bool cont = true;
-                        Console.WriteLine("Select the data type: \n" +
+                        Console.WriteLine("\nSelect the data type: \n" +
                            "1 - Building \n" +
                            "2 - Floor \n" +
                            "3 - Room \n" +
@@ -95,7 +96,9 @@ namespace ConsoleApp
                                 var buildings = allObjects as Buildings;
                                 if (buildings.Items.Count == 0)
                                 {
-                                    Console.WriteLine("Empty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine("\nEmpty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
                                     cont = false;
                                 }
                                 break;
@@ -105,7 +108,9 @@ namespace ConsoleApp
                                 var floors = allObjects as Floors;
                                 if (floors.Items.Count == 0)
                                 {
-                                    Console.WriteLine("Empty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine("\nEmpty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
                                     cont = false;
                                 }
                                 break;
@@ -115,7 +120,9 @@ namespace ConsoleApp
                                 var rooms = allObjects as Rooms;
                                 if (rooms.Items.Count == 0)
                                 {
-                                    Console.WriteLine("Empty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine("\nEmpty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
                                     cont = false;
                                 }
                                 break;
@@ -125,13 +132,15 @@ namespace ConsoleApp
                                 var variables = allObjects as Variables;
                                 if (variables.Items.Count == 0)
                                 {
-                                    Console.WriteLine("Empty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                    Console.WriteLine("\nEmpty List\n");
+                                    Console.ForegroundColor = ConsoleColor.Gray;
                                     cont = false;
                                 }
                                 break;
 
                             case "5":
-                                Console.WriteLine("What kind of sample do you want to get?: \n" +
+                                Console.WriteLine("\nWhat kind of sample do you want to get?: \n" +
                                             "1 - Int\n" +
                                             "2 - Double\n" +
                                             "3 - Bool\n");
@@ -145,23 +154,24 @@ namespace ConsoleApp
                                     break;
                                 }
 
-
-                                Console.WriteLine("Do you want to search by: \n" +
+                                Console.WriteLine("\nDo you want to search by: \n" +
                                     "1 - Variable \n" +
                                     "2 - Timespan \n" +
                                     "3 - Get all \n");
 
-                                switch(Console.ReadLine())
+                                switch (Console.ReadLine())
                                 {
                                     case "1":
-                                         switch(SampleTypeSelection)
+                                        switch (SampleTypeSelection)
                                         {
                                             case "1":
                                                 allObjects = GetSampleIntByVariableId(channel);
                                                 var sampleInts = allObjects as SampleInts;
                                                 if (sampleInts.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -171,7 +181,9 @@ namespace ConsoleApp
                                                 var sampleDoubles = allObjects as SampleDoubles;
                                                 if (sampleDoubles.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -181,7 +193,9 @@ namespace ConsoleApp
                                                 var sampleBools = allObjects as SampleBools;
                                                 if (sampleBools.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -196,14 +210,16 @@ namespace ConsoleApp
                                         break;
 
                                     case "2":
-                                        switch(SampleTypeSelection)
+                                        switch (SampleTypeSelection)
                                         {
                                             case "1":
                                                 allObjects = GetSampleIntByTimeSpan(channel);
                                                 var sampleInts = allObjects as SampleInts;
                                                 if (sampleInts.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -213,7 +229,9 @@ namespace ConsoleApp
                                                 var sampleDoubles = allObjects as SampleDoubles;
                                                 if (sampleDoubles.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -223,7 +241,9 @@ namespace ConsoleApp
                                                 var sampleBools = allObjects as SampleBools;
                                                 if (sampleBools.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -245,9 +265,11 @@ namespace ConsoleApp
                                                 var sampleInts = allObjects as SampleInts;
                                                 if (sampleInts.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
-                                                }                                                
+                                                }
                                                 break;
 
                                             case "2":
@@ -255,17 +277,21 @@ namespace ConsoleApp
                                                 var sampleDoubles = allObjects as SampleDoubles;
                                                 if (sampleDoubles.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
-                                                break;                                                
+                                                break;
 
                                             case "3":
                                                 allObjects = GetAllSampleBools(channel);
                                                 var sampleBools = allObjects as SampleBools;
                                                 if (sampleBools.Items.Count == 0)
                                                 {
-                                                    Console.WriteLine("Empty List\n");
+                                                    Console.ForegroundColor = ConsoleColor.Blue;
+                                                    Console.WriteLine("\nEmpty List");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
                                                     cont = false;
                                                 }
                                                 break;
@@ -298,114 +324,54 @@ namespace ConsoleApp
 
                         if (cont is true)
                         {
+                            bool loop2 = true;
                             bool cont2 = true;
-                            Console.WriteLine("Options: \n" +
-                                "1 - Select \n" +
-                                "2 - Return to main menu \n");
 
-                            switch (Console.ReadLine())
+                            while (loop2)
                             {
-                                case "1":
-                                    switch (DataTypeSelection)
-                                    {
-                                        case "1":
-                                            Object = GetBuilding(channel, allObjects as Buildings).Building;
-                                            break;
-
-                                        case "2":
-                                            Object = GetFloor(channel, allObjects as Floors).Floor;
-                                            break;
-
-                                        case "3":
-                                            Object = GetRoom(channel, allObjects as Rooms).Room;
-                                            break;
-
-                                        case "4":
-                                            Object = GetVariable(channel, allObjects as Variables).Variable;
-                                            break;
-
-                                        case "5":
-                                            switch (SampleTypeSelection)
-                                            {
-                                                case "1":
-                                                    Object = GetSampleInt(channel, allObjects as SampleInts).SampleInt;
-                                                    break;
-                                                case "2":
-                                                    Object = GetSampleDouble(channel, allObjects as SampleDoubles).SampleDouble;
-                                                    break;
-                                                case "3":
-                                                    Object = GetSampleBool(channel, allObjects as SampleBools).SampleBool;
-                                                    break;
-                                            }
-                                            break;
-
-                                        default:
-                                            Console.ForegroundColor = ConsoleColor.Red;
-                                            Console.WriteLine("Invalid Input\n");
-                                            Console.ForegroundColor = ConsoleColor.Gray;
-                                            cont2 = false;
-                                            break;
-                                    }
-                                    break;
-
-                                case "2":
-                                    cont2 = false;
-                                    break;
-
-                                default:
-                                    Console.ForegroundColor = ConsoleColor.Red;
-                                    Console.WriteLine("Invalid Input\n");
-                                    Console.ForegroundColor = ConsoleColor.Gray;
-                                    cont2 = false;
-                                    break;
-                            }//Muestra la informacion del objeto seleccionado
-
-                            if (cont2 is true)
-                            { 
                                 Console.WriteLine("Options: \n" +
-                                    "1 - Update \n" +
-                                    "2 - Delete \n" +
-                                    "3 - Return to main menu");
+                                    "1 - Select \n" +
+                                    "2 - Return to main menu \n");
 
-                        switch(Console.ReadLine())
-                        {
-                            case "1":
-                                switch (DataTypeSelection)
+                                switch (Console.ReadLine())
                                 {
                                     case "1":
-                                        UpdateBuilding(channel , Object as BuildingDTO);
-                                        break;
-
-                                    case "2":
-                                        UpdateFloor(channel, Object as FloorDTO);
-                                        break;
-
-                                    case "3":
-                                        UpdateRoom(channel, Object as RoomDTO);
-                                        break;
-
-                                    case "4":
-                                        UpdateVariable(channel, Object as VariableDTO);
-                                        break;
-
-                                    case "5":
-                                        switch(SampleTypeSelection)
+                                        switch (DataTypeSelection)
                                         {
                                             case "1":
-                                                UpdateSampleInt(channel, Object as SampleIntDTO);
+                                                Object = GetBuilding(channel, allObjects as Buildings).Building;
                                                 break;
 
                                             case "2":
-                                                UpdateSampleDouble(channel, Object as SampleDoubleDTO);
+                                                Object = GetFloor(channel, allObjects as Floors).Floor;
                                                 break;
 
                                             case "3":
-                                                UpdateSampleBool(channel, Object as SampleBoolDTO);
+                                                Object = GetRoom(channel, allObjects as Rooms).Room;
                                                 break;
+
+                                            case "4":
+                                                Object = GetVariable(channel, allObjects as Variables).Variable;
+                                                break;
+
+                                            case "5":
+                                                switch (SampleTypeSelection)
+                                                {
+                                                    case "1":
+                                                        Object = GetSampleInt(channel, allObjects as SampleInts).SampleInt;
+                                                        break;
+
+                                                    case "2":
+                                                        Object = GetSampleDouble(channel, allObjects as SampleDoubles).SampleDouble;
+                                                        break;
+
+                                                    case "3":
+                                                        Object = GetSampleBool(channel, allObjects as SampleBools).SampleBool;
+                                                        break;
 
                                                     default:
                                                         Console.ForegroundColor = ConsoleColor.Red;
-                                                        Console.WriteLine("Invalid Input\n");
+                                                        Console.WriteLine("\nInvalid action\n");
                                                         Console.ForegroundColor = ConsoleColor.Gray;
                                                         break;
                                                 }
@@ -413,73 +379,154 @@ namespace ConsoleApp
 
                                             default:
                                                 Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Invalid Input\n");
+                                                Console.WriteLine("\nInvalid input\n");
                                                 Console.ForegroundColor = ConsoleColor.Gray;
+                                                cont2 = false;
                                                 break;
-                                        }//Se actualizan los objetos
+                                        }
+                                        loop2 = false;
                                         break;
 
                                     case "2":
-                                    switch (DataTypeSelection)
-                                    {
-                                        case "1":
-                                            DeleteBuilding(channel, Object as BuildingDTO);
-                                            break;
-
-                                        case "2":
-                                            DeleteFloor(channel, Object as FloorDTO);
-                                            break;
-
-                                        case "3":
-                                            DeleteRoom(channel, Object as RoomDTO);
-                                            break;
-
-                                        case "4":
-                                            DeleteVariable(channel, Object as VariableDTO);
-                                            break;
-
-                                        case "5":
-                                            switch (SampleTypeSelection)
-                                            {
-                                                case "1":
-                                                    DeleteSampleInt(channel, Object as SampleIntDTO);
-                                                    break;
-
-                                                case "2":
-                                                    DeleteSampleDouble(channel, Object as SampleDoubleDTO);
-                                                    break;
-
-                                                case "3":
-                                                    DeleteSampleBool(channel, Object as SampleBoolDTO);
-                                                    break;
-
-                                                default:
-                                                        Console.ForegroundColor = ConsoleColor.Red;
-                                                        Console.WriteLine("Invalid Input\n");
-                                                        Console.ForegroundColor = ConsoleColor.Gray;
-                                                        break;
-                                            }
-                                            break;
-
-                                        default:
-                                                Console.ForegroundColor = ConsoleColor.Red;
-                                                Console.WriteLine("Invalid Input\n");
-                                                Console.ForegroundColor = ConsoleColor.Gray;
-                                                break;
-                                    }//Se eliminan los objetos
-                                    break;
-                                    
-                                    case "3":
+                                        cont2 = false;
+                                        loop2 = false;
                                         break;
 
                                     default:
                                         Console.ForegroundColor = ConsoleColor.Red;
-                                        Console.WriteLine("Invalid Input\n");
+                                        Console.WriteLine("Invalid input\n");
                                         Console.ForegroundColor = ConsoleColor.Gray;
                                         break;
+                                }//Muestra la informacion del objeto seleccionado
+                            }
+
+                            if (cont2 is true)
+                            {
+                                bool loop3 = true;
+                                while (loop3)
+                                {
+                                    Console.WriteLine("Options: \n" +
+                                        "1 - Update \n" +
+                                        "2 - Delete \n" +
+                                        "3 - Return to main menu\n");
+
+                                    switch (Console.ReadLine())
+                                    {
+                                        case "1":
+                                            switch (DataTypeSelection)
+                                            {
+                                                case "1":
+                                                    UpdateBuilding(channel, Object as BuildingDTO);
+                                                    break;
+
+                                                case "2":
+                                                    UpdateFloor(channel, Object as FloorDTO);
+                                                    break;
+
+                                                case "3":
+                                                    UpdateRoom(channel, Object as RoomDTO);
+                                                    break;
+
+                                                case "4":
+                                                    UpdateVariable(channel, Object as VariableDTO);
+                                                    break;
+
+                                                case "5":
+                                                    switch (SampleTypeSelection)
+                                                    {
+                                                        case "1":
+                                                            UpdateSampleInt(channel, Object as SampleIntDTO);
+                                                            break;
+
+                                                        case "2":
+                                                            UpdateSampleDouble(channel, Object as SampleDoubleDTO);
+                                                            break;
+
+                                                        case "3":
+                                                            UpdateSampleBool(channel, Object as SampleBoolDTO);
+                                                            break;
+
+                                                        default:
+                                                            Console.ForegroundColor = ConsoleColor.Red;
+                                                            Console.WriteLine("Invalid Input\n");
+                                                            Console.ForegroundColor = ConsoleColor.Gray;
+                                                            break;
+                                                    }
+                                                    break;
+
+                                                default:
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("\nInvalid input\n");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
+                                                    break;
+                                            }//Se actualizan los objetos
+                                            loop3 = false;
+                                            break;
+
+                                        case "2":
+                                            switch (DataTypeSelection)
+                                            {
+                                                case "1":
+                                                    DeleteBuilding(channel, Object as BuildingDTO);
+                                                    break;
+
+                                                case "2":
+                                                    DeleteFloor(channel, Object as FloorDTO);
+                                                    break;
+
+                                                case "3":
+                                                    DeleteRoom(channel, Object as RoomDTO);
+                                                    break;
+
+                                                case "4":
+                                                    DeleteVariable(channel, Object as VariableDTO);
+                                                    break;
+
+                                                case "5":
+                                                    switch (SampleTypeSelection)
+                                                    {
+                                                        case "1":
+                                                            DeleteSampleInt(channel, Object as SampleIntDTO);
+                                                            break;
+
+                                                        case "2":
+                                                            DeleteSampleDouble(channel, Object as SampleDoubleDTO);
+                                                            break;
+
+                                                        case "3":
+                                                            DeleteSampleBool(channel, Object as SampleBoolDTO);
+                                                            break;
+
+                                                        default:
+                                                            Console.ForegroundColor = ConsoleColor.Red;
+                                                            Console.WriteLine("Invalid Input\n");
+                                                            Console.ForegroundColor = ConsoleColor.Gray;
+                                                            break;
+                                                    }
+                                                    break;
+
+                                                default:
+                                                    Console.ForegroundColor = ConsoleColor.Red;
+                                                    Console.WriteLine("\nInvalid input\n");
+                                                    Console.ForegroundColor = ConsoleColor.Gray;
+                                                    break;
+                                            }//Se eliminan los objetos
+                                            loop3 = false;
+                                            break;
+
+                                        case "3":
+                                            loop3 = false;
+                                            break;
+
+                                        default:
+                                            Console.ForegroundColor = ConsoleColor.Red;
+                                            Console.WriteLine("Invalid Input\n");
+                                            Console.ForegroundColor = ConsoleColor.Gray;
+                                            break;
+                                    }
                                 }
                             }
-                        }                        
+                        }
                         break;
 
                     case "3":
@@ -487,7 +534,9 @@ namespace ConsoleApp
                         return;
 
                     default:
-                        Console.WriteLine("Invalid action\n");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nInvalid input");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                 }
             }
@@ -495,7 +544,7 @@ namespace ConsoleApp
         public static void CreateBuilding(GrpcChannel channel)
         {
             var buildingClient = new Building.BuildingClient(channel);
-            Console.Write("Insert the following data: \n" +
+            Console.Write("\nInsert the following data: \n" +
                            "Address: ");
             var address = Console.ReadLine();
 
@@ -526,13 +575,16 @@ namespace ConsoleApp
 
             if (createResponse is null)
             {
-                Console.WriteLine("Cannot create object");
-                channel.Dispose();
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create object");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
             else
             {
-                Console.WriteLine($"Succesfully Created\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("\nSuccesfully Created");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -547,8 +599,11 @@ namespace ConsoleApp
             var allBuildings = GetAllBuildings(channel);
             if (allBuildings.Items.Count == 0)
             {
-                Console.WriteLine("No building in the DataBase");
-                Console.WriteLine("Cannot create floor");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\nNo building in the DataBase");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create floor");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
 
@@ -572,7 +627,7 @@ namespace ConsoleApp
                 if (position < 0 || position >= allBuildings.Items.Count())
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.WriteLine("Invalid Input\n");
+                    Console.WriteLine("\nInvalid Input");
                     Console.ForegroundColor = ConsoleColor.Gray;
                     loop = true;
                 }
@@ -587,12 +642,16 @@ namespace ConsoleApp
 
             if (createResponse is null)
             {
-                Console.WriteLine("Cannot create floor");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create floor");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
             else
             {
-                Console.WriteLine($"Succesfully Created\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Created");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -600,16 +659,16 @@ namespace ConsoleApp
         {
             var roomClient = new Room.RoomClient(channel);
             var buildingClient = new Building.BuildingClient(channel);
-           
-            Console.WriteLine("Insert the following data:"); 
+
+            Console.WriteLine("Insert the following data:");
             bool loop = true;
             int roomNumber = 0;
             while (loop)
             {
-                 Console.Write("Number: ");
+                Console.Write("Number: ");
                 try
                 {
-                    
+
                     roomNumber = Convert.ToInt32(Console.ReadLine());
                     loop = false;
                 }
@@ -621,10 +680,10 @@ namespace ConsoleApp
                     loop = true;
                 }
             }
-            
+
             Console.Write("\nDescription: ");
             var description = Console.ReadLine();
-            
+
             bool isProduction = false;
             bool loop2 = true;
             while (loop2)
@@ -638,7 +697,7 @@ namespace ConsoleApp
                     isProduction = true;
                     loop2 = false;
                 }
-                else if(select == "2")
+                else if (select == "2")
                 {
                     isProduction = false;
                     loop2 = false;
@@ -652,13 +711,16 @@ namespace ConsoleApp
 
                 }
             }
-            
+
             var allFloors = GetAllFloors(channel);
 
             if (allFloors.Items.Count == 0)
             {
-                Console.WriteLine("No floor in the DataBase");
-                Console.WriteLine("Cannot create room");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\nNo floor in the DataBase");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create room");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
 
@@ -690,7 +752,7 @@ namespace ConsoleApp
 
             var floorOfRoom = allFloors.Items[position];
             floorOfRoom.Building = buildingClient.GetBuilding(new GetRequest() { Id = allFloors.Items[position].BuildingId }).Building;
-              
+
             var createResponse = roomClient.CreateRoom(new CreateRoomRequest()
             {
                 Number = roomNumber,
@@ -701,12 +763,16 @@ namespace ConsoleApp
 
             if (createResponse is null)
             {
-                Console.WriteLine("Cannot create room");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create room");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
             else
             {
-                Console.WriteLine($"Succesfully Created\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Created");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -730,8 +796,7 @@ namespace ConsoleApp
             while (loop0)
             {
 
-            
-                Console.Write("\nWhere is located? \n" +
+                Console.WriteLine("\nWhere is located? \n" +
                     "1 - Building \n" +
                     "2 - Floor \n" +
                     "3 - Room \n");
@@ -746,22 +811,23 @@ namespace ConsoleApp
                     Console.ForegroundColor = ConsoleColor.Gray;
                 }
             }
-            
+
 
             //Lista de Edificios, pisos o habitaciones para escoger la ubicacion de la variable
-            
-            
+
+
             VariableDTO createResponse = null;
             switch (locationPosition)
             {
                 case "1":
-                    Console.WriteLine("Select the corresponding building: \n");
                     var allBuildings = GetAllBuildings(channel);
 
                     if (allBuildings.Items.Count == 0)
                     {
-                        Console.WriteLine("No building in the DataBase");
-                        Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("\nNo building in the DataBase");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nCannot create variable");
                         return;
                     }
 
@@ -792,7 +858,7 @@ namespace ConsoleApp
                     }
 
                     var buildingOfVariable = allBuildings.Items[position];
-                    createResponse = variableClient.CreateVariable(new GrpcProtos.CreateVariableRequest()
+                    createResponse = variableClient.CreateVariable(new CreateVariableRequest()
                     {
                         Code = code,
                         VariableType = new VariableType() { Name = name, MeasurementUnit = measurementUnit },
@@ -801,13 +867,14 @@ namespace ConsoleApp
                     break;
 
                 case "2":
-
-                    Console.WriteLine("Select the corresponding floor: \n");
                     var allFloors = GetAllFloors(channel);
                     if (allFloors.Items.Count == 0)
                     {
-                        Console.WriteLine("No floor in the DataBase");
-                        Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Blue;
+                        Console.WriteLine("\nNo floor in the DataBase");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nCannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
@@ -851,12 +918,14 @@ namespace ConsoleApp
 
                 case "3":
 
-                    Console.WriteLine("Select the corresponding room: \n");
                     var allRooms = GetAllRooms(channel);
                     if (allRooms.Items.Count == 0)
                     {
+                        Console.ForegroundColor = ConsoleColor.Blue;
                         Console.WriteLine("No room in the DataBase");
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
@@ -902,18 +971,24 @@ namespace ConsoleApp
                     break;
 
                 default:
-                    Console.WriteLine("Invalid action");
+                    Console.ForegroundColor = ConsoleColor.Red;
+                    Console.WriteLine("\nInvalid Input");
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     break;
             }
 
             if (createResponse is null)
             {
-                Console.WriteLine("Cannot create variable");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create variable");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
             else
             {
-                Console.WriteLine($"Succesfully Created\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Created");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -928,8 +1003,11 @@ namespace ConsoleApp
             var allVariables = GetAllVariables(channel);
             if (allVariables.Items.Count == 0)
             {
-                Console.WriteLine("No variable in the DataBase");
-                Console.WriteLine("Cannot create sample");
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("\nNo variable in the DataBase");
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.WriteLine("\nCannot create sample");
+                Console.ForegroundColor = ConsoleColor.Gray;
                 return;
             }
 
@@ -959,17 +1037,16 @@ namespace ConsoleApp
                 }
             }
 
-
             string variableId = allVariables.Items[position].Id;
 
             string sampleTypePosition = null;
             bool loop0 = true;
             while (loop0)
             {
-                Console.WriteLine("Select the Sample DataType: \n" +
-                "1 - Int\n" +
-                "2 - Double\n" +
-                "3 - Boolean\n");
+                Console.WriteLine("\nSelect the Sample DataType: \n" +
+                    "1 - Int\n" +
+                    "2 - Double\n" +
+                    "3 - Boolean\n");
 
                 sampleTypePosition = Console.ReadLine();
                 if (sampleTypePosition == "1" || sampleTypePosition == "2" || sampleTypePosition == "3")
@@ -1001,16 +1078,20 @@ namespace ConsoleApp
                         Console.WriteLine("Invalid Input\n" +
                             "Cannot create variable\n");
                         return;
-                    }             
-                    
+                    }
+
                     if (createResponseInt is null)
                     {
-                        Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nCannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
                     else
                     {
-                        Console.WriteLine($"Succesfully Created\n");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\nSuccesfully Created\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
                     break;
 
@@ -1034,12 +1115,16 @@ namespace ConsoleApp
 
                     if (createResponseDouble is null)
                     {
-                        Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nCannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
                     else
                     {
-                        Console.WriteLine($"Succesfully Created\n");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\nSuccesfully Created");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
                     break;
 
@@ -1063,12 +1148,16 @@ namespace ConsoleApp
 
                     if (createResponseBool is null)
                     {
-                        Console.WriteLine("Cannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("\nCannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
                     else
                     {
-                        Console.WriteLine($"Succesfully Created\n");
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.WriteLine("\nSuccesfully Created");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                     }
                     break;
 
@@ -1106,9 +1195,9 @@ namespace ConsoleApp
                         Console.WriteLine("Invalid Input\n");
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
-                                    
+
                 }
-                
+
 
                 // Se modifica el numero o la direccion.
                 switch (option)
@@ -1135,7 +1224,7 @@ namespace ConsoleApp
                         break;
 
                     case "2":
-                        Console.Write("Write the new Address: ");
+                        Console.WriteLine("\nWrite the new Address");
                         buildingToUpdate.Address = Console.ReadLine();
                         break;
 
@@ -1202,7 +1291,7 @@ namespace ConsoleApp
                 switch (option)
                 {
                     case "1":
-                        Console.Write("Write the new Location: ");
+                        Console.WriteLine("\nWrite the new Location");
                         floorToUpdate.Location = Console.ReadLine();
                         floorToUpdate.Building = building.Building;
                         break;
@@ -1269,7 +1358,7 @@ namespace ConsoleApp
             var buildingClient = new Building.BuildingClient(channel);
             var floorClient = new Floor.FloorClient(channel);
             var roomClient = new Room.RoomClient(channel);
-            
+
             bool loop = true;
 
             while (loop)
@@ -1292,7 +1381,7 @@ namespace ConsoleApp
                 {
                     Console.WriteLine("Type: Office");
                 }
-                
+
 
                 string option = null;
                 bool loopOption = true;
@@ -1315,7 +1404,7 @@ namespace ConsoleApp
                 //Se modifica la descripcion de la habitacion, 
                 switch (option)
                 {
-                    case "1":                        
+                    case "1":
                         bool loop0 = true;
                         while (loop0)
                         {
@@ -1337,7 +1426,7 @@ namespace ConsoleApp
                         break;
 
                     case "2":
-                        Console.Write("Write the new description: ");
+                        Console.WriteLine("\nWrite the new description ");
                         roomToUpdate.Description = Console.ReadLine();
                         break;
 
@@ -1437,7 +1526,7 @@ namespace ConsoleApp
             var buildingClient = new Building.BuildingClient(channel);
             var roomClient = new Room.RoomClient(channel);
             var floorClient = new Floor.FloorClient(channel);
-           
+
             bool loop = true;
 
             while (loop)
@@ -1453,7 +1542,7 @@ namespace ConsoleApp
                 }
                 else if (variableToUpdate.StructureType == StructureType.Floor)
                 {
-                    var floorOfVariable = floorClient.GetFloor(new GetRequest() { Id= variableToUpdate.LocationId }).Floor;
+                    var floorOfVariable = floorClient.GetFloor(new GetRequest() { Id = variableToUpdate.LocationId }).Floor;
                     floorOfVariable.Building = buildingClient.GetBuilding(new GetRequest() { Id = floorOfVariable.BuildingId }).Building;
                     Console.WriteLine("Location: " + floorOfVariable.Location + " of Building No." + floorOfVariable.Building.Number.ToString() + "\n");
                 }
@@ -1482,22 +1571,22 @@ namespace ConsoleApp
                     }
 
                 }
-                
+
 
                 switch (option)
                 {
                     case "1":
-                        Console.WriteLine("Write the new code \n");
+                        Console.Write("\nWrite the new code:");
                         variableToUpdate.Code = Console.ReadLine();
                         break;
 
                     case "2":
-                        Console.WriteLine("Write the new name \n");
+                        Console.Write("\nWrite the new name:");
                         variableToUpdate.VariableType.Name = Console.ReadLine();
                         break;
 
                     case "3":
-                        Console.WriteLine("Write the new measuremnt unit \n");
+                        Console.Write("\nWrite the new measuremnt unit:");
                         variableToUpdate.VariableType.MeasurementUnit = Console.ReadLine();
                         break;
 
@@ -1520,10 +1609,10 @@ namespace ConsoleApp
                                 Console.WriteLine("Invalid Input\n");
                                 Console.ForegroundColor = ConsoleColor.Gray;
                             }
-                                
+
 
                         }
-                        
+
                         switch (locationPosition)
                         {
                             case "1":
@@ -1599,6 +1688,7 @@ namespace ConsoleApp
 
                             case "3":
                                 var allRooms = GetAllRooms(channel);
+                                Console.Write("\nSelect the corresponding room: ");
 
                                 int position3 = 0;
                                 bool loop4 = true;
@@ -1659,12 +1749,12 @@ namespace ConsoleApp
                 updatedGetResponse.Variable.VariableType == variableToUpdate.VariableType &&
                 updatedGetResponse.Variable.LocationCase == variableToUpdate.LocationCase)
             {
-               
+
 
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                
+
             }
         }
 
@@ -1693,8 +1783,8 @@ namespace ConsoleApp
                 }
 
                 bool loop2 = true;
-                while(loop2)
-                { 
+                while (loop2)
+                {
 
                     Console.Write("Insert the new value: ");
                     try
@@ -1711,7 +1801,7 @@ namespace ConsoleApp
                     }
                 }
 
-                Console.Write("Save this value?(1 = yes / 0 = no): ");
+                Console.Write("\nSave this value?(1 = yes / 0 = no): ");
                 if (Console.ReadLine() == "1")
                     loop = false;
 
@@ -1776,7 +1866,7 @@ namespace ConsoleApp
                     }
                 }
 
-                Console.Write("Save this value?(1 = yes / 0 = no) ");
+                Console.Write("\nSave this value?(1 = yes / 0 = no) ");
                 if (Console.ReadLine() == "1")
                     loop = false;
             }
@@ -1841,7 +1931,7 @@ namespace ConsoleApp
                     }
                 }
 
-                Console.Write("Save this value?(1 = yes / 0 = no): ");
+                Console.Write("\nSave this value?(1 = yes / 0 = no): ");
                 if (Console.ReadLine() == "1")
                     loop = false;
             }
@@ -1859,66 +1949,74 @@ namespace ConsoleApp
                         Console.WriteLine($"Succesfully Updated\n");
                         Console.ForegroundColor = ConsoleColor.Gray;
                     }
-                        
+
             }
         }
 
         public static void DeleteBuilding(GrpcChannel channel, BuildingDTO buildingToDelete)
         {
             var buildingClient = new Building.BuildingClient(channel);
-            
+
             buildingClient.DeleteBuilding(new DeleteRequest() { Id = buildingToDelete.Id });
             var deletedGetResponse = buildingClient.GetBuilding(new GetRequest() { Id = buildingToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableBuildingDTO.KindOneofCase.Building)
             {
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
         public static void DeleteFloor(GrpcChannel channel, FloorDTO floorToDelete)
         {
             var floorClient = new Floor.FloorClient(channel);
-            
+
             floorClient.DeleteFloor(new DeleteRequest() { Id = floorToDelete.Id });
             var deletedGetResponse = floorClient.GetFloor(new GetRequest() { Id = floorToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableFloorDTO.KindOneofCase.Floor)
             {
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
         public static void DeleteRoom(GrpcChannel channel, RoomDTO roomToDelete)
         {
             var roomClient = new Room.RoomClient(channel);
-            
+
             roomClient.DeleteRoom(new DeleteRequest() { Id = roomToDelete.Id });
             var deletedGetResponse = roomClient.GetRoom(new GetRequest() { Id = roomToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableRoomDTO.KindOneofCase.Room)
             {
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
         public static void DeleteVariable(GrpcChannel channel, VariableDTO variableToDelete)
         {
             var variableClient = new Variable.VariableClient(channel);
-            
+
             variableClient.DeleteVariable(new DeleteRequest() { Id = variableToDelete.Id });
             var deletedGetResponse = variableClient.GetVariable(new GetRequest() { Id = variableToDelete.Id });
             if (deletedGetResponse is null ||
                 deletedGetResponse.KindCase != NullableVariableDTO.KindOneofCase.Variable)
             {
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine($"\nSuccesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
         public static void DeleteSampleInt(GrpcChannel channel, SampleIntDTO sampleToDelete)
         {
             var sampleClient = new SampleInt.SampleIntClient(channel);
-            
+
             sampleClient.DeleteSampleInt(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleIntByTimeSpan(
@@ -1931,13 +2029,15 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nSuccesfully Deleted\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public static void DeleteSampleDouble(GrpcChannel channel, SampleDoubleDTO sampleToDelete)
         {
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            
+
             sampleClient.DeleteSampleDouble(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleDoubleByTimeSpan(
@@ -1950,13 +2050,15 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nSuccesfully Deleted\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public static void DeleteSampleBool(GrpcChannel channel, SampleBoolDTO sampleToDelete)
         {
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            
+
             sampleClient.DeleteSampleBool(new DeleteSampleRequest() { VariableId = sampleToDelete.VariableId, DateTime = sampleToDelete.DateTime });
 
             var deletedGetResponse = sampleClient.GetSampleBoolByTimeSpan(
@@ -1969,7 +2071,9 @@ namespace ConsoleApp
                     count++;
             }
             if (count == 0)
-                Console.WriteLine($"Succesfully Deleted\n");
+                Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine($"\nSuccesfully Deleted\n");
+            Console.ForegroundColor = ConsoleColor.Gray;
         }
 
         public static Buildings? GetAllBuildings(GrpcChannel channel)
@@ -2144,7 +2248,7 @@ namespace ConsoleApp
                 {
                     var variable = variableClient.GetVariable(new GetRequest() { Id = getResponse.Items[i - 1].VariableId });
 
-                    if(variable.Variable != null) 
+                    if (variable.Variable != null)
                         Console.WriteLine(i + " - Variable Code: " + variable.Variable.Code + "\n\t" +
                             "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                             "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
@@ -2226,7 +2330,7 @@ namespace ConsoleApp
         public static NullableBuildingDTO GetBuilding(GrpcChannel channel, Buildings allBuildings)
         {
             if (allBuildings.Items.Count == 0)
-                return new NullableBuildingDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue};
+                return new NullableBuildingDTO() { Null = Google.Protobuf.WellKnownTypes.NullValue.NullValue };
 
             var buildingClient = new Building.BuildingClient(channel);
             var floorClient = new Floor.FloorClient(channel);
@@ -2236,11 +2340,11 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Building: ");
+                Console.Write("\nSelect the Building: ");
                 try
                 {
                     loop = false;
-                    position = Convert.ToInt32(Console.ReadLine())-1;
+                    position = Convert.ToInt32(Console.ReadLine()) - 1;
                 }
                 catch
                 {
@@ -2249,7 +2353,7 @@ namespace ConsoleApp
                     Console.ForegroundColor = ConsoleColor.Gray;
                     loop = true;
                 }
-                if(position < 0 || position >= allBuildings.Items.Count)
+                if (position < 0 || position >= allBuildings.Items.Count)
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid Input\n");
@@ -2257,10 +2361,10 @@ namespace ConsoleApp
                     loop = true;
                 }
             }
-            
-            
+
+
             var getResponse = buildingClient.GetBuilding(new GetRequest() { Id = allBuildings.Items[position].Id });
-            Console.WriteLine("SELECTED Building No." + getResponse.Building.Number.ToString() + " Address: " + getResponse.Building.Address + "\n");
+            Console.WriteLine("\nSELECTED Building No." + getResponse.Building.Number.ToString() + " Address: " + getResponse.Building.Address + "\n");
 
             var allFloors = floorClient.GetAllFloors(new Google.Protobuf.WellKnownTypes.Empty());
             Console.WriteLine("Floors List: ");
@@ -2271,16 +2375,16 @@ namespace ConsoleApp
                 {
                     Console.WriteLine(i + " - Location: " + floor.Location + "\n");
                     i++;
-                    
+
                 }
             }
             if (i == 1)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("Empty List\n");
-                Console.ForegroundColor= ConsoleColor.Gray;
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
-                
+
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             i = 1;
             Console.WriteLine("Variables List: ");
@@ -2316,7 +2420,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Floor: ");
+                Console.Write("\nSelect the Floor: ");
                 try
                 {
                     loop = false;
@@ -2337,10 +2441,10 @@ namespace ConsoleApp
                     loop = true;
                 }
             }
-            
+
 
             var getResponse = floorClient.GetFloor(new GetRequest() { Id = allFloors.Items[position].Id });
-            Console.WriteLine("SELECTED Floor " + getResponse.Floor.Location + "\n");
+            Console.WriteLine("\nSELECTED Floor " + getResponse.Floor.Location + "\n");
 
             var allRooms = roomClient.GetAllRooms(new Google.Protobuf.WellKnownTypes.Empty());
             Console.WriteLine("Rooms List: ");
@@ -2394,7 +2498,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Room: ");
+                Console.Write("\nSelect the Room: ");
                 try
                 {
                     loop = false;
@@ -2417,7 +2521,7 @@ namespace ConsoleApp
             }
 
             var getResponse = roomClient.GetRoom(new GetRequest() { Id = allRooms.Items[position].Id });
-            Console.WriteLine("SELECTED Room No." + getResponse.Room.Number.ToString() + " Description: " + getResponse.Room.Description + "\n");
+            Console.WriteLine("\nSELECTED Room No." + getResponse.Room.Number.ToString() + " Description: " + getResponse.Room.Description + "\n");
 
 
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
@@ -2456,7 +2560,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Variable: ");
+                Console.Write("\nSelect the Variable: ");
                 try
                 {
                     loop = false;
@@ -2479,7 +2583,7 @@ namespace ConsoleApp
             }
 
             var getResponse = variableClient.GetVariable(new GetRequest() { Id = allVariables.Items[position].Id });
-            Console.WriteLine("SELECTED Variable Code: " + getResponse.Variable.Code + " Name: " + getResponse.Variable.VariableType.Name + " MeasurementUnit: " + getResponse.Variable.VariableType.MeasurementUnit + "\n");
+            Console.WriteLine("\nSELECTED Variable Code: " + getResponse.Variable.Code + " Name: " + getResponse.Variable.VariableType.Name + " MeasurementUnit: " + getResponse.Variable.VariableType.MeasurementUnit + "\n");
 
             int i = 1;
             Console.WriteLine("Samples List: ");
@@ -2533,7 +2637,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Sample: ");
+                Console.Write("\nSelect the Sample: ");
                 try
                 {
                     loop = false;
@@ -2570,7 +2674,7 @@ namespace ConsoleApp
                     "Date & Time: " + getResponse.DateTime + "\n" +
                     "Value: " + getResponse.Value.ToString() + "\n");
 
-            return new NullableSampleIntDTO() {SampleInt = getResponse};
+            return new NullableSampleIntDTO() { SampleInt = getResponse };
         }
 
         public static NullableSampleDoubleDTO GetSampleDouble(GrpcChannel channel, SampleDoubles allSamples)
@@ -2584,7 +2688,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Sample: ");
+                Console.Write("\nSelect the Sample: ");
                 try
                 {
                     loop = false;
@@ -2621,7 +2725,7 @@ namespace ConsoleApp
                     "Date & Time: " + getResponse.DateTime + "\n" +
                     "Value: " + getResponse.Value.ToString() + "\n");
 
-            return new NullableSampleDoubleDTO() { SampleDouble = getResponse};
+            return new NullableSampleDoubleDTO() { SampleDouble = getResponse };
         }
 
         public static NullableSampleBoolDTO GetSampleBool(GrpcChannel channel, SampleBools allSamples)
@@ -2635,7 +2739,7 @@ namespace ConsoleApp
             bool loop = true;
             while (loop)
             {
-                Console.Write("Select the Sample: ");
+                Console.Write("\nSelect the Sample: ");
                 try
                 {
                     loop = false;
@@ -2679,7 +2783,7 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleInt.SampleIntClient(channel);
-            Console.WriteLine("Select the Variable you want to get its samples: ");
+            Console.WriteLine("\nSelect the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
             int position = 0;
@@ -2741,7 +2845,7 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
-            Console.WriteLine("Select the Variable you want to get its samples: ");
+            Console.WriteLine("\nSelect the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
             int position = 0;
@@ -2803,7 +2907,7 @@ namespace ConsoleApp
         {
             var variableClient = new Variable.VariableClient(channel);
             var sampleClient = new SampleBool.SampleBoolClient(channel);
-            Console.WriteLine("Select the Variable you want to get its samples: ");
+            Console.WriteLine("\nSelect the Variable you want to get its samples: ");
             var allVariables = GetAllVariables(channel);
 
             int position = 0;
@@ -2882,7 +2986,7 @@ namespace ConsoleApp
                 start = start + ":" + Console.ReadLine();
                 Console.Write("Insert the seconds (ss): ");
                 start = start + ":" + Console.ReadLine();
-            
+
                 try
                 {
                     DateTime format = System.DateTime.Parse(start);
@@ -2892,7 +2996,7 @@ namespace ConsoleApp
                 {
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.WriteLine("Invalid format\n");
-                    Console.ForegroundColor = ConsoleColor.Gray;                    
+                    Console.ForegroundColor = ConsoleColor.Gray;
                     loop = true;
                 }
             }
@@ -2927,7 +3031,7 @@ namespace ConsoleApp
                     loop = true;
                 }
             }
-            
+
             var getResponse = sampleClient.GetSampleIntByTimeSpan(new GrpcProtos.TimeSpan() { StartTime = ParseDateTimeSimpleToExact(start), EndTime = ParseDateTimeSimpleToExact(end) });
 
             if (getResponse.Items is null)
