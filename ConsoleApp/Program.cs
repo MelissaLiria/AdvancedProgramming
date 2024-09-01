@@ -2271,8 +2271,16 @@ namespace ConsoleApp
                 {
                     Console.WriteLine(i + " - Location: " + floor.Location + "\n");
                     i++;
+                    
                 }
             }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor= ConsoleColor.Gray;
+            }
+                
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             i = 1;
             Console.WriteLine("Variables List: ");
@@ -2285,6 +2293,12 @@ namespace ConsoleApp
                         "Measurement unit: " + variable.VariableType.MeasurementUnit + "\n");
                     i++;
                 }
+            }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             return getResponse;
         }
@@ -2340,6 +2354,12 @@ namespace ConsoleApp
                     i++;
                 }
             }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+            }
             var allVariables = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
             i = 1;
             Console.WriteLine("Variables List: ");
@@ -2352,6 +2372,12 @@ namespace ConsoleApp
                         "Measurement unit: " + variable.VariableType.MeasurementUnit + "\n");
                     i++;
                 }
+            }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             return getResponse;
         }
@@ -2406,6 +2432,12 @@ namespace ConsoleApp
                         "Measurement unit: " + variable.VariableType.MeasurementUnit + "\n");
                     i++;
                 }
+            }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             return getResponse;
         }
@@ -2480,6 +2512,12 @@ namespace ConsoleApp
                         "Value: " + sample.Value.ToString() + "\n");
                     i++;
                 }
+            }
+            if (i == 1)
+            {
+                Console.ForegroundColor = ConsoleColor.Blue;
+                Console.WriteLine("Empty List\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
             return getResponse;
         }
