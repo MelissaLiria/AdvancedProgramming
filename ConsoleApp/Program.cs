@@ -2081,12 +2081,11 @@ namespace ConsoleApp
             var buildingClient = new Building.BuildingClient(channel);
             var getResponse = buildingClient.GetAllBuildings(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2106,12 +2105,11 @@ namespace ConsoleApp
             var buildingClient = new Building.BuildingClient(channel);
             var getResponse = floorClient.GetAllFloors(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2134,12 +2132,11 @@ namespace ConsoleApp
             var floorClient = new Floor.FloorClient(channel);
             var buildingClient = new Building.BuildingClient(channel);
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2182,12 +2179,11 @@ namespace ConsoleApp
 
             var getResponse = variableClient.GetAllVariables(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2234,12 +2230,11 @@ namespace ConsoleApp
             var sampleClient = new SampleInt.SampleIntClient(channel);
             var getResponse = sampleClient.GetAllSampleInts(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2267,12 +2262,11 @@ namespace ConsoleApp
             var sampleClient = new SampleDouble.SampleDoubleClient(channel);
             var getResponse = sampleClient.GetAllSampleDoubles(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
@@ -2300,12 +2294,11 @@ namespace ConsoleApp
             var sampleClient = new SampleBool.SampleBoolClient(channel);
             var getResponse = sampleClient.GetAllSampleBools(new Google.Protobuf.WellKnownTypes.Empty());
 
-            if (getResponse.Items is null)
+            if (getResponse.Items.Count == 0)
             {
                 Console.ForegroundColor = ConsoleColor.Blue;
                 Console.WriteLine("There is none\n");
                 Console.ForegroundColor = ConsoleColor.Gray;
-                channel.Dispose();
             }
             else
             {
