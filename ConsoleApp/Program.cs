@@ -1144,7 +1144,9 @@ namespace ConsoleApp
                         break;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid action");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                 }
             }
@@ -1156,7 +1158,9 @@ namespace ConsoleApp
                 updatedGetResponse.Building.Number == buildingToUpdate.Number &&
                 updatedGetResponse.Building.Address == buildingToUpdate.Address)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -1239,7 +1243,9 @@ namespace ConsoleApp
                         break;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid action");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                 }
             }
@@ -1252,7 +1258,9 @@ namespace ConsoleApp
                 updatedGetResponse.Floor.Location == floorToUpdate.Location &&
                 updatedGetResponse.Floor.BuildingId == floorToUpdate.BuildingId)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -1401,7 +1409,9 @@ namespace ConsoleApp
                         loop = false;
                         break;
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid action");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                 }
             }
@@ -1415,7 +1425,9 @@ namespace ConsoleApp
                 updatedGetResponse.Room.Floor == roomToUpdate.Floor &&
                 updatedGetResponse.Room.Floor.Building == roomToUpdate.Floor.Building)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
             }
         }
 
@@ -1631,7 +1643,9 @@ namespace ConsoleApp
                         break;
 
                     default:
+                        Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("Invalid action");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         break;
                 }
             }
@@ -1645,7 +1659,12 @@ namespace ConsoleApp
                 updatedGetResponse.Variable.VariableType == variableToUpdate.VariableType &&
                 updatedGetResponse.Variable.LocationCase == variableToUpdate.LocationCase)
             {
+               
+
+                Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
+                Console.ForegroundColor = ConsoleColor.Gray;
+                
             }
         }
 
@@ -1658,10 +1677,20 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("\nSelected Sample \n" +
-                "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
-                "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                if (variable != null)
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: " + variable.Code + "\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: ERASED VARIABLE\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
 
                 bool loop2 = true;
                 while(loop2)
@@ -1696,7 +1725,11 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Succesfully Updated\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
             }
         }
 
@@ -1709,10 +1742,20 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("\nSelected Sample \n" +
-                "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
-                "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                if (variable != null)
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: " + variable.Code + "\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: ERASED VARIABLE\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
 
                 bool loop2 = true;
                 while (loop2)
@@ -1746,7 +1789,12 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
+                    {
+
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Succesfully Updated\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
             }
         }
 
@@ -1759,10 +1807,20 @@ namespace ConsoleApp
             VariableDTO variable = variableClient.GetVariable(new GetRequest() { Id = sampleToUpdate.VariableId }).Variable;
             while (loop)
             {
-                Console.WriteLine("\nSelected Sample \n" +
-                "Variable: " + variable.Code + "\n" +
-                "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
-                "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                if (variable != null)
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: " + variable.Code + "\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
+                else
+                {
+                    Console.WriteLine("\nSelected Sample \n" +
+                    "Variable: ERASED VARIABLE\n" +
+                    "Date & Time: " + ParseDateTimeExactToSimple(sampleToUpdate.DateTime) + "\n" +
+                    "Value: " + sampleToUpdate.Value.ToString() + "\n");
+                }
 
                 bool loop2 = true;
                 while (loop2)
@@ -1796,7 +1854,12 @@ namespace ConsoleApp
             {
                 if (item.VariableId == sampleToUpdate.VariableId)
                     if (item.Value == sampleToUpdate.Value)
+                    {
+                        Console.ForegroundColor = ConsoleColor.Green;
                         Console.WriteLine($"Succesfully Updated\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                    }
+                        
             }
         }
 
