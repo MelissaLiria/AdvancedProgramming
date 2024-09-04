@@ -32,7 +32,26 @@ namespace DataAccess.Repositories.Structures
 
         public void DeleteStructure(Structure structure)
         {
+            if (structure is Building)
+            {
+                var floorElements = GetAllStructures<Floor>().ToList();
+                foreach (Floor floor in floorElements)
+                {
+                    if(floor.BuildingId == structure.Id)
+                        DeleteStructure(floor);
+                }
+            }
+            else if (structure is Floor)
+            {
+                var roomElements = GetAllStructures<Room>().ToList();
+                foreach (Room room in roomElements)
+                {
+                    if (room.FloorId == structure.Id)
+                        DeleteStructure(room);
+                }
+            }
             _context.Structures.Remove(structure);
+
         }
 
         public T? GetStructureById<T>(Guid id) where T : Structure

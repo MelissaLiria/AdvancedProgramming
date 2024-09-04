@@ -828,6 +828,7 @@ namespace ConsoleApp
                         Console.WriteLine("\nNo building in the DataBase");
                         Console.ForegroundColor = ConsoleColor.Red;
                         Console.WriteLine("\nCannot create variable");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
@@ -1075,15 +1076,16 @@ namespace ConsoleApp
                     }
                     catch
                     {
-                        Console.WriteLine("Invalid Input\n" +
-                            "Cannot create variable\n");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
                     if (createResponseInt is null)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nCannot create variable");
+                        Console.WriteLine("\nCannot create sample\n");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
@@ -1108,15 +1110,16 @@ namespace ConsoleApp
                     }
                     catch
                     {
-                        Console.WriteLine("Invalid Input\n" +
-                            "Cannot create variable\n");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
                     if (createResponseDouble is null)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nCannot create variable");
+                        Console.WriteLine("\nCannot create sample\n");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
@@ -1141,15 +1144,16 @@ namespace ConsoleApp
                     }
                     catch
                     {
-                        Console.WriteLine("Invalid Input\n" +
-                            "Cannot create variable\n");
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.WriteLine("Invalid Input\n");
+                        Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
 
                     if (createResponseBool is null)
                     {
                         Console.ForegroundColor = ConsoleColor.Red;
-                        Console.WriteLine("\nCannot create variable");
+                        Console.WriteLine("\nCannot create sample\n");
                         Console.ForegroundColor = ConsoleColor.Gray;
                         return;
                     }
@@ -1511,8 +1515,7 @@ namespace ConsoleApp
             if (updatedGetResponse is not null &&
                 updatedGetResponse.KindCase == NullableRoomDTO.KindOneofCase.Room &&
                 updatedGetResponse.Room.Description == roomToUpdate.Description &&
-                updatedGetResponse.Room.Floor == roomToUpdate.Floor &&
-                updatedGetResponse.Room.Floor.Building == roomToUpdate.Floor.Building)
+                updatedGetResponse.Room.FloorId == roomToUpdate.FloorId)
             {
                 Console.ForegroundColor = ConsoleColor.Green;
                 Console.WriteLine($"Succesfully Updated\n");
@@ -1746,8 +1749,10 @@ namespace ConsoleApp
             if (updatedGetResponse is not null &&
                 updatedGetResponse.KindCase == NullableVariableDTO.KindOneofCase.Variable &&
                 updatedGetResponse.Variable.Code == variableToUpdate.Code &&
-                updatedGetResponse.Variable.VariableType == variableToUpdate.VariableType &&
-                updatedGetResponse.Variable.LocationCase == variableToUpdate.LocationCase)
+                updatedGetResponse.Variable.VariableType.Name == variableToUpdate.VariableType.Name &&
+                updatedGetResponse.Variable.VariableType.MeasurementUnit == variableToUpdate.VariableType.MeasurementUnit &&
+                updatedGetResponse.Variable.StructureType == variableToUpdate.StructureType &&
+                updatedGetResponse.Variable.LocationId == variableToUpdate.LocationId)
             {
 
 

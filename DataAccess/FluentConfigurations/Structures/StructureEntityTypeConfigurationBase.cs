@@ -20,6 +20,7 @@ namespace DataAccess.FluentConfigurations.Structures
                 .WithOne(x => x.Location)
                 .HasForeignKey(x => x.LocationId);
             base.Configure(builder);
+            
         }
     }
 }
