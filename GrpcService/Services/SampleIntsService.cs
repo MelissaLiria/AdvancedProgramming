@@ -2,6 +2,7 @@
 using Application.Samples.Commands.DeleteSampleInt;
 using Application.Samples.Commands.UpdateSampleInt;
 using Application.Samples.Queries.GetAllSampleInts;
+using Application.Samples.Queries.GetAverageOfSampleInts;
 using Application.Samples.Queries.GetSampleIntByTimeSpan;
 using Application.Samples.Queries.GetSampleIntByVariableId;
 using AutoMapper;
@@ -89,6 +90,19 @@ namespace GrpcService.Services
             _mediator.Send(command);
 
             return Task.FromResult(new Empty());    
+        }
+
+        public override Task<Average> GetAverageOfSampleInts(SampleInts request, ServerCallContext context)
+        {
+            var samples = new List<Domain.Entities.HistoricalData.SampleInt>();
+            foreach(SampleIntDTO sample in request.Items)
+            {
+                samples.Add(_mapper.Map<Domain.Entities.HistoricalData.SampleInt>(sample));
+            }
+            var query = new GetAverageOfSampleIntsQuery(samples);
+            var result = _mediator.Send(query).Result;
+            Average avg = new Average() { Average_ = result};
+            return Task.FromResult(avg);
         }
 
     }

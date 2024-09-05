@@ -26,3 +26,7 @@ message DeleteSampleRequest{
 	string variableId = 1;
 	string dateTime = 2;
 }
+
+message Average{
+	double average = 1;
+}

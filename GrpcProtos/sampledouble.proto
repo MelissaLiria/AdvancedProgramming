@@ -16,6 +16,7 @@ service SampleDouble{
 	rpc GetAllSampleDoubles (google.protobuf.Empty) returns (SampleDoubles);
 	rpc UpdateSampleDouble (SampleDoubleDTO) returns (google.protobuf.Empty);
 	rpc DeleteSampleDouble (DeleteSampleRequest) returns (google.protobuf.Empty);
+	rpc GetAverageOfSampleDoubles (SampleDoubles) returns (Average);
 }
 
 message SampleDoubleDTO{

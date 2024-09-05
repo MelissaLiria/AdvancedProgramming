@@ -2,6 +2,7 @@
 using Application.Samples.Commands.DeleteSampleDouble;
 using Application.Samples.Commands.UpdateSampleDouble;
 using Application.Samples.Queries.GetAllSampleDoubles;
+using Application.Samples.Queries.GetAverageOfSampleDoubles;
 using Application.Samples.Queries.GetSampleDoubleByTimeSpan;
 using Application.Samples.Queries.GetSampleDoubleByVariableId;
 using AutoMapper;
@@ -91,5 +92,17 @@ namespace GrpcService.Services
             return Task.FromResult(new Empty());
         }
 
+        public override Task<Average> GetAverageOfSampleDoubles(SampleDoubles request, ServerCallContext context)
+        {
+            var samples = new List<Domain.Entities.HistoricalData.SampleDouble>();
+            foreach (SampleDoubleDTO sample in request.Items)
+            {
+                samples.Add(_mapper.Map<Domain.Entities.HistoricalData.SampleDouble>(sample));
+            }
+            var query = new GetAverageOfSampleDoublesQuery(samples);
+            var result = _mediator.Send(query).Result;
+            Average avg = new Average() { Average_ = result };
+            return Task.FromResult(avg);
+        }
     }
 }

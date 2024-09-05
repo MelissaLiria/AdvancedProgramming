@@ -18,6 +18,8 @@ namespace GrpcService.Mappers
                 .ForMember(t => t.VariableId, o => o.MapFrom(s => new Guid(s.VariableId)))
                 .ForMember(t => t.Value, o => o.MapFrom(s => s.Value))
                 .ForMember(t => t.DateTime, o => o.MapFrom(s => DateTime.ParseExact(s.DateTime, "yyyy-MM-ddTHH:mm:ss.fffffffK", CultureInfo.InvariantCulture, DateTimeStyles.RoundtripKind)));
+
+            
         }
     }
 }

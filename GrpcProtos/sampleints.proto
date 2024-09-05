@@ -16,6 +16,7 @@ service SampleInt{
 	rpc GetAllSampleInts (google.protobuf.Empty) returns (SampleInts);
 	rpc UpdateSampleInt (SampleIntDTO) returns (google.protobuf.Empty);
 	rpc DeleteSampleInt (DeleteSampleRequest) returns (google.protobuf.Empty);
+	rpc GetAverageOfSampleInts (SampleInts) returns (Average);
 }
 
 message SampleIntDTO{

@@ -3056,6 +3056,11 @@ namespace ConsoleApp
                             "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
             }
+            if (getResponse.Items.Count != 0)
+            {
+                Average average = sampleClient.GetAverageOfSampleInts(getResponse);
+                Console.WriteLine("\nThe Average of the SamplesInts selected is " + average.Average_.ToString() + "\n");
+            }
             return getResponse;
         }
 
@@ -3152,6 +3157,11 @@ namespace ConsoleApp
                             "Date&Time: " + ParseDateTimeExactToSimple(getResponse.Items[i - 1].DateTime) + "\n\t" +
                             "Value: " + getResponse.Items[i - 1].Value.ToString() + "\n");
                 };
+            }
+            if (getResponse.Items.Count != 0)
+            {
+                Average average = sampleClient.GetAverageOfSampleDoubles(getResponse);
+                Console.WriteLine("\nThe Average of the SamplesDoubles selected is " + average.Average_.ToString() + "\n");
             }
             return getResponse;
         }
